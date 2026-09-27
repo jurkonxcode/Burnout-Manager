@@ -277,19 +277,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
   font-size:12px;color:var(--muted);font-family:ui-monospace,Menlo,monospace;margin-top:10px}
 .version-badge{display:inline-block;padding:4px 10px;border-radius:10px;background:var(--accent-soft);
   color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.02em}
-/* Journal */
-.journal-textarea{width:100%;min-height:280px;padding:16px;border-radius:16px;border:1px solid var(--line);
-  font:inherit;font-size:15px;line-height:1.7;background:var(--surface-2);color:var(--ink);
-  outline:none;resize:vertical;font-family:inherit;
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.journal-textarea::placeholder{color:var(--muted)}
-.journal-preview{font-size:13.5px;line-height:1.6;color:var(--ink);
-  white-space:pre-wrap;word-break:break-word;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.journal-date{font-size:12px;font-weight:600;color:var(--muted)}
-.journal-empty{text-align:center;padding:40px 20px}
-.journal-empty svg{width:48px;height:48px;stroke:var(--muted);stroke-width:1.4;fill:none;
-  opacity:.5;margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -562,20 +549,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
-    <div class="card tap" onclick="go('s-journal')">
-      <div class="card-head">
-        <div style="display:flex;gap:14px;align-items:center">
-          <div class="icon-round" style="background:var(--accent-soft);color:var(--accent)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M4 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
-          </div>
-          <div>
-            <h3>Jurnal</h3>
-            <div class="muted" style="margin-top:3px">Tulis bebas, tanpa penilaian</div>
-          </div>
-        </div>
-        <div style="font-size:22px;color:var(--muted)">›</div>
-      </div>
-    </div>
     <div class="card tap" onclick="go('s-breath')" style="background:var(--sage-soft)">
       <div class="card-head">
         <div style="display:flex;gap:14px;align-items:center">
@@ -593,7 +566,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
     <div class="card tap" onclick="go('s-tracker')">
       <div class="card-head">
         <div style="display:flex;gap:14px;align-items:center">
-          <div class="icon-round" style="background:var(--primary-soft);color:var(--primary)">
+          <div class="icon-round" style="background:var(--accent-soft);color:var(--accent)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg>
           </div>
           <div>
@@ -655,38 +628,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       </div>
     </div>
     <button class="btn btn-primary" style="margin-top:8px" onclick="saveCheckin()">Simpan</button>
-  </div>
-
-  <!-- JURNAL -->
-  <div class="screen" id="s-journal" data-depth="30">
-    <div class="top">
-      <div class="back" onclick="go('s-dash',true)">‹</div>
-      <h1>Jurnal</h1>
-    </div>
-    <button class="btn btn-primary" onclick="newJournal()" style="margin-bottom:20px">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-      Tulis hari ini
-    </button>
-    <div id="journalList"></div>
-  </div>
-
-  <!-- JURNAL EDIT -->
-  <div class="screen" id="s-journal-edit" data-depth="31">
-    <div class="top">
-      <div class="back" onclick="go('s-journal',true)">‹</div>
-      <h1 id="journalEditTitle">Tulis</h1>
-      <div class="back" id="journalDeleteBtn" style="display:none" onclick="deleteJournal()" title="Hapus">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="width:18px;height:18px">
-          <path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/>
-        </svg>
-      </div>
-    </div>
-    <div class="journal-date" id="journalDate" style="margin-bottom:12px">—</div>
-    <textarea id="journalText" class="journal-textarea" placeholder="Hari ini aku merasa..."></textarea>
-    <button class="btn btn-primary" style="margin-top:16px" onclick="saveJournal()">Simpan</button>
-    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
-      Jurnal hanya tersimpan di HP kamu.
-    </p>
   </div>
 
   <!-- NAPAS -->
@@ -803,6 +744,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="back" onclick="go('s-profile',true)">‹</div>
       <h1>Pengaturan</h1>
     </div>
+
     <div class="card">
       <h2>Akun</h2>
       <div class="setting" onclick="pickPhoto()">
@@ -830,6 +772,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:18px;color:var(--muted)">›</div>
       </div>
     </div>
+
     <div class="card">
       <h2>Tampilan</h2>
       <div class="setting" onclick="toggleTheme()" style="cursor:pointer">
@@ -857,6 +800,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div class="setting-value">ID</div>
       </div>
     </div>
+
     <div class="card">
       <h2>Data &amp; privasi</h2>
       <div class="setting" onclick="startAssess()">
@@ -896,6 +840,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:18px;color:var(--muted)">›</div>
       </div>
     </div>
+
     <div class="card">
       <h2>Informasi</h2>
       <div class="setting" onclick="go('s-about')">
@@ -947,6 +892,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:18px;color:var(--muted)">›</div>
       </div>
     </div>
+
     <div class="card">
       <h2>Akun</h2>
       <button class="btn btn-danger" onclick="logout()">Keluar &amp; hapus data lokal</button>
@@ -969,23 +915,23 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         </svg>
       </div>
       <div class="info-title">Burnout Manager</div>
-      <div class="info-sub">Versi 0.3 · Prototipe</div>
+      <div class="info-sub">Versi 0.2 · Prototipe</div>
       <div style="margin-top:10px"><span class="version-badge">Belum rilis resmi</span></div>
     </div>
     <div class="card">
       <h2>Kenapa dibuat</h2>
       <p style="margin:0;font-size:13.5px;line-height:1.65">
-        Aplikasi kesehatan mental yang ada sering terasa terlalu medis, terlalu ramai, atau justru menambah beban. Yang ini coba pendekatan lain: sederhana, tenang, dan tidak menghakimi.
+        Dibuat karena capek. Cari aplikasi yang cocok, banyak yang terlalu klinis atau terlalu ramai.
+        Jadi bikin sendiri. Pelan-pelan. Dari HP.
       </p>
     </div>
     <div class="card">
       <h2>Apa yang bisa dilakukan</h2>
       <div class="list-item"><div class="list-num">1</div><div class="list-text"><strong>Log harian</strong><small>Catat energi, stres, dan beban kerja. 20 detik.</small></div></div>
-      <div class="list-item"><div class="list-num">2</div><div class="list-text"><strong>Jurnal</strong><small>Tulis bebas, tanpa penilaian.</small></div></div>
-      <div class="list-item"><div class="list-num">3</div><div class="list-text"><strong>Kenalan dulu</strong><small>Kepribadian, jam biologis, konteks kerja.</small></div></div>
-      <div class="list-item"><div class="list-num">4</div><div class="list-text"><strong>Cek burnout</strong><small>Skrining 10 pertanyaan, skor 0–40.</small></div></div>
-      <div class="list-item"><div class="list-num">5</div><div class="list-text"><strong>Napas 4-7-8</strong><small>Kalau butuh tenang cepat.</small></div></div>
-      <div class="list-item"><div class="list-num">6</div><div class="list-text"><strong>Tren 7 hari</strong><small>Lihat pola energi dan stres.</small></div></div>
+      <div class="list-item"><div class="list-num">2</div><div class="list-text"><strong>Kenalan dulu</strong><small>Kepribadian, jam biologis, konteks kerja.</small></div></div>
+      <div class="list-item"><div class="list-num">3</div><div class="list-text"><strong>Cek burnout</strong><small>Skrining 10 pertanyaan, skor 0–40.</small></div></div>
+      <div class="list-item"><div class="list-num">4</div><div class="list-text"><strong>Napas 4-7-8</strong><small>Kalau butuh tenang cepat.</small></div></div>
+      <div class="list-item"><div class="list-num">5</div><div class="list-text"><strong>Tren 7 hari</strong><small>Lihat pola energi dan stres.</small></div></div>
     </div>
     <div class="banner">
       <strong>Bukan pengganti siapa pun</strong>
@@ -1023,38 +969,49 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
     </div>
     <div class="card">
       <h2>Apa yang disimpan</h2>
-      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Nama panggilan</strong><small>Yang kamu isi sendiri.</small></div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Nama panggilan</strong><small>Yang kamu isi sendiri. Tidak harus nama asli.</small></div></div>
       <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Jawaban onboarding</strong><small>Kepribadian, jam tidur, konteks kerja.</small></div></div>
       <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Jawaban asesmen</strong><small>Skrining burnout.</small></div></div>
       <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Log harian</strong><small>Energi, stres, beban kerja per hari.</small></div></div>
-      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Jurnal</strong><small>Catatan bebas yang kamu tulis.</small></div></div>
-      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Foto profil</strong><small>Kalau dipasang.</small></div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Foto profil</strong><small>Kalau dipasang. Di-resize max 400×400.</small></div></div>
       <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Pengaturan</strong><small>Dark mode atau terang.</small></div></div>
+      <p style="font-size:13px;margin:14px 0 0">Itu saja. Tidak ada tracking, analytics, atau cookie.</p>
     </div>
     <div class="card">
       <h2>Di mana disimpan</h2>
-      <p style="font-size:13px;margin:0 0 10px">Di <code>localStorage</code> browser kamu.</p>
+      <p style="font-size:13px;margin:0 0 10px">Di <code>localStorage</code> browser kamu. Anggap saja notes kecil di dalam Chrome atau Safari.</p>
       <div class="list-item"><div class="list-num">·</div><div class="list-text">Data <strong>hanya ada di HP ini</strong>.</div></div>
-      <div class="list-item"><div class="list-num">·</div><div class="list-text">Kalau hapus data browser, data hilang.</div></div>
-      <div class="list-item"><div class="list-num">·</div><div class="list-text">Ganti HP, data tidak pindah.</div></div>
-      <div class="list-item"><div class="list-num">·</div><div class="list-text">Incognito: data hilang saat tab ditutup.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Kalau kamu hapus data browser, data hilang.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Kalau ganti HP, data tidak ikut pindah.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Mode Incognito: data hilang saat tab ditutup.</div></div>
+    </div>
+    <div class="card">
+      <h2>Siapa yang bisa lihat</h2>
+      <p style="font-size:13px;margin:0">Hanya kamu. Tidak ada server. Tidak ada database. Kalau ada orang lain memegang HP kamu, mereka bisa lihat. Jaga HP seperti biasa.</p>
     </div>
     <div class="card">
       <h2>Login "Google"</h2>
-      <p style="font-size:13px;margin:0">Tombol "Lanjut dengan Google" <strong>bukan login sungguhan</strong>. Itu simulasi. Tidak ada akun Google yang terhubung.</p>
+      <p style="font-size:13px;margin:0 0 10px">Tombol "Lanjut dengan Google" <strong>bukan login sungguhan</strong>. Itu simulasi.</p>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Tidak ada akun Google yang terhubung.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Tidak ada data yang dikirim ke Google.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Tidak ada email yang dikirim ke mana pun.</div></div>
     </div>
     <div class="card">
       <h2>Lapor masalah</h2>
-      <p style="font-size:13px;margin:0">Kalau kamu kirim laporan lewat menu "Lapor masalah", isi laporan dikirim ke layanan Formspree untuk diteruskan ke pengembang. Info perangkat (browser) juga disertakan untuk bantu debug.</p>
+      <p style="font-size:13px;margin:0">Kalau kamu kirim laporan lewat menu "Lapor masalah", isi laporan (jenis, judul, pesan, kontak opsional) dikirim ke layanan Formspree untuk diteruskan ke pengembang. Info perangkat (browser) juga disertakan untuk bantu debug. Tidak ada data lain yang ikut terkirim.</p>
     </div>
     <div class="card">
       <h2>Data kesehatan</h2>
-      <p style="font-size:13px;margin:0">Jawaban asesmen, log harian, dan jurnal termasuk data kesehatan mental. Karena semua tersimpan lokal, risikonya kecil. Tapi tetap jaga HP kamu.</p>
+      <p style="font-size:13px;margin:0">Jawaban asesmen dan log harian termasuk data kesehatan mental. Karena semua tersimpan lokal dan tidak dikirim ke mana pun, risikonya kecil. Tapi tetap jaga HP kamu.</p>
     </div>
     <div class="card">
       <h2>Ekspor &amp; hapus</h2>
-      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Ekspor</strong> semua data ke JSON.</div></div>
-      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Hapus</strong> semua data. Tidak bisa dibatalkan.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Ekspor</strong> semua data ke JSON. Kapan saja. Di Pengaturan.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Hapus</strong> semua data. Satu tombol di Pengaturan. Tidak bisa dibatalkan.</div></div>
+    </div>
+    <div class="card">
+      <h2>Perubahan ke depan</h2>
+      <p style="font-size:13px;margin:0">Kalau nanti saya tambahkan backend, saya akan: (1) bilang di CHANGELOG, (2) perbarui halaman ini, (3) minta izin kamu dulu sebelum data apa pun dikirim ke server.</p>
     </div>
   </div>
 
@@ -1072,35 +1029,36 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         </svg>
       </div>
       <div class="info-title">Panduan singkat</div>
-      <div class="info-sub">5 menit baca</div>
+      <div class="info-sub">5 menit baca, seumur hidup pakai</div>
     </div>
     <div class="card">
       <h2>1. Mulai dari log harian</h2>
-      <p style="font-size:13.5px;margin:0">Setiap hari, isi log harian. Cukup 20 detik. Pilih emoji energi, stres, dan beban kerja. Jangan dipikir lama.</p>
+      <p style="font-size:13.5px;margin:0">Setiap hari, isi log harian. Cukup 20 detik. Pilih emoji energi, stres, dan beban kerja. Jangan dipikir lama — jawab spontan lebih jujur.</p>
     </div>
     <div class="card">
-      <h2>2. Tulis jurnal</h2>
-      <p style="font-size:13.5px;margin:0">Kalau ada yang mengganjal, tulis di jurnal. Tidak ada aturan. Tidak ada yang menilai. Kadang menulis saja sudah cukup melegakan.</p>
+      <h2>2. Kenali dirimu</h2>
+      <p style="font-size:13.5px;margin:0 0 10px">Di dashboard ada kartu "Lengkapi profil kamu". Isi 30 detik. Hasilnya dipakai untuk menyesuaikan saran.</p>
+      <p style="font-size:13px;margin:0;color:var(--muted)">Boleh dilewati kalau tidak mau. Aplikasi tetap jalan.</p>
     </div>
     <div class="card">
-      <h2>3. Kenali dirimu</h2>
-      <p style="font-size:13.5px;margin:0">Di dashboard ada kartu "Lengkapi profil kamu". Isi 30 detik. Hasilnya dipakai untuk menyesuaikan saran.</p>
+      <h2>3. Cek tingkat burnout</h2>
+      <p style="font-size:13.5px;margin:0">10 pertanyaan. Skor 0–40. Setelah selesai, kartu status di dashboard akan berubah warna. Isi ulang setiap 2–4 minggu untuk lihat perubahan.</p>
     </div>
     <div class="card">
-      <h2>4. Cek tingkat burnout</h2>
-      <p style="font-size:13.5px;margin:0">10 pertanyaan. Skor 0–40. Isi ulang setiap 2–4 minggu untuk lihat perubahan.</p>
+      <h2>4. Kalau butuh tenang cepat</h2>
+      <p style="font-size:13.5px;margin:0">Buka tab "Tenang". Tap Mulai. Ikuti lingkaran: tarik 4 detik, tahan 7 detik, buang 8 detik. Ulangi 4 kali.</p>
     </div>
     <div class="card">
-      <h2>5. Kalau butuh tenang cepat</h2>
-      <p style="font-size:13.5px;margin:0">Buka tab "Tenang". Tarik 4 detik, tahan 7 detik, buang 8 detik. Ulangi 4 kali.</p>
+      <h2>5. Lihat pola</h2>
+      <p style="font-size:13.5px;margin:0">Buka tab "Tren". Setelah 3+ hari data, akan muncul insight. Contoh: "Energi turun tiap Senin." Itu petunjuk untuk berubah.</p>
     </div>
     <div class="card">
-      <h2>6. Lihat pola</h2>
-      <p style="font-size:13.5px;margin:0">Buka tab "Tren". Setelah 3+ hari data, akan muncul insight.</p>
+      <h2>6. Kalau skor tinggi</h2>
+      <p style="font-size:13.5px;margin:0">Kalau skor asesmenmu Tinggi atau Berat, kartu "Hubungi Ahli" muncul di dashboard. Tap untuk lihat daftar psikolog terverifikasi. Ini demo, belum ada booking asli.</p>
     </div>
     <div class="banner">
       <strong>Satu tips</strong>
-      <p>Isi log di jam yang sama tiap hari. Misalnya setelah makan malam.</p>
+      <p>Isi log di jam yang sama tiap hari. Misalnya setelah makan malam. Lama-lama jadi kebiasaan, dan datanya lebih konsisten.</p>
     </div>
   </div>
 
@@ -1110,6 +1068,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="back" onclick="go('s-settings',true)">‹</div>
       <h1>Lapor masalah</h1>
     </div>
+
     <div class="info-head">
       <div class="info-icon danger">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -1119,6 +1078,8 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="info-title">Ada sesuatu?</div>
       <div class="info-sub">Bug, ide, atau masukan</div>
     </div>
+
+    <!-- FORM STATE -->
     <div id="reportForm">
       <div class="card">
         <h2>Jenis laporan</h2>
@@ -1138,7 +1099,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="card">
         <h2>Ceritakan lebih detail</h2>
         <textarea id="reportBody" rows="6" maxlength="2000"
-          placeholder="Apa yang terjadi? Apa yang kamu harapkan?"
+          placeholder="Apa yang terjadi? Apa yang kamu harapkan? Langkah apa yang bikin error muncul?"
           style="width:100%;padding:14px;border-radius:14px;border:1px solid var(--line);
           font:inherit;font-size:14px;background:var(--surface-2);color:var(--ink);outline:none;
           resize:vertical;line-height:1.55;font-family:inherit"></textarea>
@@ -1155,6 +1116,8 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         Laporan dikirim langsung dari aplikasi.<br>Butuh koneksi internet.
       </p>
     </div>
+
+    <!-- LOADING STATE -->
     <div id="reportLoading" style="display:none;text-align:center;padding:40px 20px">
       <div class="info-icon" style="margin-bottom:18px">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite">
@@ -1164,6 +1127,8 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div style="font-size:15px;font-weight:700;margin-bottom:6px">Mengirim...</div>
       <p style="font-size:13px;margin:0">Tunggu sebentar.</p>
     </div>
+
+    <!-- SUCCESS STATE -->
     <div id="reportSuccess" style="display:none">
       <div class="info-head">
         <div class="info-icon sage">
@@ -1179,6 +1144,8 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       </div>
       <button class="btn btn-ghost" onclick="resetReport()">Kirim laporan lain</button>
     </div>
+
+    <!-- ERROR STATE -->
     <div id="reportError" style="display:none">
       <div class="info-head">
         <div class="info-icon danger">
@@ -1192,6 +1159,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <button class="btn btn-primary" onclick="submitReport()">Coba lagi</button>
       <button class="btn btn-ghost" style="margin-top:10px" onclick="openIssuesFallback()">Atau kirim lewat GitHub</button>
     </div>
+
     <div id="reportFooter">
       <div class="banner danger" style="margin-top:20px">
         <strong>Kalau sedang krisis</strong>
@@ -1231,7 +1199,7 @@ const FORMSPREE_ENDPOINT = 'https://formspree.io/f/meaorboz';
 /* ═══════════════════════════════════════════
    NAVIGASI
    ═══════════════════════════════════════════ */
-const HIDDEN_NAV = ['s-welcome','s-auth','s-name','s-tipi','s-chrono','s-work','s-result','s-assess','s-assess-result','s-settings','s-about','s-privacy','s-howto','s-contact','s-journal','s-journal-edit'];
+const HIDDEN_NAV = ['s-welcome','s-auth','s-name','s-tipi','s-chrono','s-work','s-result','s-assess','s-assess-result','s-settings','s-about','s-privacy','s-howto','s-contact'];
 function depthOf(id){
   const el = document.getElementById(id);
   return el ? parseInt(el.dataset.depth || 0) : 0;
@@ -1265,7 +1233,6 @@ function go(id, back){
   if(id === 's-settings') renderSettings();
   if(id === 's-dash') refreshDashboard();
   if(id === 's-contact') resetReport();
-  if(id === 's-journal') renderJournalList();
 }
 
 /* ═══════════════════════════════════════════
@@ -1627,4 +1594,353 @@ function renderAssessResult(){
   circle.className = 'score-circle ' + (a.total<=9?'low':a.total<=19?'mid':a.total<=29?'high':'severe');
   document.getElementById('scoreNum').textContent = a.total;
   document.getElementById('scoreLevel').textContent = 'Risiko: ' + a.level;
-  document.getElementById('scoreDesc').textContent =
+  document.getElementById('scoreDesc').textContent = a.desc;
+  const advice = [];
+  if(a.total <= 9){
+    advice.push('Lanjutkan tidur 7–8 jam dan olahraga ringan rutin.');
+    advice.push('Isi log harian supaya kamu tahu saat energi mulai turun.');
+  } else if(a.total <= 19){
+    advice.push('Tetapkan jam berhenti kerja yang tegas.');
+    advice.push('Sisipkan jeda 5 menit setiap 90 menit kerja.');
+    advice.push('Kurangi satu komitmen opsional minggu ini.');
+  } else if(a.total <= 29){
+    advice.push('Bicara dengan atasan soal prioritas, bukan menambah beban.');
+    advice.push('Blokir waktu tanpa notifikasi setiap hari.');
+    advice.push('Pertimbangkan sesi dengan psikolog dalam 2 minggu.');
+  } else {
+    advice.push('Prioritaskan pemulihan, bukan produktivitas.');
+    advice.push('Hubungi psikolog atau psikiater secepatnya.');
+    advice.push('Beri tahu satu orang yang kamu percaya.');
+    document.getElementById('crisisBanner').style.display = 'block';
+  }
+  document.getElementById('assessAdvice').innerHTML =
+    advice.map(t => '<p style="margin:0 0 10px;font-size:13px;color:var(--ink)">• ' + t + '</p>').join('');
+}
+function finishAssess(){
+  localStorage.setItem('bm_assessment', JSON.stringify(window._assess));
+  go('s-dash');
+}
+
+/* ═══════════════════════════════════════════
+   DASHBOARD
+   ═══════════════════════════════════════════ */
+function refreshDashboard(){
+  updateStatusFromScore();
+  updateCTAs();
+}
+function updateCTAs(){
+  const hasProfile = !!localStorage.getItem('bm_profile');
+  const hasAssess = !!localStorage.getItem('bm_assessment');
+  const p = document.getElementById('ctaProfile');
+  const a = document.getElementById('ctaAssess');
+  if(p) p.style.display = hasProfile ? 'none' : 'block';
+  if(a) a.style.display = hasAssess ? 'none' : 'block';
+}
+function updateStatusFromScore(){
+  const a = JSON.parse(localStorage.getItem('bm_assessment') || 'null');
+  const card = document.getElementById('statusCard');
+  const label = document.getElementById('statusLabel');
+  const note = document.getElementById('statusNote');
+  if(!card) return;
+  if(!a){
+    label.textContent = '—';
+    note.textContent = 'Belum ada data. Cek tingkat burnout di bawah.';
+    card.style.background = 'linear-gradient(135deg,#5B8DB8,#8FB6D8)';
+    card.style.boxShadow = '0 16px 40px rgba(91,141,184,.35)';
+    return;
+  }
+  label.textContent = a.level;
+  note.textContent = 'Skor: ' + a.total + ' dari 40';
+  let bg, sh;
+  if(a.total <= 9){ bg = 'linear-gradient(135deg,#7FA588,#A9C4AD)'; sh = 'rgba(127,165,136,.35)'; }
+  else if(a.total <= 19){ bg = 'linear-gradient(135deg,#5B8DB8,#8FB6D8)'; sh = 'rgba(91,141,184,.35)'; }
+  else if(a.total <= 29){ bg = 'linear-gradient(135deg,#D9A56A,#EBC896)'; sh = 'rgba(217,165,106,.4)'; }
+  else { bg = 'linear-gradient(135deg,#C97A6D,#E2A89A)'; sh = 'rgba(201,122,109,.4)'; }
+  card.style.background = bg;
+  card.style.boxShadow = '0 16px 40px ' + sh;
+}
+let severe = false;
+function toggleSevere(){
+  severe = !severe;
+  const expert = document.getElementById('expertCard');
+  if(severe){
+    document.getElementById('statusLabel').textContent = 'Berat (demo)';
+    document.getElementById('statusNote').textContent = 'Kami sarankan bicara dengan ahli';
+    document.getElementById('statusCard').style.background = 'linear-gradient(135deg,#C97A6D,#E2A89A)';
+    expert.style.display = 'block';
+  } else {
+    updateStatusFromScore();
+    expert.style.display = 'none';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   CHECK-IN
+   ═══════════════════════════════════════════ */
+function initChips(){
+  document.querySelectorAll('.emoji-row, .chips').forEach(group => {
+    group.querySelectorAll('.emoji, .chip').forEach(el => {
+      el.onclick = () => {
+        group.querySelectorAll('.emoji, .chip').forEach(x => x.classList.remove('sel'));
+        el.classList.add('sel');
+      };
+    });
+  });
+}
+function saveCheckin(){
+  const data = {};
+  let ok = true;
+  document.querySelectorAll('[data-field]').forEach(g => {
+    const sel = g.querySelector('.sel');
+    if(!sel){ ok = false; return; }
+    data[g.dataset.field] = +sel.dataset.v;
+  });
+  if(!ok){ alert('Isi semua dulu ya.'); return; }
+  const all = JSON.parse(localStorage.getItem('bm_logs') || '[]');
+  const today = new Date().toISOString().slice(0,10);
+  const idx = all.findIndex(x => x.d === today);
+  if(idx >= 0) all[idx] = { d: today, ...data };
+  else all.push({ d: today, ...data });
+  localStorage.setItem('bm_logs', JSON.stringify(all));
+  alert('Tersimpan.');
+  go('s-dash', true);
+}
+
+/* ═══════════════════════════════════════════
+   GRAFIK
+   ═══════════════════════════════════════════ */
+function renderCharts(){
+  const all = JSON.parse(localStorage.getItem('bm_logs') || '[]');
+  const days = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+  const energy = [], stress = [];
+  for(let i = 6; i >= 0; i--){
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0,10);
+    const hit = all.find(x => x.d === key);
+    energy.push(hit ? hit.energy : 0);
+    stress.push(hit ? hit.stress : 0);
+  }
+  const draw = (id, arr, color, hi) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.innerHTML = '';
+    const max = 4;
+    arr.forEach((v, i) => {
+      const bar = document.createElement('div');
+      bar.className = 'bar' + (v >= hi ? ' hi' : '');
+      bar.style.height = (v/max*100 || 4) + '%';
+      if(v >= hi) bar.style.background = color;
+      const s = document.createElement('span');
+      s.textContent = days[(new Date().getDay() - 6 + i + 7) % 7];
+      bar.appendChild(s);
+      el.appendChild(bar);
+    });
+  };
+  draw('chartEnergy', energy, 'linear-gradient(180deg,#8FB6D8,#5B8DB8)', 3);
+  draw('chartStress', stress, 'linear-gradient(180deg,#E2A89A,#C97A6D)', 3);
+  const filled = energy.filter(v => v > 0).length;
+  const ins = document.getElementById('insight');
+  if(!ins) return;
+  if(filled < 3){
+    ins.textContent = 'Baru ' + filled + ' hari data. Isi log harian beberapa hari lagi.';
+  } else {
+    const avgE = energy.filter(v => v).reduce((a,b) => a+b, 0) / filled;
+    ins.textContent = avgE < 2.5
+      ? 'Energi kamu rendah minggu ini. Coba kurangi satu komitmen malam.'
+      : 'Energi kamu cukup stabil. Pertahankan faktor pelindung.';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   NAPAS 4-7-8
+   ═══════════════════════════════════════════ */
+let breathTimer = null, breathStep = 0;
+function setBreath(text, cls){
+  const circle = document.getElementById('breathCircle');
+  if(!circle) return;
+  circle.textContent = text;
+  circle.classList.remove('inhale','exhale');
+  if(cls) circle.classList.add(cls);
+}
+function startBreath(){
+  const bBtn = document.getElementById('breathBtn');
+  if(!bBtn) return;
+  if(breathTimer){ stopBreath(); return; }
+  bBtn.textContent = 'Berhenti';
+  breathStep = 0;
+  const cycle = () => {
+    const phase = breathStep % 3;
+    if(phase === 0) setBreath('Tarik napas...','inhale');
+    else if(phase === 1) setBreath('Tahan...','');
+    else setBreath('Buang napas...','exhale');
+    breathStep++;
+  };
+  cycle();
+  breathTimer = setInterval(cycle, 4000);
+}
+function stopBreath(){
+  clearInterval(breathTimer);
+  breathTimer = null;
+  const bBtn = document.getElementById('breathBtn');
+  if(bBtn) bBtn.textContent = 'Mulai';
+  setBreath('Siap?','');
+}
+
+/* ═══════════════════════════════════════════
+   PROFIL
+   ═══════════════════════════════════════════ */
+function renderProfile(){
+  renderName();
+  const card = document.getElementById('profileSummary');
+  const p = JSON.parse(localStorage.getItem('bm_profile') || 'null');
+  if(!p){
+    card.innerHTML = '<h2>Profilmu</h2><p style="margin:0;font-size:13px;color:var(--muted)">Belum diisi. <a onclick="startTipi()" style="color:var(--primary);font-weight:700;cursor:pointer">Mulai sekarang</a></p>';
+  } else {
+    const b = p.big5;
+    card.innerHTML =
+      '<h2>Profilmu</h2>' +
+      '<div class="pbar"><div class="pbar-label">Keterbukaan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.O/7*100) + '%"></div></div><div class="pbar-val">' + b.O.toFixed(1) + '</div></div>' +
+      '<div class="pbar"><div class="pbar-label">Kedisiplinan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.C/7*100) + '%"></div></div><div class="pbar-val">' + b.C.toFixed(1) + '</div></div>' +
+      '<div class="pbar"><div class="pbar-label">Ekstraversi</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.E/7*100) + '%"></div></div><div class="pbar-val">' + b.E.toFixed(1) + '</div></div>' +
+      '<div class="pbar"><div class="pbar-label">Keramahan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.A/7*100) + '%"></div></div><div class="pbar-val">' + b.A.toFixed(1) + '</div></div>' +
+      '<div class="pbar"><div class="pbar-label">Sensitivitas stres</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.N/7*100) + '%"></div></div><div class="pbar-val">' + b.N.toFixed(1) + '</div></div>';
+  }
+  const acard = document.getElementById('profileAssess');
+  const a = JSON.parse(localStorage.getItem('bm_assessment') || 'null');
+  if(!a){
+    acard.innerHTML = '<h2>Asesmen burnout</h2><p style="margin:0;font-size:13px;color:var(--muted)">Belum diisi. <a onclick="startAssess()" style="color:var(--primary);font-weight:700;cursor:pointer">Mulai sekarang</a></p>';
+  } else {
+    acard.innerHTML =
+      '<h2>Asesmen burnout</h2>' +
+      '<p style="margin:0;font-size:14px;color:var(--ink)"><strong>' + a.level + '</strong> · ' + a.total + '/40</p>' +
+      '<p class="muted" style="margin:6px 0 0;font-size:12px">Terakhir: ' + a.date + '</p>';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SETTINGS
+   ═══════════════════════════════════════════ */
+function renderSettings(){
+  const n = localStorage.getItem('bm_name') || '—';
+  const el = document.getElementById('setName');
+  if(el) el.textContent = n;
+  applyTheme();
+}
+
+/* ═══════════════════════════════════════════
+   LAPOR MASALAH — Formspree
+   ═══════════════════════════════════════════ */
+function showReportState(state){
+  ['reportForm','reportLoading','reportSuccess','reportError','reportFooter'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+  const el = document.getElementById(state);
+  if(el) el.style.display = 'block';
+}
+function resetReport(){
+  const t = document.getElementById('reportTitle');
+  const b = document.getElementById('reportBody');
+  const c = document.getElementById('reportContact');
+  if(t) t.value = '';
+  if(b) b.value = '';
+  if(c) c.value = '';
+  document.querySelectorAll('#reportType .chip').forEach(ch => ch.classList.remove('sel'));
+  showReportState('reportForm');
+}
+function submitReport(){
+  const typeChip = document.querySelector('#reportType .chip.sel');
+  const title = document.getElementById('reportTitle').value.trim();
+  const body = document.getElementById('reportBody').value.trim();
+  const contact = document.getElementById('reportContact').value.trim();
+
+  if(!typeChip){ alert('Pilih jenis laporan dulu ya.'); return; }
+  if(!title){ alert('Isi judul singkat.'); return; }
+  if(!body){ alert('Ceritakan detailnya sedikit.'); return; }
+
+  if(FORMSPREE_ENDPOINT.includes('GANTI_DENGAN_ID_KAMU')){
+    document.getElementById('reportErrorMsg').textContent = 'Form belum dikonfigurasi. Hubungi pengembang.';
+    showReportState('reportError');
+    return;
+  }
+
+  showReportState('reportLoading');
+
+  const payload = {
+    jenis: typeChip.dataset.v,
+    judul: title,
+    pesan: body,
+    kontak: contact || '(anonim)',
+    perangkat: navigator.userAgent,
+    versi: '0.2',
+    waktu: new Date().toISOString()
+  };
+
+  fetch(FORMSPREE_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if(res.ok){ showReportState('reportSuccess'); }
+    else { throw new Error('HTTP ' + res.status); }
+  })
+  .catch(err => {
+    document.getElementById('reportErrorMsg').textContent =
+      navigator.onLine ? 'Terjadi masalah. Coba lagi nanti.' : 'Tidak ada koneksi internet.';
+    showReportState('reportError');
+  });
+}
+function openIssuesFallback(){
+  const typeChip = document.querySelector('#reportType .chip.sel');
+  const title = document.getElementById('reportTitle').value.trim() || 'Laporan';
+  const body = document.getElementById('reportBody').value.trim() || '';
+  const typeVal = typeChip ? typeChip.dataset.v : 'Lainnya';
+  const fullTitle = '[' + typeVal + '] ' + title;
+  const url = 'https://github.com/jurkonxcode/jurkonxcode.github.io/issues/new'
+    + '?title=' + encodeURIComponent(fullTitle)
+    + '&body=' + encodeURIComponent(body);
+  window.open(url, '_blank');
+}
+
+/* ═══════════════════════════════════════════
+   EKSPOR
+   ═══════════════════════════════════════════ */
+function exportData(){
+  const payload = {
+    name: localStorage.getItem('bm_name') || 'user',
+    auth: JSON.parse(localStorage.getItem('bm_auth') || 'null'),
+    profile: JSON.parse(localStorage.getItem('bm_profile') || 'null'),
+    assessment: JSON.parse(localStorage.getItem('bm_assessment') || 'null'),
+    logs: JSON.parse(localStorage.getItem('bm_logs') || '[]'),
+    theme: localStorage.getItem('bm_theme') || 'light',
+    hasPhoto: !!localStorage.getItem('bm_photo'),
+    exportedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'burnout-manager.json';
+  a.click();
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  applyTheme();
+  const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  const now = new Date();
+  const t = document.getElementById('today');
+  if(t) t.textContent = hari[now.getDay()] + ', ' + now.getDate() + ' ' + bulan[now.getMonth()];
+  renderName();
+  initChips();
+  if(localStorage.getItem('bm_name')){ go('s-dash'); }
+});
+</script>
+</body>
+  </html>
