@@ -47,11 +47,20 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 7 10-7"/></svg>
         Lanjut dengan Email
       </button>
-    </div>
-    <p class="muted" style="margin-top:26px;font-size:12px;text-align:center">
-      Dengan lanjut, kamu setuju data disimpan terenkripsi<br>dan bisa dihapus kapan saja.
-    </p>
+    <!-- ONBOARDING: NAMA -->
+<div class="screen" id="s-name">
+  <div style="margin-top:56px">
+    <h1>Siapa namamu?</h1>
+    <p>Biar aplikasinya terasa milikmu, bukan milik orang lain.</p>
   </div>
+  <input id="inputName" type="text" placeholder="Nama panggilan" autocomplete="given-name"
+    style="width:100%;padding:16px;border-radius:16px;border:1px solid var(--line);
+    font:inherit;font-size:16px;background:var(--surface);color:var(--ink);margin-top:16px">
+  <button class="btn btn-primary" style="margin-top:16px" onclick="saveName()">Lanjut</button>
+  <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
+    Nama ini hanya dipakai di dalam aplikasi. Tidak dibagikan.
+  </p>
+</div>
 
   <!-- 3. DASHBOARD -->
   <div class="screen" id="s-dash">
