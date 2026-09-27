@@ -1,9 +1,7 @@
 /* ═══════════════════════════════════════════
    BURNOUT MANAGER — app.js
-   Versi lengkap dengan nama dinamis
    ═══════════════════════════════════════════ */
 
-/* ── Navigasi antar layar ── */
 function go(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const target = document.getElementById(id);
@@ -21,12 +19,9 @@ function go(id){
   if(id === 's-tracker') renderCharts();
 }
 
-/* ═══════════════════════════════════════════
-   NAMA USER
-   ═══════════════════════════════════════════ */
-
 function saveName(){
   const input = document.getElementById('inputName');
+  if(!input) return;
   const v = input.value.trim();
   if(!v){ alert('Isi nama dulu ya.'); return; }
   localStorage.setItem('bm_name', v);
@@ -41,10 +36,6 @@ function renderName(){
   if(el) el.textContent = n;
   if(av) av.textContent = n.charAt(0).toUpperCase();
 }
-
-/* ═══════════════════════════════════════════
-   STATUS SEVERE (demo)
-   ═══════════════════════════════════════════ */
 
 let severe = false;
 
@@ -70,10 +61,6 @@ function toggleSevere(){
     expert.style.display = 'none';
   }
 }
-
-/* ═══════════════════════════════════════════
-   CHECK-IN HARIAN
-   ═══════════════════════════════════════════ */
 
 function initCheckin(){
   document.querySelectorAll('.emoji-row, .chips').forEach(group => {
@@ -101,7 +88,6 @@ function saveCheckin(){
   const all = JSON.parse(localStorage.getItem('bm_logs') || '[]');
   const today = new Date().toISOString().slice(0,10);
 
-  // Kalau hari ini sudah isi, ganti. Kalau belum, tambah.
   const idx = all.findIndex(x => x.d === today);
   if(idx >= 0){
     all[idx] = { d: today, ...data };
@@ -113,10 +99,6 @@ function saveCheckin(){
   alert('Tersimpan. Terima kasih sudah jujur pada diri sendiri.');
   go('s-dash');
 }
-
-/* ═══════════════════════════════════════════
-   GRAFIK & INSIGHT
-   ═══════════════════════════════════════════ */
 
 function renderCharts(){
   const all = JSON.parse(localStorage.getItem('bm_logs') || '[]');
@@ -167,10 +149,6 @@ function renderCharts(){
   }
 }
 
-/* ═══════════════════════════════════════════
-   LATIHAN NAPAS 4-7-8
-   ═══════════════════════════════════════════ */
-
 let breathTimer = null;
 let breathStep = 0;
 
@@ -211,10 +189,6 @@ function stopBreath(){
   setBreath('Siap?', '');
 }
 
-/* ═══════════════════════════════════════════
-   DATA: EKSPOR & HAPUS
-   ═══════════════════════════════════════════ */
-
 function exportData(){
   const all = localStorage.getItem('bm_logs') || '[]';
   const name = localStorage.getItem('bm_name') || 'user';
@@ -230,21 +204,13 @@ function exportData(){
   a.click();
 }
 
-/* ═══════════════════════════════════════════
-   INISIALISASI
-   ═══════════════════════════════════════════ */
-
 window.addEventListener('DOMContentLoaded', () => {
-  // Tanggal hari ini
   const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   const now = new Date();
   const t = document.getElementById('today');
   if(t) t.textContent = `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]}`;
 
-  // Nama user
   renderName();
-
-  // Check-in handlers
   initCheckin();
 });
