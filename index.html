@@ -1947,5 +1947,12 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
   <script src="js/journal.js"></script>
   <script src="js/reminder.js"></script>
+  <script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+  </script>
 </body>
   </html>
