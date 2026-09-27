@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#EDE8DD">
+<meta name="theme-color" content="#EFEAE0">
 <title>Burnout Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -73,7 +73,6 @@ body::after{width:300px;height:300px;background:radial-gradient(circle,#D9A56A,t
   box-shadow:0 40px 100px rgba(0,0,0,.18);z-index:1}
 @media(min-width:480px){.phone{border-radius:40px;margin-top:1.5vh;height:97dvh}}
 
-/* Screens & transitions */
 .screen{display:none;flex:1;overflow-y:auto;padding:28px 22px 130px;position:relative;z-index:2}
 .screen::-webkit-scrollbar{display:none}
 .screen.active{display:block}
@@ -84,16 +83,12 @@ body::after{width:300px;height:300px;background:radial-gradient(circle,#D9A56A,t
 @keyframes slideLeft{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
 @keyframes fadeOnly{from{opacity:0}to{opacity:1}}
 
-/* Typography */
 h1{font-size:27px;font-weight:800;letter-spacing:-.025em;margin:0 0 10px;line-height:1.15}
 h2{font-size:16px;font-weight:700;margin:0 0 12px;letter-spacing:-.01em}
 h3{margin:0;font-size:15px;font-weight:700}
 p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .muted{color:var(--muted);font-size:13px}
-.gradient-text{background:linear-gradient(135deg,var(--primary),var(--sage));-webkit-background-clip:text;
-  background-clip:text;color:transparent}
 
-/* Buttons */
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:17px;border:0;
   border-radius:18px;font:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:all .2s cubic-bezier(.22,1,.36,1);
   position:relative;overflow:hidden}
@@ -106,7 +101,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
   backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));box-shadow:var(--shadow-card)}
 .btn-danger{background:var(--danger-soft);color:var(--danger);border:1px solid transparent}
 
-/* Glass cards */
 .card{background:var(--surface);border-radius:var(--radius);padding:20px;margin-bottom:14px;
   backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
   border:1px solid var(--line);box-shadow:var(--shadow-card);
@@ -117,7 +111,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .icon-round{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;flex-shrink:0}
 .icon-round svg{width:22px;height:22px;stroke-width:1.8}
 
-/* Nav floating pill */
 .nav{position:absolute;bottom:calc(16px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
   background:var(--surface);border:1px solid var(--line);
   backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);
@@ -133,16 +126,35 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 [data-theme="dark"] .nav button.active{color:#0A0E13}
 .nav svg{width:21px;height:21px;stroke-width:1.9}
 
-/* Hero welcome */
-.hero{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;text-align:center;padding:40px 0}
-.logo{width:96px;height:96px;border-radius:30px;
+/* HERO */
+.hero{display:flex;flex-direction:column;justify-content:center;align-items:center;
+  height:100%;text-align:center;padding:24px 0}
+.hero-inner{width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;
+  background:var(--surface);border:1px solid var(--line);
+  font-size:10.5px;font-weight:600;color:var(--muted);margin-bottom:18px;letter-spacing:.02em;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.hero-badge .dot{width:5px;height:5px;border-radius:50%;background:#7FA588;
+  box-shadow:0 0 0 3px rgba(127,165,136,.2);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 3px rgba(127,165,136,.2)}
+  50%{opacity:.7;box-shadow:0 0 0 5px rgba(127,165,136,.08)}}
+.logo{width:72px;height:72px;border-radius:22px;position:relative;overflow:hidden;
   background:linear-gradient(135deg,#5B8DB8,#8FB6D8);display:grid;place-items:center;
-  margin-bottom:26px;box-shadow:0 20px 50px rgba(91,141,184,.4), inset 0 1px 0 rgba(255,255,255,.3);
-  animation:logoFloat 4s ease-in-out infinite}
-@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.logo svg{width:48px;height:48px;stroke:#fff;stroke-width:1.6}
+  margin-bottom:22px;
+  box-shadow:0 20px 44px rgba(91,141,184,.32), 0 6px 14px rgba(91,141,184,.16),
+    inset 0 1.5px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.08)}
+.logo::before{content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.25),transparent 55%);pointer-events:none}
+.logo svg{width:36px;height:36px;stroke:#fff;stroke-width:1.7;position:relative;z-index:1}
+.hero-title{font-size:31px;font-weight:800;letter-spacing:-.035em;line-height:1.1;
+  margin:0 0 12px;color:var(--ink)}
+.hero-title .grad{background:linear-gradient(135deg,#5B8DB8,#7FA588);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{font-size:14px;color:var(--muted);line-height:1.55;margin:0 0 30px;max-width:270px}
+.hero-actions{width:100%;display:flex;flex-direction:column;gap:10px}
+.hero-foot{font-size:10.5px;color:var(--muted);margin-top:22px;
+  letter-spacing:.01em;max-width:250px;line-height:1.6}
 
-/* Rows */
 .row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);gap:10px}
 .row:last-child{border-bottom:0}
 .row-label{font-weight:600;font-size:14px}
@@ -159,29 +171,25 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .chip.sel{background:var(--primary-soft);border-color:var(--primary);color:var(--primary);
   box-shadow:0 6px 20px var(--primary-soft)}
 
-/* Charts */
 .chart{display:flex;align-items:flex-end;gap:8px;height:150px;padding:12px 0 26px}
 .bar{flex:1;background:var(--primary-soft);border-radius:10px 10px 4px 4px;position:relative;transition:.5s cubic-bezier(.22,1,.36,1)}
 .bar.hi{background:linear-gradient(180deg,var(--primary-2),var(--primary))}
 .bar span{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);font-weight:600}
 
-/* Header with back */
 .top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .back{width:42px;height:42px;border-radius:14px;background:var(--surface);border:1px solid var(--line);
   display:grid;place-items:center;cursor:pointer;font-size:18px;color:var(--ink);
   backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));box-shadow:var(--shadow-card);
-  transition:transform .2s}
+  transition:transform .2s;flex-shrink:0}
 .back:active{transform:scale(.94)}
 .top h1{font-size:20px;margin:0;flex:1;font-weight:700}
 
-/* Banner */
 .banner{border-radius:20px;padding:18px;margin-bottom:14px;background:var(--accent-soft);
   border:1px solid var(--line);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur))}
 .banner.danger{background:var(--danger-soft)}
 .banner strong{display:block;font-size:14px;margin-bottom:6px;color:var(--ink)}
 .banner p{margin:0;font-size:13px}
 
-/* Expert */
 .expert{display:flex;gap:14px;align-items:center;padding:18px;background:var(--surface);border-radius:var(--radius);
   margin-bottom:12px;border:1px solid var(--line);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
   box-shadow:var(--shadow-card);cursor:pointer;transition:transform .2s}
@@ -192,7 +200,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .verified{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--sage);
   background:var(--sage-soft);padding:3px 9px;border-radius:9px;margin-top:5px}
 
-/* Breathing */
 .breath-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;gap:36px}
 .breath-circle{width:220px;height:220px;border-radius:50%;
   background:radial-gradient(circle at 30% 30%,#A8CCE5,#5B8DB8);display:grid;place-items:center;color:#fff;
@@ -201,12 +208,10 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .breath-circle.inhale{transform:scale(1.3)}
 .breath-circle.exhale{transform:scale(.88)}
 
-/* Progress */
 .progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--sage));
   transition:.4s cubic-bezier(.22,1,.36,1);width:0;border-radius:3px}
 
-/* Options */
 .tipi-options{display:flex;flex-direction:column;gap:10px;margin-top:22px}
 .tipi-opt{padding:16px 18px;background:var(--surface);border-radius:16px;border:1px solid var(--line);
   cursor:pointer;font-size:14px;font-weight:500;display:flex;align-items:center;gap:14px;
@@ -218,7 +223,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
   font-weight:700;font-size:12px;color:var(--muted);flex-shrink:0;transition:all .2s}
 .tipi-opt.sel .num{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff}
 
-/* Bars */
 .pbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:13px}
 .pbar-label{width:112px;font-weight:600;color:var(--ink);font-size:12px}
 .pbar-track{flex:1;height:8px;background:var(--surface-2);border-radius:5px;overflow:hidden}
@@ -226,7 +230,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
   transition:1s cubic-bezier(.22,1,.36,1)}
 .pbar-val{width:30px;text-align:right;font-size:12px;color:var(--muted);font-weight:700}
 
-/* Score circle */
 .score-circle{width:170px;height:170px;border-radius:50%;margin:24px auto;display:grid;place-items:center;
   position:relative;background:var(--surface);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
   border:1px solid var(--line);box-shadow:var(--shadow-card)}
@@ -239,7 +242,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .score-circle .score-num{font-size:44px;font-weight:800;line-height:1;color:var(--ink);letter-spacing:-.03em}
 .score-circle .score-label{font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
 
-/* Switch */
 .switch{position:relative;width:50px;height:29px;background:var(--line);border-radius:15px;cursor:pointer;
   transition:.3s cubic-bezier(.22,1,.36,1);flex-shrink:0}
 .switch.on{background:linear-gradient(135deg,var(--primary),var(--primary-2))}
@@ -247,12 +249,10 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
   border-radius:50%;transition:.3s cubic-bezier(.22,1,.36,1);box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .switch.on::after{transform:translateX(21px)}
 
-/* Pill */
 .pill{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:11px;
   font-size:10px;font-weight:700;background:var(--accent-soft);color:var(--accent);margin-top:6px;
   border:1px solid var(--line)}
 
-/* Settings row */
 .setting{display:flex;align-items:center;justify-content:space-between;padding:16px 0;
   border-bottom:1px solid var(--line);cursor:pointer;transition:opacity .2s;gap:12px}
 .setting:last-child{border-bottom:0}
@@ -263,8 +263,8 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .setting-left{display:flex;align-items:center;gap:14px;flex:1}
 .setting-icon{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;flex-shrink:0}
 .setting-icon svg{width:18px;height:18px;stroke-width:1.9}
+.setting.disabled{opacity:.5;cursor:not-allowed}
 
-/* Profile header */
 .profile-head{display:flex;flex-direction:column;align-items:center;padding:16px 0 22px;text-align:center}
 .profile-avatar{width:88px;height:88px;border-radius:30px;
   background:linear-gradient(135deg,var(--primary),var(--sage));
@@ -273,26 +273,9 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .profile-name{font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-.02em}
 .profile-sub{font-size:13px;color:var(--muted)}
 
-/* Greeting */
 .greet{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
 .greet h1{font-size:22px;margin:6px 0 0}
 .greet .avatar{width:50px;height:50px;border-radius:17px;font-size:18px}
-
-/* Empty state */
-.empty{padding:32px 20px;text-align:center}
-
-/* FAB */
-.fab{position:absolute;bottom:calc(96px + env(safe-area-inset-bottom));right:20px;
-  width:56px;height:56px;border-radius:20px;
-  background:linear-gradient(135deg,#2A3641,#1B242C);color:#fff;border:0;
-  display:none;place-items:center;cursor:pointer;z-index:15;
-  box-shadow:0 12px 30px rgba(27,36,44,.35), inset 0 1px 0 rgba(255,255,255,.15);
-  transition:transform .2s}
-.fab.on{display:grid;animation:fabIn .3s cubic-bezier(.22,1,.36,1)}
-@keyframes fabIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
-.fab:active{transform:scale(.92)}
-.fab svg{width:26px;height:26px;stroke-width:2.2}
-[data-theme="dark"] .fab{background:linear-gradient(135deg,#8FB6D8,#5B8DB8);color:#0A0E13}
 </style>
 </head>
 <body>
@@ -302,31 +285,32 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
   <!-- WELCOME -->
   <div class="screen active" id="s-welcome" data-depth="0">
     <div class="hero">
-      <div class="logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3a7 7 0 0 0-7 7c0 3 2 5 3 7a5 5 0 0 0 8 0c1-2 3-4 3-7a7 7 0 0 0-7-7z"/>
-        </svg>
+      <div class="hero-inner">
+        <div class="hero-badge"><span class="dot"></span> Data tersimpan di HP kamu</div>
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a7 7 0 0 0-7 7c0 3 2 5 3 7a5 5 0 0 0 8 0c1-2 3-4 3-7a7 7 0 0 0-7-7z"/>
+          </svg>
+        </div>
+        <h1 class="hero-title">Kelola <span class="grad">burnout</span><br>sebelum menumpuk.</h1>
+        <p class="hero-sub">Catat energi, kenali pemicu, dan tahu kapan harus berhenti.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="go('s-auth')">Mulai</button>
+          <button class="btn btn-ghost" onclick="go('s-auth')">Saya sudah punya akun</button>
+        </div>
+        <p class="hero-foot">Bukan pengganti psikolog atau psikiater.</p>
       </div>
-      <h1 class="gradient-text">Burnout Manager</h1>
-      <p style="max-width:290px;font-size:15px">Teman tenang untuk memantau energi, beban, dan batas kerjamu.</p>
-      <div style="width:100%;max-width:320px;margin-top:32px;display:flex;flex-direction:column;gap:10px">
-        <button class="btn btn-primary" onclick="go('s-auth')">Mulai</button>
-        <button class="btn btn-ghost" onclick="go('s-auth')">Saya sudah punya akun</button>
-      </div>
-      <p class="muted" style="margin-top:26px;font-size:11px;max-width:270px">
-        Bukan pengganti psikolog atau psikiater.
-      </p>
     </div>
   </div>
 
   <!-- AUTH -->
   <div class="screen" id="s-auth" data-depth="1">
-    <div style="margin-top:64px">
-      <h1>Selamat datang.</h1>
-      <p>Mulai dengan satu langkah. Tidak ada formulir panjang.</p>
-      <div class="pill">● Mode demo</div>
+    <div style="margin-top:64px;width:100%;max-width:360px;margin-left:auto;margin-right:auto">
+      <h1 style="font-size:26px">Selamat datang.</h1>
+      <p style="margin-bottom:20px">Satu langkah untuk mulai. Tidak ada formulir panjang.</p>
+      <div class="pill" style="margin-bottom:0">● Mode demo · data lokal</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-top:34px">
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:26px;width:100%;max-width:360px;margin-left:auto;margin-right:auto">
       <button class="btn btn-ghost" onclick="mockLogin('google')">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.24 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.11a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
         Lanjut dengan Google
@@ -336,12 +320,12 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         Lanjut dengan Email
       </button>
     </div>
-    <p class="muted" style="margin-top:30px;font-size:12px;text-align:center;line-height:1.6">
+    <p class="muted" style="margin-top:26px;font-size:11.5px;text-align:center;line-height:1.65;max-width:300px;margin-left:auto;margin-right:auto">
       Login ini <strong>simulasi</strong>. Tidak ada akun Google asli.<br>Semua data disimpan di HP ini.
     </p>
   </div>
 
-  <!-- NAME -->
+  <!-- NAMA -->
   <div class="screen" id="s-name" data-depth="2">
     <div style="margin-top:64px">
       <h1>Siapa namamu?</h1>
@@ -365,6 +349,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <p>Seberapa setuju kamu?</p>
     </div>
     <div id="tipiOptions" class="tipi-options"></div>
+    <button class="btn btn-ghost" style="margin-top:18px;opacity:.75" onclick="skipTipi()">Lewati pertanyaan ini</button>
   </div>
 
   <!-- CHRONO -->
@@ -400,6 +385,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
     </div>
 
     <button class="btn btn-primary" onclick="saveChrono()">Lanjut</button>
+    <button class="btn btn-ghost" style="margin-top:10px;opacity:.75" onclick="skipChrono()">Lewati bagian ini</button>
   </div>
 
   <!-- WORK -->
@@ -444,6 +430,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
     </div>
 
     <button class="btn btn-primary" onclick="saveWork()">Lihat profil</button>
+    <button class="btn btn-ghost" style="margin-top:10px;opacity:.75" onclick="skipWork()">Lewati bagian ini</button>
   </div>
 
   <!-- RESULT -->
@@ -464,15 +451,18 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 
   <!-- ASESMEN -->
   <div class="screen" id="s-assess" data-depth="7">
-    <div style="margin-top:20px">
-      <div class="progress"><div class="progress-fill" id="assessProgress"></div></div>
-      <div class="muted" style="margin-top:12px;font-size:12px">
-        <span id="assessNum">1</span> / 10
-      </div>
-      <h1 id="assessText" style="margin-top:20px;font-size:23px;line-height:1.3">...</h1>
-      <p>Dalam 2 minggu terakhir...</p>
+    <div class="top">
+      <div class="back" onclick="go('s-result',true)">‹</div>
+      <h1>Asesmen</h1>
     </div>
+    <div class="progress"><div class="progress-fill" id="assessProgress"></div></div>
+    <div class="muted" style="margin-top:12px;font-size:12px">
+      <span id="assessNum">1</span> / 10
+    </div>
+    <h1 id="assessText" style="margin-top:20px;font-size:23px;line-height:1.3">...</h1>
+    <p>Dalam 2 minggu terakhir...</p>
     <div id="assessOptions" class="tipi-options"></div>
+    <button class="btn btn-ghost" style="margin-top:18px;opacity:.75" onclick="skipAssess()">Isi nanti</button>
   </div>
 
   <!-- RESULT ASESMEN -->
@@ -743,7 +733,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <h1>Pengaturan</h1>
     </div>
 
-    <!-- AKUN -->
     <div class="card">
       <h2>Akun</h2>
       <div class="setting" onclick="editName()">
@@ -771,7 +760,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       </div>
     </div>
 
-    <!-- TAMPILAN -->
     <div class="card">
       <h2>Tampilan</h2>
       <div class="setting" onclick="toggleTheme()" style="cursor:pointer">
@@ -801,7 +789,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       </div>
     </div>
 
-    <!-- NOTIFIKASI -->
     <div class="card">
       <h2>Notifikasi</h2>
       <div class="setting disabled">
@@ -831,7 +818,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       </div>
     </div>
 
-    <!-- DATA -->
     <div class="card">
       <h2>Data &amp; privasi</h2>
       <div class="setting" onclick="exportData()">
@@ -874,7 +860,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       </div>
     </div>
 
-    <!-- AKUN AKSI -->
     <div class="card">
       <h2>Akun</h2>
       <button class="btn btn-danger" onclick="logout()">Keluar &amp; hapus data lokal</button>
@@ -883,7 +868,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       </p>
     </div>
 
-    <!-- TENTANG -->
     <div class="card">
       <h2>Tentang</h2>
       <p style="font-size:13px;margin:0 0 8px">Burnout Manager versi 0.1 (prototipe).</p>
@@ -916,10 +900,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 </div>
 
 <script>
-/* ═══════════════════════════════════════════
-   NAVIGASI DENGAN TRANSISI
-   ═══════════════════════════════════════════ */
-
+/* NAVIGASI */
 const ONBOARDING_SCREENS = ['s-welcome','s-auth','s-name','s-tipi','s-chrono','s-work','s-result','s-assess','s-assess-result'];
 
 function depthOf(id){
@@ -931,11 +912,9 @@ function go(id, back){
   const current = document.querySelector('.screen.active');
   const currentId = current ? current.id : null;
   if(currentId === id) return;
-
   const target = document.getElementById(id);
   if(!target) return;
 
-  // Tentukan arah
   let dir = 'fade';
   if(!back && currentId){
     const d1 = depthOf(currentId);
@@ -946,17 +925,13 @@ function go(id, back){
     dir = 'left';
   }
 
-  if(current){
-    current.classList.remove('active','slide-right','slide-left','fade-only');
-  }
-
+  if(current) current.classList.remove('active','slide-right','slide-left','fade-only');
   target.classList.add('active');
   if(dir === 'right') target.classList.add('slide-right');
   else if(dir === 'left') target.classList.add('slide-left');
   else target.classList.add('fade-only');
   target.scrollTop = 0;
 
-  // Nav
   const nav = document.getElementById('nav');
   const showNav = !ONBOARDING_SCREENS.includes(id) && id !== 's-settings';
   nav.classList.toggle('on', showNav);
@@ -964,17 +939,13 @@ function go(id, back){
     b.classList.toggle('active', b.dataset.tab === id);
   });
 
-  // Callbacks per layar
   if(id === 's-tracker') renderCharts();
   if(id === 's-profile') renderProfile();
   if(id === 's-settings') renderSettings();
   if(id === 's-dash') updateStatusFromScore();
 }
 
-/* ═══════════════════════════════════════════
-   TEMA (DARK MODE)
-   ═══════════════════════════════════════════ */
-
+/* TEMA */
 function applyTheme(){
   const t = localStorage.getItem('bm_theme') || 'light';
   document.documentElement.setAttribute('data-theme', t);
@@ -983,17 +954,13 @@ function applyTheme(){
   const meta = document.querySelector('meta[name="theme-color"]');
   if(meta) meta.setAttribute('content', t === 'dark' ? '#0A0E13' : '#EFEAE0');
 }
-
 function toggleTheme(){
   const t = localStorage.getItem('bm_theme') === 'dark' ? 'light' : 'dark';
   localStorage.setItem('bm_theme', t);
   applyTheme();
 }
 
-/* ═══════════════════════════════════════════
-   MOCK LOGIN
-   ═══════════════════════════════════════════ */
-
+/* LOGIN */
 function mockLogin(provider){
   localStorage.setItem('bm_auth', JSON.stringify({
     provider: provider,
@@ -1002,17 +969,13 @@ function mockLogin(provider){
   }));
   go('s-name');
 }
-
 function logout(){
   if(!confirm('Keluar dan hapus semua data di HP ini?')) return;
   localStorage.clear();
   location.reload();
 }
 
-/* ═══════════════════════════════════════════
-   NAMA
-   ═══════════════════════════════════════════ */
-
+/* NAMA */
 function saveName(){
   const input = document.getElementById('inputName');
   if(!input) return;
@@ -1022,7 +985,6 @@ function saveName(){
   renderName();
   startTipi();
 }
-
 function editName(){
   const cur = localStorage.getItem('bm_name') || '';
   const v = prompt('Nama panggilan:', cur);
@@ -1032,7 +994,6 @@ function editName(){
   renderSettings();
   renderProfile();
 }
-
 function renderName(){
   const n = localStorage.getItem('bm_name') || 'teman';
   const el = document.getElementById('userName');
@@ -1050,10 +1011,7 @@ function renderName(){
   }
 }
 
-/* ═══════════════════════════════════════════
-   TIPI
-   ═══════════════════════════════════════════ */
-
+/* TIPI */
 const tipiQuestions = [
   "Saya orang yang terbuka, antusias.",
   "Saya orang yang kritis, suka berdebat.",
@@ -1069,15 +1027,15 @@ const tipiQuestions = [
 const tipiLabels = ["Sangat tidak setuju","Tidak setuju","Agak tidak setuju","Netral","Agak setuju","Setuju","Sangat setuju"];
 
 let tipiIndex = 0;
-let onboarding = { tipi: [], wake:null, focus:null, jobType:null, workHours:null, meetings:null, big5:null };
+let onboarding = { tipi: [], wake:null, focus:null, jobType:null, workHours:null, meetings:null, big5:null, skipCount:0 };
 
 function startTipi(){
   tipiIndex = 0;
   onboarding.tipi = [];
+  onboarding.skipCount = 0;
   renderTipi();
   go('s-tipi');
 }
-
 function renderTipi(){
   document.getElementById('tipiNum').textContent = tipiIndex + 1;
   document.getElementById('tipiText').textContent = tipiQuestions[tipiIndex];
@@ -1092,7 +1050,6 @@ function renderTipi(){
     opts.appendChild(el);
   });
 }
-
 function answerTipi(value){
   onboarding.tipi[tipiIndex] = value;
   tipiIndex++;
@@ -1101,7 +1058,15 @@ function answerTipi(value){
     go('s-chrono');
   } else renderTipi();
 }
-
+function skipTipi(){
+  onboarding.tipi[tipiIndex] = 4;
+  onboarding.skipCount = (onboarding.skipCount || 0) + 1;
+  tipiIndex++;
+  if(tipiIndex >= tipiQuestions.length){
+    computeBig5();
+    go('s-chrono');
+  } else renderTipi();
+}
 function computeBig5(){
   const t = onboarding.tipi;
   const r = i => 8 - t[i];
@@ -1114,10 +1079,7 @@ function computeBig5(){
   };
 }
 
-/* ═══════════════════════════════════════════
-   CHRONO & WORK
-   ═══════════════════════════════════════════ */
-
+/* CHRONO & WORK */
 function saveChrono(){
   const w = document.querySelector('[data-field="wake"] .sel');
   const f = document.querySelector('[data-field="focus"] .sel');
@@ -1126,7 +1088,13 @@ function saveChrono(){
   onboarding.focus = +f.dataset.v;
   go('s-work');
 }
-
+function skipChrono(){
+  const w = document.querySelector('[data-field="wake"] .sel');
+  const f = document.querySelector('[data-field="focus"] .sel');
+  onboarding.wake = w ? +w.dataset.v : null;
+  onboarding.focus = f ? +f.dataset.v : null;
+  go('s-work');
+}
 function saveWork(){
   const jt = document.querySelector('[data-field="jobType"] .sel');
   const wh = document.querySelector('[data-field="workHours"] .sel');
@@ -1138,11 +1106,18 @@ function saveWork(){
   renderResult();
   go('s-result');
 }
+function skipWork(){
+  const jt = document.querySelector('[data-field="jobType"] .sel');
+  const wh = document.querySelector('[data-field="workHours"] .sel');
+  const mt = document.querySelector('[data-field="meetings"] .sel');
+  onboarding.jobType = jt ? +jt.dataset.v : null;
+  onboarding.workHours = wh ? +wh.dataset.v : null;
+  onboarding.meetings = mt ? +mt.dataset.v : null;
+  renderResult();
+  go('s-result');
+}
 
-/* ═══════════════════════════════════════════
-   HASIL PROFIL
-   ═══════════════════════════════════════════ */
-
+/* HASIL PROFIL */
 function renderResult(){
   const b = onboarding.big5;
   const names = { O: 'Keterbukaan', C: 'Kedisiplinan', E: 'Ekstraversi', A: 'Keramahan', N: 'Sensitivitas stres' };
@@ -1159,18 +1134,28 @@ function renderResult(){
   });
 
   const chronoLabels = { 1:'Pagi banget', 2:'Pagi', 3:'Siang', 4:'Sore', 5:'Malam', 6:'Malam banget' };
-  const chronoType = onboarding.focus <= 2 ? 'Tipe pagi' : onboarding.focus >= 5 ? 'Tipe malam' : 'Tipe menengah';
-  document.getElementById('resultChrono').innerHTML =
-    '<h2>Jam biologis</h2><p style="margin:0;font-size:14px;color:var(--ink)"><strong>' + chronoType +
-    '</strong><br>Paling fokus: ' + chronoLabels[onboarding.focus] + '</p>';
+  if(onboarding.focus === null || onboarding.focus === undefined){
+    document.getElementById('resultChrono').innerHTML =
+      '<h2>Jam biologis</h2><p style="margin:0;font-size:14px;color:var(--muted)">Belum diisi. Bisa diisi nanti lewat Pengaturan.</p>';
+  } else {
+    const chronoType = onboarding.focus <= 2 ? 'Tipe pagi' : onboarding.focus >= 5 ? 'Tipe malam' : 'Tipe menengah';
+    document.getElementById('resultChrono').innerHTML =
+      '<h2>Jam biologis</h2><p style="margin:0;font-size:14px;color:var(--ink)"><strong>' + chronoType +
+      '</strong><br>Paling fokus: ' + chronoLabels[onboarding.focus] + '</p>';
+  }
 
   const jobLabels = { 1:'Kantoran', 2:'Remote', 3:'Hybrid', 4:'Freelancer', 5:'Shift', 6:'Lainnya' };
   const hourLabels = { 1:'< 6 jam', 2:'6–8 jam', 3:'8–10 jam', 4:'> 10 jam' };
   const meetLabels = { 1:'0–1', 2:'2–3', 3:'4–5', 4:'6+' };
-  document.getElementById('resultWork').innerHTML =
-    '<h2>Konteks kerja</h2><p style="margin:0;font-size:14px;color:var(--ink)">' +
-    jobLabels[onboarding.jobType] + ' · ' + hourLabels[onboarding.workHours] + ' per hari<br>' +
-    'Rapat: ' + meetLabels[onboarding.meetings] + ' per hari</p>';
+  if(onboarding.jobType === null || onboarding.jobType === undefined){
+    document.getElementById('resultWork').innerHTML =
+      '<h2>Konteks kerja</h2><p style="margin:0;font-size:14px;color:var(--muted)">Belum diisi. Bisa diisi nanti lewat Pengaturan.</p>';
+  } else {
+    document.getElementById('resultWork').innerHTML =
+      '<h2>Konteks kerja</h2><p style="margin:0;font-size:14px;color:var(--ink)">' +
+      jobLabels[onboarding.jobType] + ' · ' + hourLabels[onboarding.workHours] + ' per hari<br>' +
+      'Rapat: ' + meetLabels[onboarding.meetings] + ' per hari</p>';
+  }
 
   const insights = [];
   if(b.N >= 4.5) insights.push('Kamu cukup sensitif terhadap stres. Jaga waktu pemulihan harian.');
@@ -1180,15 +1165,13 @@ function renderResult(){
   if(onboarding.workHours >= 3) insights.push('Jam kerjamu panjang. Prioritaskan tidur 7–8 jam.');
   if(onboarding.meetings >= 3) insights.push('Rapatmu padat. Sisipkan blok fokus tanpa gangguan.');
   if(insights.length === 0) insights.push('Profilmu cukup seimbang. Lanjutkan kebiasaan baik.');
+  if(onboarding.skipCount >= 4) insights.push('Kamu melewati ' + onboarding.skipCount + ' pertanyaan kepribadian. Hasil mungkin kurang akurat.');
 
   document.getElementById('resultInsights').innerHTML =
     insights.map(t => '<p style="margin:0 0 10px;font-size:13px;color:var(--ink)">• ' + t + '</p>').join('');
 }
 
-/* ═══════════════════════════════════════════
-   ASESMEN
-   ═══════════════════════════════════════════ */
-
+/* ASESMEN */
 const assessQuestions = [
   "Saya merasa lelah.",
   "Saya merasa secara fisik terkuras.",
@@ -1212,7 +1195,6 @@ function startAssess(){
   renderAssess();
   go('s-assess');
 }
-
 function renderAssess(){
   document.getElementById('assessNum').textContent = assessIndex + 1;
   document.getElementById('assessText').textContent = assessQuestions[assessIndex];
@@ -1227,7 +1209,6 @@ function renderAssess(){
     opts.appendChild(el);
   });
 }
-
 function answerAssess(value){
   assessAnswers[assessIndex] = value;
   assessIndex++;
@@ -1237,7 +1218,10 @@ function answerAssess(value){
     go('s-assess-result');
   } else renderAssess();
 }
-
+function skipAssess(){
+  if(!confirm('Isi asesmen nanti? Kamu bisa isi lagi lewat Pengaturan.')) return;
+  go('s-dash');
+}
 function computeAssess(){
   const total = assessAnswers.reduce((a,b) => a+b, 0);
   let level, desc;
@@ -1247,7 +1231,6 @@ function computeAssess(){
   else { level = 'Berat'; desc = 'Kamu sangat terbebani. Kami sarankan segera bicara dengan ahli.'; }
   window._assess = { total, level, desc, answers: assessAnswers.slice(), date: new Date().toISOString().slice(0,10) };
 }
-
 function renderAssessResult(){
   const a = window._assess;
   const circle = document.getElementById('scoreCircle');
@@ -1274,11 +1257,9 @@ function renderAssessResult(){
     advice.push('Beri tahu satu orang yang kamu percaya.');
     document.getElementById('crisisBanner').style.display = 'block';
   }
-
   document.getElementById('assessAdvice').innerHTML =
     advice.map(t => '<p style="margin:0 0 10px;font-size:13px;color:var(--ink)">• ' + t + '</p>').join('');
 }
-
 function finishAssess(){
   localStorage.setItem('bm_assessment', JSON.stringify(window._assess));
   if(!localStorage.getItem('bm_profile')){
@@ -1286,7 +1267,6 @@ function finishAssess(){
   }
   go('s-dash');
 }
-
 function updateStatusFromScore(){
   const a = JSON.parse(localStorage.getItem('bm_assessment') || 'null');
   const card = document.getElementById('statusCard');
@@ -1294,20 +1274,16 @@ function updateStatusFromScore(){
   const note = document.getElementById('statusNote');
   if(!card) return;
   if(!a){ label.textContent = '—'; note.textContent = 'Belum ada data'; return; }
-
   label.textContent = a.level;
   note.textContent = 'Skor: ' + a.total + ' dari 40';
-
   let bg, sh;
   if(a.total <= 9){ bg = 'linear-gradient(135deg,#7FA588,#A9C4AD)'; sh = 'rgba(127,165,136,.35)'; }
   else if(a.total <= 19){ bg = 'linear-gradient(135deg,#5B8DB8,#8FB6D8)'; sh = 'rgba(91,141,184,.35)'; }
   else if(a.total <= 29){ bg = 'linear-gradient(135deg,#D9A56A,#EBC896)'; sh = 'rgba(217,165,106,.4)'; }
   else { bg = 'linear-gradient(135deg,#C97A6D,#E2A89A)'; sh = 'rgba(201,122,109,.4)'; }
-
   card.style.background = bg;
   card.style.boxShadow = '0 16px 40px ' + sh;
 }
-
 let severe = false;
 function toggleSevere(){
   severe = !severe;
@@ -1323,10 +1299,7 @@ function toggleSevere(){
   }
 }
 
-/* ═══════════════════════════════════════════
-   CHECK-IN
-   ═══════════════════════════════════════════ */
-
+/* CHECK-IN */
 function initChips(){
   document.querySelectorAll('.emoji-row, .chips').forEach(group => {
     group.querySelectorAll('.emoji, .chip').forEach(el => {
@@ -1337,7 +1310,6 @@ function initChips(){
     });
   });
 }
-
 function saveCheckin(){
   const data = {};
   let ok = true;
@@ -1357,10 +1329,7 @@ function saveCheckin(){
   go('s-dash', true);
 }
 
-/* ═══════════════════════════════════════════
-   GRAFIK
-   ═══════════════════════════════════════════ */
-
+/* GRAFIK */
 function renderCharts(){
   const all = JSON.parse(localStorage.getItem('bm_logs') || '[]');
   const days = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
@@ -1404,10 +1373,7 @@ function renderCharts(){
   }
 }
 
-/* ═══════════════════════════════════════════
-   NAPAS
-   ═══════════════════════════════════════════ */
-
+/* NAPAS */
 let breathTimer = null, breathStep = 0;
 function setBreath(text, cls){
   const circle = document.getElementById('breathCircle');
@@ -1440,10 +1406,7 @@ function stopBreath(){
   setBreath('Siap?','');
 }
 
-/* ═══════════════════════════════════════════
-   PROFIL & SETTINGS
-   ═══════════════════════════════════════════ */
-
+/* PROFIL & SETTINGS */
 function renderProfile(){
   renderName();
   const card = document.getElementById('profileSummary');
@@ -1460,7 +1423,6 @@ function renderProfile(){
       '<div class="pbar"><div class="pbar-label">Keramahan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.A/7*100) + '%"></div></div><div class="pbar-val">' + b.A.toFixed(1) + '</div></div>' +
       '<div class="pbar"><div class="pbar-label">Sensitivitas stres</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.N/7*100) + '%"></div></div><div class="pbar-val">' + b.N.toFixed(1) + '</div></div>';
   }
-
   const acard = document.getElementById('profileAssess');
   const a = JSON.parse(localStorage.getItem('bm_assessment') || 'null');
   if(!a){
@@ -1472,14 +1434,12 @@ function renderProfile(){
       '<p class="muted" style="margin:6px 0 0;font-size:12px">Terakhir: ' + a.date + '</p>';
   }
 }
-
 function renderSettings(){
   const n = localStorage.getItem('bm_name') || '—';
   const el = document.getElementById('setName');
   if(el) el.textContent = n;
   applyTheme();
 }
-
 function resetOnboarding(){
   if(!confirm('Ulangi onboarding dari awal?')) return;
   localStorage.removeItem('bm_profile');
@@ -1487,10 +1447,7 @@ function resetOnboarding(){
   startTipi();
 }
 
-/* ═══════════════════════════════════════════
-   EKSPOR
-   ═══════════════════════════════════════════ */
-
+/* EKSPOR */
 function exportData(){
   const payload = {
     name: localStorage.getItem('bm_name') || 'user',
@@ -1508,13 +1465,9 @@ function exportData(){
   a.click();
 }
 
-/* ═══════════════════════════════════════════
-   INIT
-   ═══════════════════════════════════════════ */
-
+/* INIT */
 window.addEventListener('DOMContentLoaded', () => {
   applyTheme();
-
   const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   const now = new Date();
@@ -1524,7 +1477,6 @@ window.addEventListener('DOMContentLoaded', () => {
   renderName();
   initChips();
 
-  // Auto masuk kalau sudah lengkap
   if(localStorage.getItem('bm_profile') && localStorage.getItem('bm_assessment') && localStorage.getItem('bm_name')){
     go('s-dash');
   }
