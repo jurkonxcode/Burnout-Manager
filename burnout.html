@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Burnout Manager — Prototipe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F1EA; --surface:#FFF; --ink:#1E2A33; --muted:#77848F; --line:#E6E1D7;
+  --primary:#5B8DB8; --primary-soft:#E7F0F7;
+  --sage:#8FAE94; --sage-soft:#EAF1EB;
+  --accent:#E2B173; --accent-soft:#FBF1E2;
+  --danger:#C97A6D; --danger-soft:#F8E8E4;
+  --radius:22px; --shadow:0 8px 24px rgba(30,42,51,.08);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#EDE8DD;font-family:"Plus Jakarta Sans",system-ui,sans-serif;color:var(--ink)}
+.phone{width:100%;max-width:420px;height:100dvh;max-height:900px;margin:0 auto;background:var(--bg);
+  position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.15)}
+@media(min-width:480px){.phone{border-radius:36px;margin-top:2vh;height:96dvh}}
+.screen{display:none;flex:1;overflow-y:auto;padding:24px 20px 120px}
+.screen.active{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:0 0 8px}
+h2{font-size:17px;font-weight:700;margin:0 0 12px}
+p{line-height:1.55;color:var(--muted);margin:0 0 12px}
+.muted{color:var(--muted);font-size:13px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;border:0;
+  border-radius:16px;font:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:.15s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.card{background:var(--surface);border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card-head{display:flex;align-items:center;justify-content:space-between}
+.card h3{margin:0;font-size:15px;font-weight:700}
+.icon-round{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex-shrink:0}
+.icon-round svg{width:22px;height:22px;stroke-width:1.8}
+.nav{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);display:none;padding:10px 8px calc(10px + env(safe-area-inset-bottom));justify-content:space-around}
+.nav.on{display:flex}
+.nav button{background:none;border:0;font:inherit;color:var(--muted);font-size:11px;font-weight:600;
+  display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 14px;border-radius:14px;cursor:pointer}
+.nav button.active{color:var(--primary);background:var(--primary-soft)}
+.nav svg{width:22px;height:22px;stroke-width:1.8}
+.hero{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;text-align:center;padding:40px 0}
+.logo{width:88px;height:88px;border-radius:28px;background:var(--primary);display:grid;place-items:center;
+  margin-bottom:24px;box-shadow:0 12px 30px rgba(91,141,184,.35)}
+.logo svg{width:44px;height:44px;stroke:#fff;stroke-width:1.6}
+.row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row-label{font-weight:600;font-size:14px}
+.emoji-row{display:flex;gap:8px}
+.emoji{width:42px;height:42px;border-radius:14px;background:var(--bg);border:2px solid transparent;font-size:20px;
+  display:grid;place-items:center;cursor:pointer;transition:.15s}
+.emoji.sel{border-color:var(--primary);background:var(--primary-soft);transform:scale(1.08)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:10px 16px;border-radius:14px;background:var(--bg);border:2px solid transparent;font-size:13px;font-weight:600;cursor:pointer}
+.chip.sel{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+.chart{display:flex;align-items:flex-end;gap:8px;height:150px;padding:12px 0 26px}
+.bar{flex:1;background:var(--primary-soft);border-radius:8px 8px 4px 4px;position:relative;transition:.4s}
+.bar.hi{background:var(--primary)}
+.bar span{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);font-weight:600}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.back{width:40px;height:40px;border-radius:14px;background:var(--surface);border:1px solid var(--line);
+  display:grid;place-items:center;cursor:pointer;font-size:18px}
+.top h1{font-size:19px;margin:0}
+.banner{border-radius:18px;padding:16px;margin-bottom:14px;background:var(--accent-soft)}
+.banner.danger{background:var(--danger-soft)}
+.banner strong{display:block;font-size:14px;margin-bottom:4px}
+.banner p{margin:0;font-size:13px}
+.expert{display:flex;gap:14px;align-items:center;padding:16px;background:var(--surface);border-radius:var(--radius);
+  margin-bottom:12px;box-shadow:var(--shadow)}
+.avatar{width:52px;height:52px;border-radius:18px;background:var(--sage-soft);display:grid;place-items:center;
+  font-weight:700;color:var(--sage);font-size:17px;flex-shrink:0}
+.verified{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--sage);
+  background:var(--sage-soft);padding:3px 8px;border-radius:8px;margin-top:4px}
+.breath-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;gap:36px}
+.breath-circle{width:210px;height:210px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,#8FB6D8,#5B8DB8);display:grid;place-items:center;color:#fff;
+  font-weight:600;font-size:15px;box-shadow:0 20px 50px rgba(91,141,184,.4);
+  transition:transform 4s ease-in-out;text-align:center;padding:20px}
+.breath-circle.inhale{transform:scale(1.28)}
+.breath-circle.exhale{transform:scale(.9)}
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+  <!-- ══════════ 1. WELCOME ══════════ -->
+  <div class="screen active" id="s-welcome">
+    <div class="hero">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a7 7 0 0 0-7 7c0 3 2 5 3 7a5 5 0 0 0 8 0c1-2 3-4 3-7a7 7 0 0 0-7-7z"/>
+        </svg>
+      </div>
+      <h1>Burnout Manager</h1>
+      <p style="max-width:280px">Teman tenang untuk memantau energi, beban, dan batas kerjamu.</p>
+      <div style="width:100%;max-width:320px;margin-top:28px;display:flex;flex-direction:column;gap:10px">
+        <button class="btn btn-primary" onclick="go('s-auth')">Mulai</button>
+        <button class="btn btn-ghost" onclick="go('s-auth')">Saya sudah punya akun</button>
+      </div>
+      <p class="muted" style="margin-top:22px;font-size:11px;max-width:260px">
+        Burnout Manager bukan pengganti psikolog atau psikiater.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════ 2. AUTH MINIMALIS ══════════ -->
+  <div class="screen" id="s-auth">
+    <div style="margin-top:56px">
+      <h1>Masuk atau daftar</h1>
+      <p>Cukup satu langkah. Tidak ada formulir panjang.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:28px">
+      <button class="btn btn-ghost" onclick="go('s-dash')">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.24 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.11a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+        Lanjut dengan Google
+      </button>
+      <button class="btn btn-ghost" onclick="go('s-dash')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 7 10-7"/></svg>
+        Lanjut dengan Email
+      </button>
+    </div>
+    <p class="muted" style="margin-top:26px;font-size:12px;text-align:center">
+      Dengan lanjut, kamu setuju data disimpan terenkripsi<br>dan bisa dihapus kapan saja.
+    </p>
+  </div>
+
+  <!-- ══════════ 3. DASHBOARD ══════════ -->
+  <div class="screen" id="s-dash">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <div>
+        <div class="muted" id="today">Selasa, 27 Sep</div>
+        <h1 style="font-size:21px;margin:4px 0 0">Halo, Rani 👋</h1>
+      </div>
+      <div class="avatar" style="background:var(--accent-soft);color:var(--accent)">R</div>
+    </div>
+
+    <!-- Status card: tap untuk toggle severe (demo) -->
+    <div class="card" id="statusCard" onclick="toggleSevere()" style="cursor:pointer;color:#fff;
+      background:linear-gradient(135deg,#5B8DB8,#8FB6D8);box-shadow:0 12px 30px rgba(91,141,184,.3)">
+      <div style="font-size:12px;opacity:.8">Status minggu ini</div>
+      <div style="font-size:23px;font-weight:700;margin:6px 0 4px" id="statusLabel">Sedang</div>
+      <div style="font-size:12px;opacity:.85" id="statusNote">Energi turun 3 hari berturut-turut</div>
+      <div style="font-size:10px;opacity:.6;margin-top:10px">ketuk untuk ubah (demo)</div>
+    </div>
+
+    <h2 style="margin-top:22px">Hari ini</h2>
+
+    <!-- 1. LOG HARIAN -->
+    <div class="card" onclick="go('s-checkin')" style="cursor:pointer">
+      <div class="card-head">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="icon-round" style="background:var(--primary-soft);color:var(--primary)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div>
+            <h3>Log Harian</h3>
+            <div class="muted" style="margin-top:2px">Check-in 20 detik</div>
+          </div>
+        </div>
+        <div style="font-size:20px;color:var(--muted)">›</div>
+      </div>
+    </div>
+
+    <!-- 2. BANTU SAYA SEKARANG -->
+    <div class="card" onclick="go('s-breath')" style="cursor:pointer;background:var(--sage-soft);box-shadow:none">
+      <div class="card-head">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="icon-round" style="background:#fff;color:var(--sage)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg>
+          </div>
+          <div>
+            <h3>Bantu Saya Sekarang</h3>
+            <div class="muted" style="margin-top:2px">Napas 2 menit</div>
+          </div>
+        </div>
+        <div style="font-size:20px;color:var(--muted)">›</div>
+      </div>
+    </div>
+
+    <!-- 3. TRACKER -->
+    <div class="card" onclick="go('s-tracker')" style="cursor:pointer">
+      <div class="card-head">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="icon-round" style="background:var(--accent-soft);color:var(--accent)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg>
+          </div>
+          <div>
+            <h3>Tracker & Grafik</h3>
+            <div class="muted" style="margin-top:2px">Lihat tren mingguan</div>
+          </div>
+        </div>
+        <div style="font-size:20px;color:var(--muted)">›</div>
+      </div>
+    </div>
+
+    <!-- 4. HUBUNGI AHLI (kondisional) -->
+    <div class="card" id="expertCard" onclick="go('s-expert')" style="cursor:pointer;display:none">
+      <div class="card-head">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="icon-round" style="background:var(--danger-soft);color:var(--danger)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div>
+            <h3>Hubungi Ahli</h3>
+            <div class="muted" style="margin-top:2px">Psikolog terverifikasi</div>
+          </div>
+        </div>
+        <div style="font-size:20px;color:var(--muted)">›</div>
+      </div>
+    </div>
+
+    <div class="banner danger" style="margin-top:18px">
+      <strong>Butuh bantuan sekarang?</strong>
+      <p>SEJIWA 119 ext 8 · Into The Light Indonesia</p>
+    </div>
+  </div>
+
+  <!-- ══════════ 4. CHECK-IN ══════════ -->
+  <div class="screen" id="s-checkin">
+    <div class="top">
+      <div class="back" onclick="go('s-dash')">‹</div>
+      <h1>Log Harian</h1>
+    </div>
+
+    <div class="card">
+      <div class="row" style="padding-top:0">
+        <div class="row-label">Energi</div>
+        <div class="emoji-row" data-field="energy">
+          <div class="emoji" data-v="1">😞</div><div class="emoji" data-v="2">😐</div>
+          <div class="emoji" data-v="3">🙂</div><div class="emoji" data-v="4">😄</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="row-label">Stres</div>
+        <div class="emoji-row" data-field="stress">
+          <div class="emoji" data-v="1">😌</div><div class="emoji" data-v="2">🙂</div>
+          <div class="emoji" data-v="3">😟</div><div class="emoji" data-v="4">😣</div>
+        </div>
+      </div>
+      <div class="row" style="padding-bottom:0">
+        <div class="row-label">Beban kerja</div>
+        <div class="chips" data-field="load">
+          <div class="chip" data-v="1">Ringan</div>
+          <div class="chip" data-v="2">Sedang</div>
+          <div class="chip" data-v="3">Berat</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" style="margin-top:8px" onclick="saveCheckin()">Simpan</button>
+    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
+      Data ini hanya untukmu. Tidak dibagikan ke siapa pun.
+    </p>
+  </div>
+
+  <!-- ══════════ 5. NAPAS ══════════ -->
+  <div class="screen" id="s-breath">
+    <div class="top">
+      <div class="back" onclick="stopBreath();go('s-dash')">‹</div>
+      <h1>Napas 4-7-8</h1>
+    </div>
+    <div class="breath-wrap">
+      <div class="breath-circle" id="breathCircle">Siap?</div>
+      <div style="display:flex;gap:10px;width:100%;max-width:280px">
+        <button class="btn btn-primary" id="breathBtn" onclick="startBreath()">Mulai</button>
+      </div>
+      <p class="muted" style="text-align:center;max-width:260px;font-size:12px">
+        Tarik 4 detik · Tahan 7 detik · Buang 8 detik
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════ 6. TRACKER ══════════ -->
+  <div class="screen" id="s-tracker">
+    <div class="top">
+      <div class="back" onclick="go('s-dash')">‹</div>
+      <h1>Tren 7 Hari</h1>
+    </div>
+    <div class="card">
+      <h2>Energi</h2>
+      <div class="chart" id="chartEnergy"></div>
+    </div>
+    <div class="card">
+      <h2>Stres</h2>
+      <div class="chart" id="chartStress"></div>
+    </div>
+    <div class="card" style="background:var(--accent-soft)">
+      <h2>Insight</h2>
+      <p style="margin:0;font-size:13px" id="insight">Belum ada cukup data. Isi log harian beberapa hari lagi.</p>
+    </div>
+  </div>
+
+  <!-- ══════════ 7. HUBUNGI AHLI ══════════ -->
+  <div class="screen" id="s-expert">
+    <div class="top">
+      <div class="back" onclick="go('s-dash')">‹</div>
+      <h1>Hubungi Ahli</h1>
+    </div>
+    <div class="banner" style="background:var(--sage-soft)">
+      <strong>Semua tenaga ahli terverifikasi</strong>
+      <p>Kami memeriksa STR, SIPP, dan keanggotaan profesi sebelum mereka bisa menerima sesi.</p>
+    </div>
+
+    <div class="expert" onclick="alert('Demo: buka halaman booking')">
+      <div class="avatar">AN</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:14px">dr. Ani, M.Psi</div>
+        <div class="muted" style="font-size:12px">Psikolog Klinis · Burnout kerja</div>
+        <div class="verified">✓ Terverifikasi</div>
+      </div>
+    </div>
+
+    <div class="expert" onclick="alert('Demo: buka halaman booking')">
+      <div class="avatar" style="background:var(--primary-soft);color:var(--primary)">BS</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:14px">dr. Budi, Sp.KJ</div>
+        <div class="muted" style="font-size:12px">Psikiater · Kecemasan & mood</div>
+        <div class="verified">✓ Terverifikasi</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h2 style="margin-bottom:8px">Data yang dibagikan</h2>
+      <label style="display:flex;gap:10px;align-items:center;padding:8px 0;font-size:13px">
+        <input type="checkbox" checked> Ringkasan check-in
+      </label>
+      <label style="display:flex;gap:10px;align-items:center;padding:8px 0;font-size:13px">
+        <input type="checkbox" checked> Skor asesmen
+      </label>
+      <label style="display:flex;gap:10px;align-items:center;padding:8px 0;font-size:13px">
+        <input type="checkbox"> Jurnal mentah
+      </label>
+      <p class="muted" style="margin:12px 0 0;font-size:12px">
+        Akses berlaku 30 hari. Bisa dicabut kapan saja.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════ 8. PROFIL ══════════ -->
+  <div class="screen" id="s-profile">
+    <div class="top"><h1>Profil & Privasi</h1></div>
+    <div class="card">
+      <h2>Siapa yang bisa lihat</h2>
+      <p style="font-size:13px;margin:0">Hanya kamu. Tidak ada tenaga ahli yang punya akses.</p>
+    </div>
+    <div class="card">
+      <h2>Kontrol data</h2>
+      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="exportData()">Ekspor data saya</button>
+      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="alert('Demo: lihat audit log')">Lihat audit log</button>
+      <button class="btn btn-ghost" onclick="if(confirm('Hapus semua data?')){localStorage.clear();alert('Data dihapus.')}">Hapus semua data</button>
+    </div>
+    <div class="card">
+      <h2>Tentang</h2>
+      <p style="font-size:13px;margin:0">Burnout Manager bukan pengganti layanan klinis. Untuk kondisi berat, hubungi psikolog, psikiater, atau layanan darurat.</p>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav" id="nav">
+    <button data-tab="s-dash" onclick="go('s-dash')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      Hari Ini
+    </button>
+    <button data-tab="s-tracker" onclick="go('s-tracker')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg>
+      Tren
+    </button>
+    <button data-tab="s-breath" onclick="go('s-breath')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Tenang
+    </button>
+    <button data-tab="s-profile" onclick="go('s-profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+      Profil
+    </button>
+  </div>
+
+</div>
+
+<script>
+/* ── Navigasi ── */
+const NAV_SCREENS = ['s-dash','s-tracker','s-breath','s-profile'];
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById(id).scrollTop = 0;
+
+  const nav = document.getElementById('nav');
+  const showNav = id !== 's-welcome' && id !== 's-auth';
+  nav.classList.toggle('on', showNav);
+  nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.tab===id));
+
+  if(id==='s-tracker') renderCharts();
+}
+
+/* ── Status severe toggle (demo) ── */
+let severe = false;
+function toggleSevere(){
+  severe = !severe;
+  const card = document.getElementById('statusCard');
+  const label = document.getElementById('statusLabel');
+  const note = document.getElementById('statusNote');
+  const expert = document.getElementById('expertCard');
+
+  if(severe){
+    label.textContent = 'Berat';
+    note.textContent = 'Kami sarankan bicara dengan ahli';
+    card.style.background = 'linear-gradient(135deg,#C97A6D,#E2A89A)';
+    card.style.boxShadow = '0 12px 30px rgba(201,122,109,.35)';
+    expert.style.display = 'block';
+  } else {
+    label.textContent = 'Sedang';
+    note.textContent = 'Energi turun 3 hari berturut-turut';
+    card.style.background = 'linear-gradient(135deg,#5B8DB8,#8FB6D8)';
+    card.style.boxShadow = '0 12px 30px rgba(91,141,184,.3)';
+    expert.style.display = 'none';
+  }
+}
+
+/* ── Check-in ── */
+document.querySelectorAll('.emoji-row, .chips').forEach(group=>{
+  group.querySelectorAll('.emoji,.chip').forEach(el=>{
+    el.onclick = ()=>{
+      group.querySelectorAll('.emoji,.chip').forEach(x=>x.classList.remove('sel'));
+      el.classList.add('sel');
+    };
+  });
+});
+
+function saveCheckin(){
+  const data = {};
+  let ok = true;
+  document.querySelectorAll('[data-field]').forEach(g=>{
+    const sel = g.querySelector('.sel');
+    if(!sel){ ok = false; return; }
+    data[g.dataset.field] = +sel.dataset.v;
+  });
+  if(!ok){ alert('Isi semua dulu ya.'); return; }
+
+  const all = JSON.parse(localStorage.getItem('bm') || '[]');
+  all.push({ d: new Date().toISOString().slice(0,10), ...data });
+  localStorage.setItem('bm', JSON.stringify(all));
+
+  alert('Tersimpan. Terima kasih sudah jujur pada diri sendiri.');
+  go('s-dash');
+}
+
+/* ── Charts ── */
+function renderCharts(){
+  const all = JSON.parse(localStorage.getItem('bm') || '[]');
+  const days = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+  const energy = [], stress = [];
+
+  for(let i=6;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const key = d.toISOString().slice(0,10);
+    const hit = all.find(x=>x.d===key);
+    energy.push(hit ? hit.energy : 0);
+    stress.push(hit ? hit.stress : 0);
+  }
+
+  const draw = (id, arr, color, hi)=>{
+    const el = document.getElementById(id);
+    el.innerHTML = '';
+    const max = 4;
+    arr.forEach((v,i)=>{
+      const bar = document.createElement('div');
+      bar.className = 'bar' + (v >= hi ? ' hi' : '');
+      bar.style.height = (v/max*100 || 4) + '%';
+      if(v >= hi) bar.style.background = color;
+      const s = document.createElement('span');
+      s.textContent = days[(new Date().getDay()-6+i+7)%7];
+      bar.appendChild(s);
+      el.appendChild(bar);
+    });
+  };
+
+  draw('chartEnergy', energy, '#5B8DB8', 3);
+  draw('chartStress', stress, '#C97A6D', 3);
+
+  const filled = energy.filter(v=>v>0).length;
+  const ins = document.getElementById('insight');
+  if(filled < 3){
+    ins.textContent = `Baru ${filled} hari data. Isi log harian beberapa hari lagi untuk insight.`;
+  } else {
+    const avgE = energy.filter(v=>v).reduce((a,b)=>a+b,0) / filled;
+    ins.textContent = avgE < 2.5
+      ? 'Energi kamu rendah minggu ini. Coba kurangi satu komitmen malam dan tidur lebih awal.'
+      : 'Energi kamu cukup stabil. Pertahankan faktor pelindung seperti istirahat dan olahraga.';
+  }
+}
+
+/* ── Breathing 4-7-8 ── */
+let breathTimer = null, breathStep = 0;
+const circle = document.getElementById('breathCircle');
+const bBtn = document.getElementById('breathBtn');
+
+function setBreath(text, cls){
+  circle.textContent = text;
+  circle.classList.remove('inhale','exhale');
+  if(cls) circle.classList.add(cls);
+}
+
+function startBreath(){
+  if(breathTimer){ stopBreath(); return; }
+  bBtn.textContent = 'Berhenti';
+  breathStep = 0;
+  const cycle = ()=>{
+    const phase = breathStep % 3;
+    if(phase === 0){ setBreath('Tarik napas...','inhale'); }
+    else if(phase === 1){ setBreath('Tahan...',''); }
+    else { setBreath('Buang napas...','exhale'); }
+    breathStep++;
+  };
+  cycle();
+  breathTimer = setInterval(cycle, 4000);
+}
+
+function stopBreath(){
+  clearInterval(breathTimer);
+  breathTimer = null;
+  bBtn.textContent = 'Mulai';
+  setBreath('Siap?','');
+}
+
+/* ── Data ── */
+function exportData(){
+  const all = localStorage.getItem('bm') || '[]';
+  const blob = new Blob([all], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'burnout-manager-data.json';
+  a.click();
+}
+
+/* ── Init ── */
+const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const now = new Date();
+document.getElementById('today').textContent =
+  `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]}`;
+</script>
+
+</body>
+  </html>
