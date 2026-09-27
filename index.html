@@ -43,6 +43,7 @@ body::after{width:300px;height:300px;background:radial-gradient(circle,#D9A56A,t
 [data-theme="dark"] body::before,[data-theme="dark"] body::after{opacity:.25}
 @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,60px) scale(1.1)}}
 @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,-50px) scale(1.15)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .phone{width:100%;max-width:440px;height:100dvh;max-height:940px;margin:0 auto;background:var(--bg);
   position:relative;overflow:hidden;display:flex;flex-direction:column;
   box-shadow:0 40px 100px rgba(0,0,0,.18);z-index:1}
@@ -249,7 +250,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .cta-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;
   border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.4),transparent 70%);pointer-events:none}
 .file-input{display:none}
-/* Info pages */
 .info-head{text-align:center;padding:8px 0 20px}
 .info-icon{width:64px;height:64px;border-radius:20px;
   background:linear-gradient(135deg,var(--primary),var(--primary-2));
@@ -350,9 +350,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <h1>Kepribadian</h1>
     </div>
     <div class="progress"><div class="progress-fill" id="tipiProgress"></div></div>
-    <div class="muted" style="margin-top:12px;font-size:12px">
-      <span id="tipiNum">1</span> / 10
-    </div>
+    <div class="muted" style="margin-top:12px;font-size:12px"><span id="tipiNum">1</span> / 10</div>
     <h1 id="tipiText" style="margin-top:20px;font-size:23px;line-height:1.3">...</h1>
     <p>Seberapa setuju kamu?</p>
     <div id="tipiOptions" class="tipi-options"></div>
@@ -460,9 +458,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <h1>Asesmen</h1>
     </div>
     <div class="progress"><div class="progress-fill" id="assessProgress"></div></div>
-    <div class="muted" style="margin-top:12px;font-size:12px">
-      <span id="assessNum">1</span> / 10
-    </div>
+    <div class="muted" style="margin-top:12px;font-size:12px"><span id="assessNum">1</span> / 10</div>
     <h1 id="assessText" style="margin-top:20px;font-size:23px;line-height:1.3">...</h1>
     <p>Dalam 2 minggu terakhir...</p>
     <div id="assessOptions" class="tipi-options"></div>
@@ -503,7 +499,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       </div>
       <div class="avatar" id="userAvatar" onclick="go('s-profile')">?</div>
     </div>
-
     <div class="card tap" id="statusCard" onclick="toggleSevere()" style="color:#fff;
       background:linear-gradient(135deg,#5B8DB8,#8FB6D8);border:0;
       box-shadow:0 16px 40px rgba(91,141,184,.35)">
@@ -511,7 +506,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div style="font-size:24px;font-weight:800;margin:8px 0 4px;letter-spacing:-.02em" id="statusLabel">—</div>
       <div style="font-size:12px;opacity:.9" id="statusNote">Belum ada data</div>
     </div>
-
     <div class="card cta-card tap" id="ctaProfile" onclick="startTipi()" style="display:none">
       <div class="card-head">
         <div style="display:flex;gap:14px;align-items:center">
@@ -526,7 +520,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
-
     <div class="card cta-card tap" id="ctaAssess" onclick="startAssess()" style="display:none">
       <div class="card-head">
         <div style="display:flex;gap:14px;align-items:center">
@@ -541,9 +534,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
-
     <h2 style="margin-top:24px">Hari ini</h2>
-
     <div class="card tap" onclick="go('s-checkin')">
       <div class="card-head">
         <div style="display:flex;gap:14px;align-items:center">
@@ -558,7 +549,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
-
     <div class="card tap" onclick="go('s-breath')" style="background:var(--sage-soft)">
       <div class="card-head">
         <div style="display:flex;gap:14px;align-items:center">
@@ -573,7 +563,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
-
     <div class="card tap" onclick="go('s-tracker')">
       <div class="card-head">
         <div style="display:flex;gap:14px;align-items:center">
@@ -588,7 +577,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
-
     <div class="card tap" id="expertCard" onclick="go('s-expert')" style="display:none">
       <div class="card-head">
         <div style="display:flex;gap:14px;align-items:center">
@@ -603,7 +591,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
-
     <div class="banner danger" style="margin-top:20px">
       <strong>Butuh bantuan sekarang?</strong>
       <p>SEJIWA 119 ext 8 · Into The Light</p>
@@ -717,9 +704,7 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <label style="display:flex;gap:12px;align-items:center;padding:10px 0;font-size:13px">
         <input type="checkbox"> Jurnal mentah
       </label>
-      <p class="muted" style="margin:12px 0 0;font-size:12px">
-        Akses 30 hari. Bisa dicabut kapan saja.
-      </p>
+      <p class="muted" style="margin:12px 0 0;font-size:12px">Akses 30 hari. Bisa dicabut kapan saja.</p>
     </div>
   </div>
 
@@ -734,7 +719,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         </svg>
       </div>
     </div>
-
     <div class="profile-head">
       <div class="profile-avatar" id="profileAvatar" onclick="pickPhoto()">
         <span id="profileInitial">?</span>
@@ -746,10 +730,8 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="profile-name" id="profileName">teman</div>
       <div class="profile-sub" id="profileEmail">Mode demo · data lokal</div>
     </div>
-
     <div class="card" id="profileSummary"></div>
     <div class="card" id="profileAssess"></div>
-
     <div class="card">
       <h2>Siapa yang bisa lihat</h2>
       <p style="font-size:13px;margin:0">Hanya kamu. Tidak ada tenaga ahli yang punya akses.</p>
@@ -789,17 +771,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         </div>
         <div style="font-size:18px;color:var(--muted)">›</div>
       </div>
-      <div class="setting" style="cursor:default">
-        <div class="setting-left">
-          <div class="setting-icon" style="background:var(--accent-soft);color:var(--accent)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M4 4h16v6H4z"/><path d="M4 14h16v6H4z"/></svg>
-          </div>
-          <div>
-            <div class="setting-label">Akun</div>
-            <div class="setting-sub">Mode demo · data lokal</div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="card">
@@ -827,22 +798,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
           </div>
         </div>
         <div class="setting-value">ID</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Notifikasi</h2>
-      <div class="setting disabled">
-        <div class="setting-left">
-          <div class="setting-icon" style="background:var(--accent-soft);color:var(--accent)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          </div>
-          <div>
-            <div class="setting-label">Pengingat harian</div>
-            <div class="setting-sub">Segera hadir</div>
-          </div>
-        </div>
-        <div class="setting-value">—</div>
       </div>
     </div>
 
@@ -886,7 +841,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       </div>
     </div>
 
-    <!-- INFORMASI -->
     <div class="card">
       <h2>Informasi</h2>
       <div class="setting" onclick="go('s-about')">
@@ -954,7 +908,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="back" onclick="go('s-settings',true)">‹</div>
       <h1>Tentang</h1>
     </div>
-
     <div class="info-head">
       <div class="info-icon">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -965,7 +918,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="info-sub">Versi 0.2 · Prototipe</div>
       <div style="margin-top:10px"><span class="version-badge">Belum rilis resmi</span></div>
     </div>
-
     <div class="card">
       <h2>Kenapa dibuat</h2>
       <p style="margin:0;font-size:13.5px;line-height:1.65">
@@ -973,49 +925,26 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
         Jadi bikin sendiri. Pelan-pelan. Dari HP.
       </p>
     </div>
-
     <div class="card">
       <h2>Apa yang bisa dilakukan</h2>
-      <div class="list-item">
-        <div class="list-num">1</div>
-        <div class="list-text"><strong>Log harian</strong><small>Catat energi, stres, dan beban kerja. 20 detik.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">2</div>
-        <div class="list-text"><strong>Kenalan dulu</strong><small>Kepribadian, jam biologis, konteks kerja. Biar sarannya tidak generik.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">3</div>
-        <div class="list-text"><strong>Cek burnout</strong><small>Skrining 10 pertanyaan, skor 0–40.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">4</div>
-        <div class="list-text"><strong>Napas 4-7-8</strong><small>Kalau butuh tenang cepat.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">5</div>
-        <div class="list-text"><strong>Tren 7 hari</strong><small>Lihat pola energi dan stres.</small></div>
-      </div>
+      <div class="list-item"><div class="list-num">1</div><div class="list-text"><strong>Log harian</strong><small>Catat energi, stres, dan beban kerja. 20 detik.</small></div></div>
+      <div class="list-item"><div class="list-num">2</div><div class="list-text"><strong>Kenalan dulu</strong><small>Kepribadian, jam biologis, konteks kerja.</small></div></div>
+      <div class="list-item"><div class="list-num">3</div><div class="list-text"><strong>Cek burnout</strong><small>Skrining 10 pertanyaan, skor 0–40.</small></div></div>
+      <div class="list-item"><div class="list-num">4</div><div class="list-text"><strong>Napas 4-7-8</strong><small>Kalau butuh tenang cepat.</small></div></div>
+      <div class="list-item"><div class="list-num">5</div><div class="list-text"><strong>Tren 7 hari</strong><small>Lihat pola energi dan stres.</small></div></div>
     </div>
-
     <div class="banner">
       <strong>Bukan pengganti siapa pun</strong>
-      <p>Bukan pengganti psikolog, psikiater, atau diagnosis klinis. Kalau kamu merasa berat, hubungi ahli. Ini cuma alat bantu harian.</p>
+      <p>Bukan pengganti psikolog, psikiater, atau diagnosis klinis. Kalau kamu merasa berat, hubungi ahli.</p>
     </div>
-
     <div class="card">
       <h2>Yang belum ada</h2>
-      <p style="font-size:13px;margin:0 0 8px">Jujur saja:</p>
-      <p style="font-size:13px;margin:0">Backend belum ada. Login Google masih simulasi. Notifikasi belum. Bahasa Inggris belum. Semua data tersimpan di HP kamu saja.</p>
+      <p style="font-size:13px;margin:0">Backend belum ada. Login Google masih simulasi. Notifikasi belum. Bahasa Inggris belum.</p>
     </div>
-
     <div class="card">
       <h2>Lisensi</h2>
-      <p style="font-size:13px;margin:0">
-        MIT. Bebas dipakai, diubah, dijual. Satu permintaan: jangan pakai untuk mengawasi orang.
-      </p>
+      <p style="font-size:13px;margin:0">MIT. Bebas dipakai, diubah, dijual. Satu permintaan: jangan pakai untuk mengawasi orang.</p>
     </div>
-
     <button class="btn btn-ghost" style="margin-top:6px" onclick="go('s-privacy')">Baca kebijakan privasi</button>
   </div>
 
@@ -1025,7 +954,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="back" onclick="go('s-settings',true)">‹</div>
       <h1>Kebijakan Privasi</h1>
     </div>
-
     <div class="info-head">
       <div class="info-icon sage">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -1035,110 +963,55 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="info-title">Privasi kamu</div>
       <div class="info-sub">Terakhir diperbarui: 27 Sep 2026</div>
     </div>
-
     <div class="banner sage">
       <strong>Ringkasnya</strong>
       <p>Semua data tersimpan di HP kamu sendiri. Tidak dikirim ke server mana pun. Tidak ada yang bisa lihat, termasuk saya.</p>
     </div>
-
     <div class="card">
       <h2>Apa yang disimpan</h2>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Nama panggilan</strong><small>Yang kamu isi sendiri. Tidak harus nama asli.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Jawaban onboarding</strong><small>10 pertanyaan kepribadian, jam tidur, konteks kerja.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Jawaban asesmen</strong><small>10 pertanyaan skrining burnout.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Log harian</strong><small>Energi, stres, beban kerja per hari.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Foto profil</strong><small>Kalau kamu pasang. Di-resize max 400×400.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Pengaturan</strong><small>Dark mode atau terang.</small></div>
-      </div>
-      <p style="font-size:13px;margin:14px 0 0">Itu saja. Tidak ada tracking, tidak ada analytics, tidak ada cookie.</p>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Nama panggilan</strong><small>Yang kamu isi sendiri. Tidak harus nama asli.</small></div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Jawaban onboarding</strong><small>Kepribadian, jam tidur, konteks kerja.</small></div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Jawaban asesmen</strong><small>Skrining burnout.</small></div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Log harian</strong><small>Energi, stres, beban kerja per hari.</small></div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Foto profil</strong><small>Kalau dipasang. Di-resize max 400×400.</small></div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Pengaturan</strong><small>Dark mode atau terang.</small></div></div>
+      <p style="font-size:13px;margin:14px 0 0">Itu saja. Tidak ada tracking, analytics, atau cookie.</p>
     </div>
-
     <div class="card">
       <h2>Di mana disimpan</h2>
       <p style="font-size:13px;margin:0 0 10px">Di <code>localStorage</code> browser kamu. Anggap saja notes kecil di dalam Chrome atau Safari.</p>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text">Data <strong>hanya ada di HP ini</strong>. Tidak bisa dibuka dari HP lain.</div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text">Kalau kamu hapus data browser, data hilang.</div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text">Kalau kamu ganti HP, data tidak ikut pindah.</div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text">Mode Incognito: data hilang saat tab ditutup.</div>
-      </div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Data <strong>hanya ada di HP ini</strong>.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Kalau kamu hapus data browser, data hilang.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Kalau ganti HP, data tidak ikut pindah.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Mode Incognito: data hilang saat tab ditutup.</div></div>
     </div>
-
     <div class="card">
       <h2>Siapa yang bisa lihat</h2>
-      <p style="font-size:13px;margin:0">Hanya kamu. Tidak ada server. Tidak ada database. Kalau ada orang lain memegang HP kamu dan membuka aplikasi ini, mereka bisa lihat datanya. Jaga HP seperti biasa.</p>
+      <p style="font-size:13px;margin:0">Hanya kamu. Tidak ada server. Tidak ada database. Kalau ada orang lain memegang HP kamu, mereka bisa lihat. Jaga HP seperti biasa.</p>
     </div>
-
     <div class="card">
       <h2>Login "Google"</h2>
-      <p style="font-size:13px;margin:0 0 10px">Tombol "Lanjut dengan Google" di aplikasi ini <strong>bukan login sungguhan</strong>. Itu simulasi untuk prototipe.</p>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text">Tidak ada akun Google yang terhubung.</div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text">Tidak ada data yang dikirim ke Google.</div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text">Tidak ada email yang dikirim ke mana pun.</div>
-      </div>
+      <p style="font-size:13px;margin:0 0 10px">Tombol "Lanjut dengan Google" <strong>bukan login sungguhan</strong>. Itu simulasi.</p>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Tidak ada akun Google yang terhubung.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Tidak ada data yang dikirim ke Google.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text">Tidak ada email yang dikirim ke mana pun.</div></div>
     </div>
-
+    <div class="card">
+      <h2>Lapor masalah</h2>
+      <p style="font-size:13px;margin:0">Kalau kamu kirim laporan lewat menu "Lapor masalah", isi laporan (jenis, judul, pesan, kontak opsional) dikirim ke layanan Formspree untuk diteruskan ke pengembang. Info perangkat (browser) juga disertakan untuk bantu debug. Tidak ada data lain yang ikut terkirim.</p>
+    </div>
     <div class="card">
       <h2>Data kesehatan</h2>
-      <p style="font-size:13px;margin:0">Jawaban asesmen dan log harian termasuk data kesehatan mental. Menurut UU PDP No. 27/2022, data seperti ini butuh perlindungan khusus. Karena semua tersimpan lokal dan tidak dikirim ke mana pun, risikonya kecil. Tapi tetap jaga HP kamu.</p>
+      <p style="font-size:13px;margin:0">Jawaban asesmen dan log harian termasuk data kesehatan mental. Karena semua tersimpan lokal dan tidak dikirim ke mana pun, risikonya kecil. Tapi tetap jaga HP kamu.</p>
     </div>
-
     <div class="card">
       <h2>Ekspor &amp; hapus</h2>
-      <p style="font-size:13px;margin:0 0 10px">Kamu bisa:</p>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Ekspor</strong> semua data ke file JSON. Kapan saja. Di Pengaturan.</div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Hapus</strong> semua data. Satu tombol di Pengaturan. Tidak bisa dibatalkan.</div>
-      </div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Ekspor</strong> semua data ke JSON. Kapan saja. Di Pengaturan.</div></div>
+      <div class="list-item"><div class="list-num">·</div><div class="list-text"><strong>Hapus</strong> semua data. Satu tombol di Pengaturan. Tidak bisa dibatalkan.</div></div>
     </div>
-
     <div class="card">
       <h2>Perubahan ke depan</h2>
-      <p style="font-size:13px;margin:0">Kalau nanti saya tambahkan backend, saya akan: (1) bilang di CHANGELOG, (2) perbarui halaman ini, (3) minta izin kamu dulu sebelum data apa pun dikirim ke server. Sampai saat itu, semua tetap lokal.</p>
-    </div>
-
-    <div class="banner primary">
-      <strong>Ada pertanyaan?</strong>
-      <p>Buka halaman "Lapor masalah" di Pengaturan.</p>
+      <p style="font-size:13px;margin:0">Kalau nanti saya tambahkan backend, saya akan: (1) bilang di CHANGELOG, (2) perbarui halaman ini, (3) minta izin kamu dulu sebelum data apa pun dikirim ke server.</p>
     </div>
   </div>
 
@@ -1148,7 +1021,6 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="back" onclick="go('s-settings',true)">‹</div>
       <h1>Cara pakai</h1>
     </div>
-
     <div class="info-head">
       <div class="info-icon accent">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -1159,41 +1031,34 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="info-title">Panduan singkat</div>
       <div class="info-sub">5 menit baca, seumur hidup pakai</div>
     </div>
-
     <div class="card">
       <h2>1. Mulai dari log harian</h2>
       <p style="font-size:13.5px;margin:0">Setiap hari, isi log harian. Cukup 20 detik. Pilih emoji energi, stres, dan beban kerja. Jangan dipikir lama — jawab spontan lebih jujur.</p>
     </div>
-
     <div class="card">
       <h2>2. Kenali dirimu</h2>
       <p style="font-size:13.5px;margin:0 0 10px">Di dashboard ada kartu "Lengkapi profil kamu". Isi 30 detik. Hasilnya dipakai untuk menyesuaikan saran.</p>
       <p style="font-size:13px;margin:0;color:var(--muted)">Boleh dilewati kalau tidak mau. Aplikasi tetap jalan.</p>
     </div>
-
     <div class="card">
       <h2>3. Cek tingkat burnout</h2>
       <p style="font-size:13.5px;margin:0">10 pertanyaan. Skor 0–40. Setelah selesai, kartu status di dashboard akan berubah warna. Isi ulang setiap 2–4 minggu untuk lihat perubahan.</p>
     </div>
-
     <div class="card">
       <h2>4. Kalau butuh tenang cepat</h2>
       <p style="font-size:13.5px;margin:0">Buka tab "Tenang". Tap Mulai. Ikuti lingkaran: tarik 4 detik, tahan 7 detik, buang 8 detik. Ulangi 4 kali.</p>
     </div>
-
     <div class="card">
       <h2>5. Lihat pola</h2>
       <p style="font-size:13.5px;margin:0">Buka tab "Tren". Setelah 3+ hari data, akan muncul insight. Contoh: "Energi turun tiap Senin." Itu petunjuk untuk berubah.</p>
     </div>
-
     <div class="card">
       <h2>6. Kalau skor tinggi</h2>
       <p style="font-size:13.5px;margin:0">Kalau skor asesmenmu Tinggi atau Berat, kartu "Hubungi Ahli" muncul di dashboard. Tap untuk lihat daftar psikolog terverifikasi. Ini demo, belum ada booking asli.</p>
     </div>
-
     <div class="banner">
       <strong>Satu tips</strong>
-      <p>Isi log di jam yang sama tiap hari. Misalnya setelah makan malam. Lama-lama jadi kebiasaan, dan datanya jadi lebih konsisten.</p>
+      <p>Isi log di jam yang sama tiap hari. Misalnya setelah makan malam. Lama-lama jadi kebiasaan, dan datanya lebih konsisten.</p>
     </div>
   </div>
 
@@ -1214,41 +1079,92 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
       <div class="info-sub">Bug, ide, atau masukan</div>
     </div>
 
-    <div class="card">
-      <h2>Lapor lewat GitHub</h2>
-      <p style="font-size:13px;margin:0 0 12px">Cara paling cepat: buka Issues di repo GitHub. Bisa pakai akun GitHub gratis.</p>
-      <button class="btn btn-primary" onclick="openIssues()">Buka halaman Issues</button>
-      <div class="link-box">github.com/jurkonxcode/jurkonxcode.github.io/issues</div>
+    <!-- FORM STATE -->
+    <div id="reportForm">
+      <div class="card">
+        <h2>Jenis laporan</h2>
+        <div class="chips" id="reportType" data-field="reportType">
+          <div class="chip" data-v="Bug">🐛 Bug</div>
+          <div class="chip" data-v="Ide">💡 Ide</div>
+          <div class="chip" data-v="Kritik">💬 Kritik</div>
+          <div class="chip" data-v="Lainnya">📝 Lainnya</div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Judul singkat</h2>
+        <input id="reportTitle" type="text" placeholder="Contoh: Tombol Mulai tidak jalan" maxlength="80"
+          style="width:100%;padding:14px;border-radius:14px;border:1px solid var(--line);
+          font:inherit;font-size:14px;background:var(--surface-2);color:var(--ink);outline:none">
+      </div>
+      <div class="card">
+        <h2>Ceritakan lebih detail</h2>
+        <textarea id="reportBody" rows="6" maxlength="2000"
+          placeholder="Apa yang terjadi? Apa yang kamu harapkan? Langkah apa yang bikin error muncul?"
+          style="width:100%;padding:14px;border-radius:14px;border:1px solid var(--line);
+          font:inherit;font-size:14px;background:var(--surface-2);color:var(--ink);outline:none;
+          resize:vertical;line-height:1.55;font-family:inherit"></textarea>
+      </div>
+      <div class="card">
+        <h2>Kontak (opsional)</h2>
+        <input id="reportContact" type="text" placeholder="Email atau username GitHub"
+          style="width:100%;padding:14px;border-radius:14px;border:1px solid var(--line);
+          font:inherit;font-size:14px;background:var(--surface-2);color:var(--ink);outline:none">
+        <p class="muted" style="margin:10px 0 0;font-size:11.5px">Kosongkan kalau mau anonim.</p>
+      </div>
+      <button class="btn btn-primary" id="reportBtn" onclick="submitReport()">Kirim laporan</button>
+      <p class="muted" style="text-align:center;margin-top:14px;font-size:11.5px;line-height:1.6">
+        Laporan dikirim langsung dari aplikasi.<br>Butuh koneksi internet.
+      </p>
     </div>
 
-    <div class="card">
-      <h2>Apa yang bagus dilaporkan</h2>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Bug</strong><small>Aplikasi error, tombol tidak jalan, data hilang.</small></div>
+    <!-- LOADING STATE -->
+    <div id="reportLoading" style="display:none;text-align:center;padding:40px 20px">
+      <div class="info-icon" style="margin-bottom:18px">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite">
+          <path d="M21 12a9 9 0 1 1-6.22-8.56"/>
+        </svg>
       </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Ide fitur</strong><small>Sesuatu yang kamu butuhkan tapi belum ada.</small></div>
-      </div>
-      <div class="list-item">
-        <div class="list-num">·</div>
-        <div class="list-text"><strong>Kritik</strong><small>Bagian yang bikin bingung, terlalu ramai, atau tidak jelas.</small></div>
-      </div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">Mengirim...</div>
+      <p style="font-size:13px;margin:0">Tunggu sebentar.</p>
     </div>
 
-    <div class="card">
-      <h2>Kalau kamu sedang dalam krisis</h2>
-      <p style="font-size:13px;margin:0">Jangan pakai halaman ini. Segera hubungi:</p>
-      <div class="banner danger" style="margin-top:14px;margin-bottom:0">
-        <strong>SEJIWA 119 ext 8</strong>
-        <p>Atau Into The Light Indonesia. Kamu tidak sendiri.</p>
+    <!-- SUCCESS STATE -->
+    <div id="reportSuccess" style="display:none">
+      <div class="info-head">
+        <div class="info-icon sage">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="fill:none">
+            <path d="M20 6 9 17l-5-5"/>
+          </svg>
+        </div>
+        <div class="info-title">Terima kasih</div>
+        <div class="info-sub">Laporanmu sudah masuk</div>
       </div>
+      <div class="card">
+        <p style="margin:0;font-size:13.5px;line-height:1.65">Saya akan baca dan tanggapi secepatnya. Kalau kamu isi kontak, saya akan balas.</p>
+      </div>
+      <button class="btn btn-ghost" onclick="resetReport()">Kirim laporan lain</button>
     </div>
 
-    <div class="banner primary">
-      <strong>Terima kasih</strong>
-      <p>Setiap laporan membantu. Sekecil apa pun.</p>
+    <!-- ERROR STATE -->
+    <div id="reportError" style="display:none">
+      <div class="info-head">
+        <div class="info-icon danger">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="fill:none">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+          </svg>
+        </div>
+        <div class="info-title">Gagal terkirim</div>
+        <div class="info-sub" id="reportErrorMsg">Periksa koneksi internet dan coba lagi</div>
+      </div>
+      <button class="btn btn-primary" onclick="submitReport()">Coba lagi</button>
+      <button class="btn btn-ghost" style="margin-top:10px" onclick="openIssuesFallback()">Atau kirim lewat GitHub</button>
+    </div>
+
+    <div id="reportFooter">
+      <div class="banner danger" style="margin-top:20px">
+        <strong>Kalau sedang krisis</strong>
+        <p>Jangan pakai form ini. Hubungi SEJIWA 119 ext 8 atau Into The Light segera.</p>
+      </div>
     </div>
   </div>
 
@@ -1275,7 +1191,14 @@ p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 </div>
 
 <script>
-/* NAVIGASI */
+/* ═══════════════════════════════════════════
+   KONFIGURASI
+   ═══════════════════════════════════════════ */
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/meaorboz';
+
+/* ═══════════════════════════════════════════
+   NAVIGASI
+   ═══════════════════════════════════════════ */
 const HIDDEN_NAV = ['s-welcome','s-auth','s-name','s-tipi','s-chrono','s-work','s-result','s-assess','s-assess-result','s-settings','s-about','s-privacy','s-howto','s-contact'];
 function depthOf(id){
   const el = document.getElementById(id);
@@ -1309,9 +1232,12 @@ function go(id, back){
   if(id === 's-profile') renderProfile();
   if(id === 's-settings') renderSettings();
   if(id === 's-dash') refreshDashboard();
+  if(id === 's-contact') resetReport();
 }
 
-/* TEMA */
+/* ═══════════════════════════════════════════
+   TEMA
+   ═══════════════════════════════════════════ */
 function applyTheme(){
   const t = localStorage.getItem('bm_theme') || 'light';
   document.documentElement.setAttribute('data-theme', t);
@@ -1326,7 +1252,9 @@ function toggleTheme(){
   applyTheme();
 }
 
-/* LOGIN MOCK */
+/* ═══════════════════════════════════════════
+   LOGIN MOCK
+   ═══════════════════════════════════════════ */
 function mockLogin(provider){
   localStorage.setItem('bm_auth', JSON.stringify({
     provider: provider,
@@ -1340,11 +1268,10 @@ function logout(){
   localStorage.clear();
   location.reload();
 }
-function openIssues(){
-  window.open('https://github.com/jurkonxcode/jurkonxcode.github.io/issues', '_blank');
-}
 
-/* NAMA */
+/* ═══════════════════════════════════════════
+   NAMA
+   ═══════════════════════════════════════════ */
 function saveName(){
   const input = document.getElementById('inputName');
   if(!input) return;
@@ -1393,7 +1320,9 @@ function renderName(){
   }
 }
 
-/* FOTO */
+/* ═══════════════════════════════════════════
+   FOTO PROFIL
+   ═══════════════════════════════════════════ */
 function pickPhoto(){
   const input = document.getElementById('photoInput');
   if(input) input.click();
@@ -1426,7 +1355,9 @@ function handlePhoto(ev){
   ev.target.value = '';
 }
 
-/* TIPI */
+/* ═══════════════════════════════════════════
+   TIPI-10
+   ═══════════════════════════════════════════ */
 const tipiQuestions = [
   "Saya orang yang terbuka, antusias.",
   "Saya orang yang kritis, suka berdebat.",
@@ -1500,7 +1431,9 @@ function computeBig5(){
   };
 }
 
-/* CHRONO & WORK */
+/* ═══════════════════════════════════════════
+   CHRONO & WORK
+   ═══════════════════════════════════════════ */
 function saveChrono(){
   const w = document.querySelector('[data-field="wake"] .sel');
   const f = document.querySelector('[data-field="focus"] .sel');
@@ -1538,7 +1471,9 @@ function skipWork(){
   go('s-result');
 }
 
-/* HASIL PROFIL */
+/* ═══════════════════════════════════════════
+   HASIL PROFIL
+   ═══════════════════════════════════════════ */
 function renderResult(){
   const b = onboarding.big5;
   const names = { O: 'Keterbukaan', C: 'Kedisiplinan', E: 'Ekstraversi', A: 'Keramahan', N: 'Sensitivitas stres' };
@@ -1592,7 +1527,9 @@ function finishOnboarding(){
   go('s-dash');
 }
 
-/* ASESMEN */
+/* ═══════════════════════════════════════════
+   ASESMEN
+   ═══════════════════════════════════════════ */
 const assessQuestions = [
   "Saya merasa lelah.",
   "Saya merasa secara fisik terkuras.",
@@ -1684,7 +1621,9 @@ function finishAssess(){
   go('s-dash');
 }
 
-/* DASHBOARD */
+/* ═══════════════════════════════════════════
+   DASHBOARD
+   ═══════════════════════════════════════════ */
 function refreshDashboard(){
   updateStatusFromScore();
   updateCTAs();
@@ -1735,7 +1674,9 @@ function toggleSevere(){
   }
 }
 
-/* CHECK-IN */
+/* ═══════════════════════════════════════════
+   CHECK-IN
+   ═══════════════════════════════════════════ */
 function initChips(){
   document.querySelectorAll('.emoji-row, .chips').forEach(group => {
     group.querySelectorAll('.emoji, .chip').forEach(el => {
@@ -1765,7 +1706,9 @@ function saveCheckin(){
   go('s-dash', true);
 }
 
-/* GRAFIK */
+/* ═══════════════════════════════════════════
+   GRAFIK
+   ═══════════════════════════════════════════ */
 function renderCharts(){
   const all = JSON.parse(localStorage.getItem('bm_logs') || '[]');
   const days = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
@@ -1808,7 +1751,9 @@ function renderCharts(){
   }
 }
 
-/* NAPAS */
+/* ═══════════════════════════════════════════
+   NAPAS 4-7-8
+   ═══════════════════════════════════════════ */
 let breathTimer = null, breathStep = 0;
 function setBreath(text, cls){
   const circle = document.getElementById('breathCircle');
@@ -1841,7 +1786,9 @@ function stopBreath(){
   setBreath('Siap?','');
 }
 
-/* PROFIL */
+/* ═══════════════════════════════════════════
+   PROFIL
+   ═══════════════════════════════════════════ */
 function renderProfile(){
   renderName();
   const card = document.getElementById('profileSummary');
@@ -1870,7 +1817,9 @@ function renderProfile(){
   }
 }
 
-/* SETTINGS */
+/* ═══════════════════════════════════════════
+   SETTINGS
+   ═══════════════════════════════════════════ */
 function renderSettings(){
   const n = localStorage.getItem('bm_name') || '—';
   const el = document.getElementById('setName');
@@ -1878,7 +1827,88 @@ function renderSettings(){
   applyTheme();
 }
 
-/* EKSPOR */
+/* ═══════════════════════════════════════════
+   LAPOR MASALAH — Formspree
+   ═══════════════════════════════════════════ */
+function showReportState(state){
+  ['reportForm','reportLoading','reportSuccess','reportError','reportFooter'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+  const el = document.getElementById(state);
+  if(el) el.style.display = 'block';
+}
+function resetReport(){
+  const t = document.getElementById('reportTitle');
+  const b = document.getElementById('reportBody');
+  const c = document.getElementById('reportContact');
+  if(t) t.value = '';
+  if(b) b.value = '';
+  if(c) c.value = '';
+  document.querySelectorAll('#reportType .chip').forEach(ch => ch.classList.remove('sel'));
+  showReportState('reportForm');
+}
+function submitReport(){
+  const typeChip = document.querySelector('#reportType .chip.sel');
+  const title = document.getElementById('reportTitle').value.trim();
+  const body = document.getElementById('reportBody').value.trim();
+  const contact = document.getElementById('reportContact').value.trim();
+
+  if(!typeChip){ alert('Pilih jenis laporan dulu ya.'); return; }
+  if(!title){ alert('Isi judul singkat.'); return; }
+  if(!body){ alert('Ceritakan detailnya sedikit.'); return; }
+
+  if(FORMSPREE_ENDPOINT.includes('GANTI_DENGAN_ID_KAMU')){
+    document.getElementById('reportErrorMsg').textContent = 'Form belum dikonfigurasi. Hubungi pengembang.';
+    showReportState('reportError');
+    return;
+  }
+
+  showReportState('reportLoading');
+
+  const payload = {
+    jenis: typeChip.dataset.v,
+    judul: title,
+    pesan: body,
+    kontak: contact || '(anonim)',
+    perangkat: navigator.userAgent,
+    versi: '0.2',
+    waktu: new Date().toISOString()
+  };
+
+  fetch(FORMSPREE_ENDPOINT, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(res => {
+    if(res.ok){ showReportState('reportSuccess'); }
+    else { throw new Error('HTTP ' + res.status); }
+  })
+  .catch(err => {
+    document.getElementById('reportErrorMsg').textContent =
+      navigator.onLine ? 'Terjadi masalah. Coba lagi nanti.' : 'Tidak ada koneksi internet.';
+    showReportState('reportError');
+  });
+}
+function openIssuesFallback(){
+  const typeChip = document.querySelector('#reportType .chip.sel');
+  const title = document.getElementById('reportTitle').value.trim() || 'Laporan';
+  const body = document.getElementById('reportBody').value.trim() || '';
+  const typeVal = typeChip ? typeChip.dataset.v : 'Lainnya';
+  const fullTitle = '[' + typeVal + '] ' + title;
+  const url = 'https://github.com/jurkonxcode/jurkonxcode.github.io/issues/new'
+    + '?title=' + encodeURIComponent(fullTitle)
+    + '&body=' + encodeURIComponent(body);
+  window.open(url, '_blank');
+}
+
+/* ═══════════════════════════════════════════
+   EKSPOR
+   ═══════════════════════════════════════════ */
 function exportData(){
   const payload = {
     name: localStorage.getItem('bm_name') || 'user',
@@ -1897,7 +1927,9 @@ function exportData(){
   a.click();
 }
 
-/* INIT */
+/* ═══════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
@@ -1911,4 +1943,4 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-        </html>
+  </html>
