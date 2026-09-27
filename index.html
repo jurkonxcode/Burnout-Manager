@@ -83,7 +83,6 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
   transition:transform 4s ease-in-out;text-align:center;padding:20px}
 .breath-circle.inhale{transform:scale(1.28)}
 .breath-circle.exhale{transform:scale(.9)}
-/* Onboarding */
 .progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
 .progress-fill{height:100%;background:var(--primary);transition:.3s;width:0}
 .tipi-options{display:flex;flex-direction:column;gap:8px;margin-top:20px}
@@ -100,6 +99,16 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
 .pbar-track{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
 .pbar-fill{height:100%;background:var(--primary);border-radius:4px;transition:.4s}
 .pbar-val{width:28px;text-align:right;font-size:12px;color:var(--muted);font-weight:600}
+/* Asesmen */
+.score-circle{width:150px;height:150px;border-radius:50%;margin:20px auto;display:grid;place-items:center;
+  border:8px solid var(--line);position:relative}
+.score-circle .score-inner{text-align:center}
+.score-circle .score-num{font-size:38px;font-weight:700;line-height:1}
+.score-circle .score-label{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.05em;text-transform:uppercase}
+.score-circle.low{border-color:#8FAE94}
+.score-circle.mid{border-color:#E2B173}
+.score-circle.high{border-color:#D28F6B}
+.score-circle.severe{border-color:#C97A6D}
 </style>
 </head>
 <body>
@@ -162,7 +171,7 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
     </p>
   </div>
 
-  <!-- TIPI-10 -->
+  <!-- TIPI -->
   <div class="screen" id="s-tipi">
     <div style="margin-top:24px">
       <div class="progress"><div class="progress-fill" id="tipiProgress"></div></div>
@@ -254,7 +263,7 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
     <button class="btn btn-primary" onclick="saveWork()">Lihat profil saya</button>
   </div>
 
-  <!-- RESULT -->
+  <!-- RESULT PROFIL -->
   <div class="screen" id="s-result">
     <div class="top"><h1>Profil kamu</h1></div>
     <p>Ini bukan diagnosis. Ini gambaran awal untuk menyesuaikan pengalamanmu di aplikasi.</p>
@@ -267,9 +276,55 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
       <div id="resultInsights"></div>
     </div>
 
-    <button class="btn btn-primary" onclick="finishOnboarding()">Mulai pakai</button>
+    <button class="btn btn-primary" onclick="startAssess()">Lanjut ke asesmen</button>
     <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
       Semua jawaban bisa diubah nanti di Profil.
+    </p>
+  </div>
+
+  <!-- ASESMEN BURNOUT -->
+  <div class="screen" id="s-assess">
+    <div style="margin-top:24px">
+      <div class="progress"><div class="progress-fill" id="assessProgress"></div></div>
+      <div class="muted" style="margin-top:10px;font-size:12px">
+        Pertanyaan <span id="assessNum">1</span> dari 10
+      </div>
+      <h1 id="assessText" style="margin-top:18px;font-size:22px">...</h1>
+      <p>Dalam 2 minggu terakhir...</p>
+    </div>
+    <div id="assessOptions" class="tipi-options"></div>
+  </div>
+
+  <!-- HASIL ASESMEN -->
+  <div class="screen" id="s-assess-result">
+    <div class="top"><h1>Hasil asesmen</h1></div>
+    <p>Ini bukan diagnosis. Ini indikasi awal tingkat burnout-mu.</p>
+
+    <div class="score-circle" id="scoreCircle">
+      <div class="score-inner">
+        <div class="score-num" id="scoreNum">0</div>
+        <div class="score-label">dari 40</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:20px">
+      <h2 id="scoreLevel" style="margin-bottom:4px">—</h2>
+      <p id="scoreDesc" style="margin:0;font-size:13px">—</p>
+    </div>
+
+    <div class="card" style="background:var(--accent-soft)">
+      <h2>Yang perlu kamu tahu</h2>
+      <div id="assessAdvice"></div>
+    </div>
+
+    <div class="banner danger" id="crisisBanner" style="display:none">
+      <strong>Kalau kamu merasa sangat berat</strong>
+      <p>SEJIWA 119 ext 8 · Into The Light Indonesia. Kamu tidak sendiri.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="finishAssess()">Mulai pakai</button>
+    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
+      Kamu bisa ulangi asesmen kapan saja di Profil.
     </p>
   </div>
 
@@ -285,10 +340,10 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
 
     <div class="card" id="statusCard" onclick="toggleSevere()" style="cursor:pointer;color:#fff;
       background:linear-gradient(135deg,#5B8DB8,#8FB6D8);box-shadow:0 12px 30px rgba(91,141,184,.3)">
-      <div style="font-size:12px;opacity:.8">Status minggu ini</div>
-      <div style="font-size:23px;font-weight:700;margin:6px 0 4px" id="statusLabel">Sedang</div>
-      <div style="font-size:12px;opacity:.85" id="statusNote">Energi turun 3 hari berturut-turut</div>
-      <div style="font-size:10px;opacity:.6;margin-top:10px">ketuk untuk ubah (demo)</div>
+      <div style="font-size:12px;opacity:.8">Status burnout</div>
+      <div style="font-size:23px;font-weight:700;margin:6px 0 4px" id="statusLabel">—</div>
+      <div style="font-size:12px;opacity:.85" id="statusNote">Belum ada data</div>
+      <div style="font-size:10px;opacity:.6;margin-top:10px">ketuk untuk demo severe</div>
     </div>
 
     <h2 style="margin-top:22px">Hari ini</h2>
@@ -484,14 +539,16 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
   <div class="screen" id="s-profile">
     <div class="top"><h1>Profil &amp; Privasi</h1></div>
     <div class="card" id="profileSummary"></div>
+    <div class="card" id="profileAssess"></div>
     <div class="card">
       <h2>Siapa yang bisa lihat</h2>
       <p style="font-size:13px;margin:0">Hanya kamu. Tidak ada tenaga ahli yang punya akses.</p>
     </div>
     <div class="card">
       <h2>Kontrol data</h2>
+      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="startAssess()">Ulangi asesmen</button>
       <button class="btn btn-ghost" style="margin-bottom:8px" onclick="exportData()">Ekspor data saya</button>
-      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="if(confirm('Ulangi onboarding dari awal?')){localStorage.removeItem('bm_profile');startTipi()}">Ulangi onboarding</button>
+      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="if(confirm('Ulangi onboarding dari awal?')){localStorage.removeItem('bm_profile');localStorage.removeItem('bm_assessment');startTipi()}">Ulangi onboarding</button>
       <button class="btn btn-ghost" onclick="if(confirm('Hapus semua data?')){localStorage.clear();location.reload()}">Hapus semua data</button>
     </div>
     <div class="card">
@@ -527,7 +584,7 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
    NAVIGASI
    ═══════════════════════════════════════════ */
 
-const ONBOARDING_SCREENS = ['s-welcome','s-auth','s-name','s-tipi','s-chrono','s-work','s-result'];
+const ONBOARDING_SCREENS = ['s-welcome','s-auth','s-name','s-tipi','s-chrono','s-work','s-result','s-assess','s-assess-result'];
 
 function go(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -544,10 +601,11 @@ function go(id){
 
   if(id === 's-tracker') renderCharts();
   if(id === 's-profile') renderProfileSummary();
+  if(id === 's-dash') updateStatusFromScore();
 }
 
 /* ═══════════════════════════════════════════
-   NAMA USER
+   NAMA
    ═══════════════════════════════════════════ */
 
 function saveName(){
@@ -569,7 +627,7 @@ function renderName(){
 }
 
 /* ═══════════════════════════════════════════
-   ONBOARDING: TIPI-10
+   TIPI-10
    ═══════════════════════════════════════════ */
 
 const tipiQuestions = [
@@ -585,15 +643,7 @@ const tipiQuestions = [
   "Saya orang yang konvensional, kurang kreatif."
 ];
 
-const tipiLabels = [
-  "Sangat tidak setuju",
-  "Tidak setuju",
-  "Agak tidak setuju",
-  "Netral",
-  "Agak setuju",
-  "Setuju",
-  "Sangat setuju"
-];
+const tipiLabels = ["Sangat tidak setuju","Tidak setuju","Agak tidak setuju","Netral","Agak setuju","Setuju","Sangat setuju"];
 
 let tipiIndex = 0;
 let onboarding = { tipi: [], wake: null, focus: null, jobType: null, workHours: null, meetings: null, big5: null };
@@ -645,7 +695,7 @@ function computeBig5(){
 }
 
 /* ═══════════════════════════════════════════
-   ONBOARDING: CHRONO & WORK
+   CHRONO & WORK
    ═══════════════════════════════════════════ */
 
 function saveChrono(){
@@ -670,7 +720,7 @@ function saveWork(){
 }
 
 /* ═══════════════════════════════════════════
-   ONBOARDING: HASIL
+   HASIL PROFIL
    ═══════════════════════════════════════════ */
 
 function renderResult(){
@@ -722,28 +772,161 @@ function finishOnboarding(){
 }
 
 /* ═══════════════════════════════════════════
-   STATUS SEVERE (demo)
+   ASESMEN BURNOUT (CBI-inspired)
+   ═══════════════════════════════════════════ */
+
+const assessQuestions = [
+  "Saya merasa lelah.",
+  "Saya merasa secara fisik terkuras.",
+  "Saya merasa secara emosional terkuras.",
+  "Pekerjaan saya membuat saya frustrasi.",
+  "Saya merasa lelah ketika memikirkan hari kerja lain.",
+  "Saya merasa terkuras di akhir hari kerja.",
+  "Saya kehilangan semangat dalam bekerja.",
+  "Saya merasa tidak peduli lagi dengan pekerjaan saya.",
+  "Saya merasa tidak mampu menyelesaikan pekerjaan.",
+  "Saya merasa usaha saya sia-sia."
+];
+
+const assessLabels = ["Tidak pernah","Jarang","Kadang","Sering","Selalu"];
+
+let assessIndex = 0;
+let assessAnswers = [];
+
+function startAssess(){
+  assessIndex = 0;
+  assessAnswers = [];
+  renderAssess();
+  go('s-assess');
+}
+
+function renderAssess(){
+  document.getElementById('assessNum').textContent = assessIndex + 1;
+  document.getElementById('assessText').textContent = assessQuestions[assessIndex];
+  document.getElementById('assessProgress').style.width = (assessIndex / 10 * 100) + '%';
+
+  const opts = document.getElementById('assessOptions');
+  opts.innerHTML = '';
+  assessLabels.forEach((label, i) => {
+    const el = document.createElement('div');
+    el.className = 'tipi-opt';
+    el.innerHTML = '<div class="num">' + i + '</div><div>' + label + '</div>';
+    el.onclick = () => answerAssess(i);
+    opts.appendChild(el);
+  });
+}
+
+function answerAssess(value){
+  assessAnswers[assessIndex] = value;
+  assessIndex++;
+  if(assessIndex >= assessQuestions.length){
+    computeAssess();
+    renderAssessResult();
+    go('s-assess-result');
+  } else {
+    renderAssess();
+  }
+}
+
+function computeAssess(){
+  const total = assessAnswers.reduce((a,b) => a+b, 0);
+  let level, desc, cssClass;
+
+  if(total <= 9){
+    level = 'Rendah';
+    desc = 'Indikasi burnout rendah. Pertahankan kebiasaan baikmu.';
+    cssClass = 'low';
+  } else if(total <= 19){
+    level = 'Sedang';
+    desc = 'Ada tanda-tanda awal. Jaga waktu pemulihan dan batas kerja.';
+    cssClass = 'mid';
+  } else if(total <= 29){
+    level = 'Tinggi';
+    desc = 'Kamu cukup terbebani. Pertimbangkan bicara dengan ahli.';
+    cssClass = 'high';
+  } else {
+    level = 'Berat';
+    desc = 'Kamu sangat terbebani. Kami sarankan segera bicara dengan ahli.';
+    cssClass = 'severe';
+  }
+
+  window._assess = { total, level, desc, answers: assessAnswers.slice(), date: new Date().toISOString().slice(0,10) };
+}
+
+function renderAssessResult(){
+  const a = window._assess;
+  const circle = document.getElementById('scoreCircle');
+  circle.className = 'score-circle ' + (a.total <= 9 ? 'low' : a.total <= 19 ? 'mid' : a.total <= 29 ? 'high' : 'severe');
+  document.getElementById('scoreNum').textContent = a.total;
+  document.getElementById('scoreLevel').textContent = 'Risiko burnout: ' + a.level;
+  document.getElementById('scoreDesc').textContent = a.desc;
+
+  const advice = [];
+  if(a.total <= 9){
+    advice.push('Lanjutkan tidur 7–8 jam dan olahraga ringan rutin.');
+    advice.push('Isi log harian supaya kamu tahu saat energi mulai turun.');
+  } else if(a.total <= 19){
+    advice.push('Tetapkan jam berhenti kerja yang tegas.');
+    advice.push('Sisipkan jeda 5 menit setiap 90 menit kerja.');
+    advice.push('Kurangi satu komitmen opsional minggu ini.');
+  } else if(a.total <= 29){
+    advice.push('Bicara dengan atasan soal prioritas, bukan menambah beban.');
+    advice.push('Blokir waktu tanpa notifikasi setiap hari.');
+    advice.push('Pertimbangkan sesi dengan psikolog dalam 2 minggu ke depan.');
+  } else {
+    advice.push('Prioritaskan pemulihan, bukan produktivitas.');
+    advice.push('Hubungi psikolog atau psikiater secepatnya.');
+    advice.push('Beri tahu satu orang yang kamu percaya tentang kondisimu.');
+    document.getElementById('crisisBanner').style.display = 'block';
+  }
+
+  document.getElementById('assessAdvice').innerHTML =
+    advice.map(t => '<p style="margin:0 0 10px;font-size:13px;color:var(--ink)">• ' + t + '</p>').join('');
+}
+
+function finishAssess(){
+  localStorage.setItem('bm_assessment', JSON.stringify(window._assess));
+  if(!localStorage.getItem('bm_profile')){
+    localStorage.setItem('bm_profile', JSON.stringify(onboarding));
+  }
+  go('s-dash');
+}
+
+function updateStatusFromScore(){
+  const a = JSON.parse(localStorage.getItem('bm_assessment') || 'null');
+  const card = document.getElementById('statusCard');
+  const label = document.getElementById('statusLabel');
+  const note = document.getElementById('statusNote');
+  if(!a || !card) return;
+
+  label.textContent = a.level;
+  note.textContent = 'Skor: ' + a.total + ' dari 40';
+
+  let bg, sh;
+  if(a.total <= 9){ bg = 'linear-gradient(135deg,#8FAE94,#A9C4AD)'; sh = 'rgba(143,174,148,.35)'; }
+  else if(a.total <= 19){ bg = 'linear-gradient(135deg,#5B8DB8,#8FB6D8)'; sh = 'rgba(91,141,184,.3)'; }
+  else if(a.total <= 29){ bg = 'linear-gradient(135deg,#E2B173,#EBC896)'; sh = 'rgba(226,177,115,.35)'; }
+  else { bg = 'linear-gradient(135deg,#C97A6D,#E2A89A)'; sh = 'rgba(201,122,109,.35)'; }
+
+  card.style.background = bg;
+  card.style.boxShadow = '0 12px 30px ' + sh;
+}
+
+/* ═══════════════════════════════════════════
+   SEVERE TOGGLE (demo)
    ═══════════════════════════════════════════ */
 
 let severe = false;
 function toggleSevere(){
   severe = !severe;
-  const card = document.getElementById('statusCard');
-  const label = document.getElementById('statusLabel');
-  const note = document.getElementById('statusNote');
   const expert = document.getElementById('expertCard');
-  if(!card) return;
   if(severe){
-    label.textContent = 'Berat';
-    note.textContent = 'Kami sarankan bicara dengan ahli';
-    card.style.background = 'linear-gradient(135deg,#C97A6D,#E2A89A)';
-    card.style.boxShadow = '0 12px 30px rgba(201,122,109,.35)';
+    document.getElementById('statusLabel').textContent = 'Berat (demo)';
+    document.getElementById('statusNote').textContent = 'Kami sarankan bicara dengan ahli';
+    document.getElementById('statusCard').style.background = 'linear-gradient(135deg,#C97A6D,#E2A89A)';
     expert.style.display = 'block';
   } else {
-    label.textContent = 'Sedang';
-    note.textContent = 'Energi turun 3 hari berturut-turut';
-    card.style.background = 'linear-gradient(135deg,#5B8DB8,#8FB6D8)';
-    card.style.boxShadow = '0 12px 30px rgba(91,141,184,.3)';
+    updateStatusFromScore();
     expert.style.display = 'none';
   }
 }
@@ -866,7 +1049,7 @@ function stopBreath(){
 }
 
 /* ═══════════════════════════════════════════
-   PROFIL SUMMARY
+   PROFIL
    ═══════════════════════════════════════════ */
 
 function renderProfileSummary(){
@@ -874,27 +1057,39 @@ function renderProfileSummary(){
   if(!card) return;
   const p = JSON.parse(localStorage.getItem('bm_profile') || 'null');
   if(!p){
-    card.innerHTML = '<h2>Profil</h2><p style="margin:0;font-size:13px">Belum ada profil. Isi onboarding dulu.</p>';
-    return;
+    card.innerHTML = '<h2>Profil</h2><p style="margin:0;font-size:13px">Belum ada profil.</p>';
+  } else {
+    const b = p.big5;
+    card.innerHTML =
+      '<h2>Profilmu</h2>' +
+      '<div class="pbar"><div class="pbar-label">Keterbukaan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.O/7*100) + '%"></div></div><div class="pbar-val">' + b.O.toFixed(1) + '</div></div>' +
+      '<div class="pbar"><div class="pbar-label">Kedisiplinan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.C/7*100) + '%"></div></div><div class="pbar-val">' + b.C.toFixed(1) + '</div></div>' +
+      '<div class="pbar"><div class="pbar-label">Ekstraversi</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.E/7*100) + '%"></div></div><div class="pbar-val">' + b.E.toFixed(1) + '</div></div>' +
+      '<div class="pbar"><div class="pbar-label">Keramahan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.A/7*100) + '%"></div></div><div class="pbar-val">' + b.A.toFixed(1) + '</div></div>' +
+      '<div class="pbar"><div class="pbar-label">Sensitivitas stres</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.N/7*100) + '%"></div></div><div class="pbar-val">' + b.N.toFixed(1) + '</div></div>';
   }
-  const b = p.big5;
-  card.innerHTML =
-    '<h2>Profilmu</h2>' +
-    '<div class="pbar"><div class="pbar-label">Keterbukaan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.O/7*100) + '%"></div></div><div class="pbar-val">' + b.O.toFixed(1) + '</div></div>' +
-    '<div class="pbar"><div class="pbar-label">Kedisiplinan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.C/7*100) + '%"></div></div><div class="pbar-val">' + b.C.toFixed(1) + '</div></div>' +
-    '<div class="pbar"><div class="pbar-label">Ekstraversi</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.E/7*100) + '%"></div></div><div class="pbar-val">' + b.E.toFixed(1) + '</div></div>' +
-    '<div class="pbar"><div class="pbar-label">Keramahan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.A/7*100) + '%"></div></div><div class="pbar-val">' + b.A.toFixed(1) + '</div></div>' +
-    '<div class="pbar"><div class="pbar-label">Sensitivitas stres</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.N/7*100) + '%"></div></div><div class="pbar-val">' + b.N.toFixed(1) + '</div></div>';
+
+  const acard = document.getElementById('profileAssess');
+  const a = JSON.parse(localStorage.getItem('bm_assessment') || 'null');
+  if(!a){
+    acard.innerHTML = '<h2>Asesmen burnout</h2><p style="margin:0;font-size:13px">Belum diisi.</p>';
+  } else {
+    acard.innerHTML =
+      '<h2>Asesmen burnout</h2>' +
+      '<p style="margin:0;font-size:14px;color:var(--ink)"><strong>' + a.level + '</strong> · ' + a.total + '/40</p>' +
+      '<p class="muted" style="margin:6px 0 0;font-size:12px">Terakhir diisi: ' + a.date + '</p>';
+  }
 }
 
 /* ═══════════════════════════════════════════
-   EKSPOR DATA
+   EKSPOR
    ═══════════════════════════════════════════ */
 
 function exportData(){
   const payload = {
     name: localStorage.getItem('bm_name') || 'user',
     profile: JSON.parse(localStorage.getItem('bm_profile') || 'null'),
+    assessment: JSON.parse(localStorage.getItem('bm_assessment') || 'null'),
     logs: JSON.parse(localStorage.getItem('bm_logs') || '[]'),
     exportedAt: new Date().toISOString()
   };
@@ -919,8 +1114,8 @@ window.addEventListener('DOMContentLoaded', () => {
   renderName();
   initChips();
 
-  // Kalau sudah onboarding, langsung ke dashboard
-  if(localStorage.getItem('bm_profile') && localStorage.getItem('bm_name')){
+  // Auto-masuk kalau sudah lengkap
+  if(localStorage.getItem('bm_profile') && localStorage.getItem('bm_assessment') && localStorage.getItem('bm_name')){
     go('s-dash');
   }
 });
