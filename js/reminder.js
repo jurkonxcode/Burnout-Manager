@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════
    PENGINGAT HARIAN — Burnout Manager (mandiri)
-   Menambahkan toggle pengingat di Pengaturan.
+   Membuat kartu Notifikasi sendiri di Pengaturan.
    ═══════════════════════════════════════════ */
 
 (function(){
@@ -26,18 +26,63 @@
     localStorage.setItem(KEY, JSON.stringify(r));
   }
 
-  /* ── Suntik UI ke kartu "Notifikasi" di Pengaturan ── */
-  function injectSettingsRow(){
-    const cards = document.querySelectorAll('#s-settings .card');
+  /* ── Suntik kartu Notifikasi ke Pengaturan ── */
+  function injectNotifCard(){
+    const settings = document.getElementById('s-settings');
+    if(!settings) return;
+
+    // Kalau sudah ada (dari HTML asli), pakai itu
     let notifCard = null;
+    const cards = settings.querySelectorAll('.card');
     for(const c of cards){
       const h = c.querySelector('h2');
       if(h && h.textContent.trim() === 'Notifikasi'){ notifCard = c; break; }
     }
-    if(!notifCard) return;
 
-    notifCard.innerHTML = `
-      <h2>Notifikasi</h2>
+    if(notifCard){
+      // Kartu sudah ada di HTML, tinggal isi
+      fillCard(notifCard);
+      return;
+    }
+
+    // Kartu belum ada — buat baru dan sisipkan
+    // Cari kartu "Tampilan" atau "Data & privasi" sebagai patokan
+    let anchor = null;
+    for(const c of cards){
+      const h = c.querySelector('h2');
+      if(!h) continue;
+      const t = h.textContent.trim();
+      if(t === 'Tampilan'){ anchor = c; break; }
+    }
+    if(!anchor){
+      for(const c of cards){
+        const h = c.querySelector('h2');
+        if(h && h.textContent.trim() === 'Data & privasi'){ anchor = c; break; }
+      }
+    }
+    if(!anchor) anchor = cards[0];
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'notifCardInjected';
+    card.innerHTML = '<h2>Notifikasi</h2><div id="notifCardBody"></div>';
+
+    if(anchor && anchor.parentNode){
+      anchor.parentNode.insertBefore(card, anchor.nextSibling);
+    } else {
+      settings.appendChild(card);
+    }
+    fillCard(card);
+  }
+
+  function fillCard(card){
+    let body = card.querySelector('#notifCardBody');
+    if(!body){
+      // Kartu dari HTML asli — ganti seluruh isinya
+      card.innerHTML = '<h2>Notifikasi</h2><div id="notifCardBody"></div>';
+      body = card.querySelector('#notifCardBody');
+    }
+    body.innerHTML = `
       <div class="setting" onclick="toggleReminder()" style="cursor:pointer">
         <div class="setting-left">
           <div class="setting-icon" style="background:var(--accent-soft);color:var(--accent)">
@@ -160,7 +205,7 @@
 
     if(note){
       if(r.enabled){
-        note.textContent = 'Catatan: notifikasi muncul saat aplikasi ini sedang terbuka di browser. Kalau tertutup total, tidak muncul. Untuk Android: buka app di Chrome, biarkan tab tetap ada. Untuk iPhone: tambahkan dulu app ke Home Screen lewat menu Share.';
+        note.textContent = 'Catatan: notifikasi muncul saat aplikasi ini sedang terbuka di browser. Kalau tertutup total, tidak muncul. Untuk iPhone: tambahkan dulu ke Home Screen.';
       } else {
         note.textContent = 'Isi log atau jurnal di jam yang sama tiap hari. Lama-lama jadi kebiasaan.';
       }
@@ -205,17 +250,33 @@
     if(timer){ clearInterval(timer); timer = null; }
   }
 
+  /* ── Hook go() untuk inject ulang saat masuk Pengaturan ── */
+  function hookGo(){
+    if(typeof window.go !== 'function') return;
+    if(window._reminderGoHooked) return;
+    window._reminderGoHooked = true;
+    const originalGo = window.go;
+    window.go = function(id, back){
+      const result = originalGo.apply(this, arguments);
+      if(id === 's-settings'){
+        setTimeout(injectNotifCard, 30);
+      }
+      return result;
+    };
+  }
+
   /* ── Boot ── */
   function boot(){
-    injectSettingsRow();
+    injectNotifCard();
+    hookGo();
     if(getReminder().enabled && 'Notification' in window && Notification.permission === 'granted'){
       startChecker();
     }
   }
 
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', function(){ setTimeout(boot, 100); });
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(boot, 120); });
   } else {
-    setTimeout(boot, 100);
+    setTimeout(boot, 120);
   }
 })();
