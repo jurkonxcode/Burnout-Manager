@@ -83,6 +83,23 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
   transition:transform 4s ease-in-out;text-align:center;padding:20px}
 .breath-circle.inhale{transform:scale(1.28)}
 .breath-circle.exhale{transform:scale(.9)}
+/* Onboarding */
+.progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--primary);transition:.3s;width:0}
+.tipi-options{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.tipi-opt{padding:14px 16px;background:var(--surface);border-radius:14px;border:2px solid transparent;
+  cursor:pointer;font-size:14px;font-weight:500;display:flex;align-items:center;gap:12px;transition:.15s;
+  box-shadow:var(--shadow)}
+.tipi-opt:active{transform:scale(.98)}
+.tipi-opt .num{width:30px;height:30px;border-radius:50%;background:var(--bg);display:grid;place-items:center;
+  font-weight:700;font-size:12px;color:var(--muted);flex-shrink:0}
+.tipi-opt.sel{border-color:var(--primary);background:var(--primary-soft)}
+.tipi-opt.sel .num{background:var(--primary);color:#fff}
+.pbar{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px}
+.pbar-label{width:105px;font-weight:600;color:var(--ink);font-size:12px}
+.pbar-track{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.pbar-fill{height:100%;background:var(--primary);border-radius:4px;transition:.4s}
+.pbar-val{width:28px;text-align:right;font-size:12px;color:var(--muted);font-weight:600}
 </style>
 </head>
 <body>
@@ -142,6 +159,117 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
     <button class="btn btn-primary" style="margin-top:16px" onclick="saveName()">Lanjut</button>
     <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
       Nama ini hanya dipakai di dalam aplikasi. Tidak dibagikan.
+    </p>
+  </div>
+
+  <!-- TIPI-10 -->
+  <div class="screen" id="s-tipi">
+    <div style="margin-top:24px">
+      <div class="progress"><div class="progress-fill" id="tipiProgress"></div></div>
+      <div class="muted" style="margin-top:10px;font-size:12px">
+        Pertanyaan <span id="tipiNum">1</span> dari 10
+      </div>
+      <h1 id="tipiText" style="margin-top:18px;font-size:22px">...</h1>
+      <p>Seberapa setuju kamu dengan pernyataan ini?</p>
+    </div>
+    <div id="tipiOptions" class="tipi-options"></div>
+  </div>
+
+  <!-- CHRONO -->
+  <div class="screen" id="s-chrono">
+    <div class="top">
+      <div class="back" onclick="startTipi()">‹</div>
+      <h1>Jam biologis</h1>
+    </div>
+    <h1>Kamu tipe pagi atau malam?</h1>
+    <p>Ini bantu kami menyarankan jam istirahat yang tepat untukmu.</p>
+
+    <div class="card">
+      <h2>Jam berapa kamu biasanya bangun?</h2>
+      <div class="chips" data-field="wake">
+        <div class="chip" data-v="1">Sebelum 05.00</div>
+        <div class="chip" data-v="2">05.00–06.30</div>
+        <div class="chip" data-v="3">06.30–08.00</div>
+        <div class="chip" data-v="4">08.00–09.30</div>
+        <div class="chip" data-v="5">Setelah 09.30</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Kapan kamu paling fokus?</h2>
+      <div class="chips" data-field="focus">
+        <div class="chip" data-v="1">Pagi banget</div>
+        <div class="chip" data-v="2">Pagi</div>
+        <div class="chip" data-v="3">Siang</div>
+        <div class="chip" data-v="4">Sore</div>
+        <div class="chip" data-v="5">Malam</div>
+        <div class="chip" data-v="6">Malam banget</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="saveChrono()">Lanjut</button>
+  </div>
+
+  <!-- WORK -->
+  <div class="screen" id="s-work">
+    <div class="top">
+      <div class="back" onclick="go('s-chrono')">‹</div>
+      <h1>Konteks kerja</h1>
+    </div>
+    <h1>Bagaimana ritme kerjamu?</h1>
+    <p>Ini bantu kami menyesuaikan saran agar realistis untukmu.</p>
+
+    <div class="card">
+      <h2>Jenis pekerjaan</h2>
+      <div class="chips" data-field="jobType">
+        <div class="chip" data-v="1">Kantoran</div>
+        <div class="chip" data-v="2">Remote</div>
+        <div class="chip" data-v="3">Hybrid</div>
+        <div class="chip" data-v="4">Freelancer</div>
+        <div class="chip" data-v="5">Shift</div>
+        <div class="chip" data-v="6">Lainnya</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Jam kerja rata-rata per hari</h2>
+      <div class="chips" data-field="workHours">
+        <div class="chip" data-v="1">&lt; 6 jam</div>
+        <div class="chip" data-v="2">6–8 jam</div>
+        <div class="chip" data-v="3">8–10 jam</div>
+        <div class="chip" data-v="4">&gt; 10 jam</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Rapat per hari</h2>
+      <div class="chips" data-field="meetings">
+        <div class="chip" data-v="1">0–1</div>
+        <div class="chip" data-v="2">2–3</div>
+        <div class="chip" data-v="3">4–5</div>
+        <div class="chip" data-v="4">6+</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="saveWork()">Lihat profil saya</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="s-result">
+    <div class="top"><h1>Profil kamu</h1></div>
+    <p>Ini bukan diagnosis. Ini gambaran awal untuk menyesuaikan pengalamanmu di aplikasi.</p>
+
+    <div class="card" id="resultPersonality"></div>
+    <div class="card" id="resultChrono"></div>
+    <div class="card" id="resultWork"></div>
+    <div class="card" style="background:var(--accent-soft)">
+      <h2>Yang perlu kamu tahu</h2>
+      <div id="resultInsights"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="finishOnboarding()">Mulai pakai</button>
+    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
+      Semua jawaban bisa diubah nanti di Profil.
     </p>
   </div>
 
@@ -355,6 +483,7 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
   <!-- PROFIL -->
   <div class="screen" id="s-profile">
     <div class="top"><h1>Profil &amp; Privasi</h1></div>
+    <div class="card" id="profileSummary"></div>
     <div class="card">
       <h2>Siapa yang bisa lihat</h2>
       <p style="font-size:13px;margin:0">Hanya kamu. Tidak ada tenaga ahli yang punya akses.</p>
@@ -362,7 +491,7 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
     <div class="card">
       <h2>Kontrol data</h2>
       <button class="btn btn-ghost" style="margin-bottom:8px" onclick="exportData()">Ekspor data saya</button>
-      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="alert('Demo: lihat audit log')">Lihat audit log</button>
+      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="if(confirm('Ulangi onboarding dari awal?')){localStorage.removeItem('bm_profile');startTipi()}">Ulangi onboarding</button>
       <button class="btn btn-ghost" onclick="if(confirm('Hapus semua data?')){localStorage.clear();location.reload()}">Hapus semua data</button>
     </div>
     <div class="card">
@@ -394,20 +523,32 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
 </div>
 
 <script>
+/* ═══════════════════════════════════════════
+   NAVIGASI
+   ═══════════════════════════════════════════ */
+
+const ONBOARDING_SCREENS = ['s-welcome','s-auth','s-name','s-tipi','s-chrono','s-work','s-result'];
+
 function go(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const target = document.getElementById(id);
   if(!target) return;
   target.classList.add('active');
   target.scrollTop = 0;
+
   const nav = document.getElementById('nav');
-  const showNav = id !== 's-welcome' && id !== 's-auth' && id !== 's-name';
-  nav.classList.toggle('on', showNav);
+  nav.classList.toggle('on', !ONBOARDING_SCREENS.includes(id));
   nav.querySelectorAll('button').forEach(b => {
     b.classList.toggle('active', b.dataset.tab === id);
   });
+
   if(id === 's-tracker') renderCharts();
+  if(id === 's-profile') renderProfileSummary();
 }
+
+/* ═══════════════════════════════════════════
+   NAMA USER
+   ═══════════════════════════════════════════ */
 
 function saveName(){
   const input = document.getElementById('inputName');
@@ -416,7 +557,7 @@ function saveName(){
   if(!v){ alert('Isi nama dulu ya.'); return; }
   localStorage.setItem('bm_name', v);
   renderName();
-  go('s-dash');
+  startTipi();
 }
 
 function renderName(){
@@ -426,6 +567,163 @@ function renderName(){
   if(el) el.textContent = n;
   if(av) av.textContent = n.charAt(0).toUpperCase();
 }
+
+/* ═══════════════════════════════════════════
+   ONBOARDING: TIPI-10
+   ═══════════════════════════════════════════ */
+
+const tipiQuestions = [
+  "Saya orang yang terbuka, antusias.",
+  "Saya orang yang kritis, suka berdebat.",
+  "Saya orang yang dapat diandalkan, disiplin diri.",
+  "Saya orang yang cemas, mudah kesal.",
+  "Saya orang yang terbuka pada pengalaman baru.",
+  "Saya orang yang pendiam, tidak banyak bicara.",
+  "Saya orang yang simpatik, hangat.",
+  "Saya orang yang tidak terorganisir, ceroboh.",
+  "Saya orang yang tenang, stabil secara emosi.",
+  "Saya orang yang konvensional, kurang kreatif."
+];
+
+const tipiLabels = [
+  "Sangat tidak setuju",
+  "Tidak setuju",
+  "Agak tidak setuju",
+  "Netral",
+  "Agak setuju",
+  "Setuju",
+  "Sangat setuju"
+];
+
+let tipiIndex = 0;
+let onboarding = { tipi: [], wake: null, focus: null, jobType: null, workHours: null, meetings: null, big5: null };
+
+function startTipi(){
+  tipiIndex = 0;
+  onboarding.tipi = [];
+  renderTipi();
+  go('s-tipi');
+}
+
+function renderTipi(){
+  document.getElementById('tipiNum').textContent = tipiIndex + 1;
+  document.getElementById('tipiText').textContent = tipiQuestions[tipiIndex];
+  document.getElementById('tipiProgress').style.width = (tipiIndex / 10 * 100) + '%';
+
+  const opts = document.getElementById('tipiOptions');
+  opts.innerHTML = '';
+  tipiLabels.forEach((label, i) => {
+    const el = document.createElement('div');
+    el.className = 'tipi-opt';
+    el.innerHTML = '<div class="num">' + (i+1) + '</div><div>' + label + '</div>';
+    el.onclick = () => answerTipi(i + 1);
+    opts.appendChild(el);
+  });
+}
+
+function answerTipi(value){
+  onboarding.tipi[tipiIndex] = value;
+  tipiIndex++;
+  if(tipiIndex >= tipiQuestions.length){
+    computeBig5();
+    go('s-chrono');
+  } else {
+    renderTipi();
+  }
+}
+
+function computeBig5(){
+  const t = onboarding.tipi;
+  const r = i => 8 - t[i];
+  onboarding.big5 = {
+    E: (t[0] + r(5)) / 2,
+    A: (t[6] + r(1)) / 2,
+    C: (t[2] + r(7)) / 2,
+    N: (t[3] + r(8)) / 2,
+    O: (t[4] + r(9)) / 2
+  };
+}
+
+/* ═══════════════════════════════════════════
+   ONBOARDING: CHRONO & WORK
+   ═══════════════════════════════════════════ */
+
+function saveChrono(){
+  const w = document.querySelector('[data-field="wake"] .sel');
+  const f = document.querySelector('[data-field="focus"] .sel');
+  if(!w || !f){ alert('Pilih dulu ya.'); return; }
+  onboarding.wake = +w.dataset.v;
+  onboarding.focus = +f.dataset.v;
+  go('s-work');
+}
+
+function saveWork(){
+  const jt = document.querySelector('[data-field="jobType"] .sel');
+  const wh = document.querySelector('[data-field="workHours"] .sel');
+  const mt = document.querySelector('[data-field="meetings"] .sel');
+  if(!jt || !wh || !mt){ alert('Isi semua dulu ya.'); return; }
+  onboarding.jobType = +jt.dataset.v;
+  onboarding.workHours = +wh.dataset.v;
+  onboarding.meetings = +mt.dataset.v;
+  renderResult();
+  go('s-result');
+}
+
+/* ═══════════════════════════════════════════
+   ONBOARDING: HASIL
+   ═══════════════════════════════════════════ */
+
+function renderResult(){
+  const b = onboarding.big5;
+  const names = { O: 'Keterbukaan', C: 'Kedisiplinan', E: 'Ekstraversi', A: 'Keramahan', N: 'Sensitivitas stres' };
+
+  const pCard = document.getElementById('resultPersonality');
+  pCard.innerHTML = '<h2>Kepribadian</h2>';
+  ['O','C','E','A','N'].forEach(k => {
+    const pct = Math.round(b[k] / 7 * 100);
+    const row = document.createElement('div');
+    row.className = 'pbar';
+    row.innerHTML = '<div class="pbar-label">' + names[k] + '</div>' +
+                    '<div class="pbar-track"><div class="pbar-fill" style="width:' + pct + '%"></div></div>' +
+                    '<div class="pbar-val">' + b[k].toFixed(1) + '</div>';
+    pCard.appendChild(row);
+  });
+
+  const chronoLabels = { 1: 'Pagi banget', 2: 'Pagi', 3: 'Siang', 4: 'Sore', 5: 'Malam', 6: 'Malam banget' };
+  const chronoType = onboarding.focus <= 2 ? 'Tipe pagi' : onboarding.focus >= 5 ? 'Tipe malam' : 'Tipe menengah';
+  document.getElementById('resultChrono').innerHTML =
+    '<h2>Jam biologis</h2><p style="margin:0;font-size:14px;color:var(--ink)"><strong>' + chronoType +
+    '</strong><br>Paling fokus: ' + chronoLabels[onboarding.focus] + '</p>';
+
+  const jobLabels = { 1: 'Kantoran', 2: 'Remote', 3: 'Hybrid', 4: 'Freelancer', 5: 'Shift', 6: 'Lainnya' };
+  const hourLabels = { 1: '< 6 jam', 2: '6–8 jam', 3: '8–10 jam', 4: '> 10 jam' };
+  const meetLabels = { 1: '0–1', 2: '2–3', 3: '4–5', 4: '6+' };
+  document.getElementById('resultWork').innerHTML =
+    '<h2>Konteks kerja</h2><p style="margin:0;font-size:14px;color:var(--ink)">' +
+    jobLabels[onboarding.jobType] + ' · ' + hourLabels[onboarding.workHours] + ' per hari<br>' +
+    'Rapat: ' + meetLabels[onboarding.meetings] + ' per hari</p>';
+
+  const insights = [];
+  if(b.N >= 4.5) insights.push('Kamu cukup sensitif terhadap stres. Jaga waktu pemulihan harian.');
+  if(b.C >= 5) insights.push('Kamu cenderung disiplin dan bisa overwork tanpa sadar. Pasang batas jam kerja.');
+  if(b.E <= 3 && onboarding.jobType === 2) insights.push('Kerja remote dengan ekstraversi rendah bisa bikin terisolasi. Jadwalkan interaksi sosial rutin.');
+  if(b.O >= 5) insights.push('Keterbukaanmu tinggi. Coba teknik istirahat yang bervariasi, bukan cuma satu.');
+  if(onboarding.workHours >= 3) insights.push('Jam kerjamu panjang. Prioritaskan tidur 7–8 jam.');
+  if(onboarding.meetings >= 3) insights.push('Rapatmu padat. Sisipkan blok fokus tanpa gangguan.');
+  if(insights.length === 0) insights.push('Profilmu cukup seimbang. Lanjutkan kebiasaan baik.');
+
+  document.getElementById('resultInsights').innerHTML =
+    insights.map(t => '<p style="margin:0 0 10px;font-size:13px;color:var(--ink)">• ' + t + '</p>').join('');
+}
+
+function finishOnboarding(){
+  localStorage.setItem('bm_profile', JSON.stringify(onboarding));
+  go('s-dash');
+}
+
+/* ═══════════════════════════════════════════
+   STATUS SEVERE (demo)
+   ═══════════════════════════════════════════ */
 
 let severe = false;
 function toggleSevere(){
@@ -450,7 +748,11 @@ function toggleSevere(){
   }
 }
 
-function initCheckin(){
+/* ═══════════════════════════════════════════
+   CHECK-IN
+   ═══════════════════════════════════════════ */
+
+function initChips(){
   document.querySelectorAll('.emoji-row, .chips').forEach(group => {
     group.querySelectorAll('.emoji, .chip').forEach(el => {
       el.onclick = () => {
@@ -479,6 +781,10 @@ function saveCheckin(){
   alert('Tersimpan. Terima kasih sudah jujur pada diri sendiri.');
   go('s-dash');
 }
+
+/* ═══════════════════════════════════════════
+   GRAFIK
+   ═══════════════════════════════════════════ */
 
 function renderCharts(){
   const all = JSON.parse(localStorage.getItem('bm_logs') || '[]');
@@ -509,11 +815,12 @@ function renderCharts(){
   };
   draw('chartEnergy', energy, '#5B8DB8', 3);
   draw('chartStress', stress, '#C97A6D', 3);
+
   const filled = energy.filter(v => v > 0).length;
   const ins = document.getElementById('insight');
   if(!ins) return;
   if(filled < 3){
-    ins.textContent = `Baru ${filled} hari data. Isi log harian beberapa hari lagi untuk insight.`;
+    ins.textContent = 'Baru ' + filled + ' hari data. Isi log harian beberapa hari lagi untuk insight.';
   } else {
     const avgE = energy.filter(v => v).reduce((a,b) => a+b, 0) / filled;
     ins.textContent = avgE < 2.5
@@ -521,6 +828,10 @@ function renderCharts(){
       : 'Energi kamu cukup stabil. Pertahankan faktor pelindung seperti istirahat dan olahraga.';
   }
 }
+
+/* ═══════════════════════════════════════════
+   NAPAS 4-7-8
+   ═══════════════════════════════════════════ */
 
 let breathTimer = null, breathStep = 0;
 function setBreath(text, cls){
@@ -554,25 +865,64 @@ function stopBreath(){
   setBreath('Siap?', '');
 }
 
+/* ═══════════════════════════════════════════
+   PROFIL SUMMARY
+   ═══════════════════════════════════════════ */
+
+function renderProfileSummary(){
+  const card = document.getElementById('profileSummary');
+  if(!card) return;
+  const p = JSON.parse(localStorage.getItem('bm_profile') || 'null');
+  if(!p){
+    card.innerHTML = '<h2>Profil</h2><p style="margin:0;font-size:13px">Belum ada profil. Isi onboarding dulu.</p>';
+    return;
+  }
+  const b = p.big5;
+  card.innerHTML =
+    '<h2>Profilmu</h2>' +
+    '<div class="pbar"><div class="pbar-label">Keterbukaan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.O/7*100) + '%"></div></div><div class="pbar-val">' + b.O.toFixed(1) + '</div></div>' +
+    '<div class="pbar"><div class="pbar-label">Kedisiplinan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.C/7*100) + '%"></div></div><div class="pbar-val">' + b.C.toFixed(1) + '</div></div>' +
+    '<div class="pbar"><div class="pbar-label">Ekstraversi</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.E/7*100) + '%"></div></div><div class="pbar-val">' + b.E.toFixed(1) + '</div></div>' +
+    '<div class="pbar"><div class="pbar-label">Keramahan</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.A/7*100) + '%"></div></div><div class="pbar-val">' + b.A.toFixed(1) + '</div></div>' +
+    '<div class="pbar"><div class="pbar-label">Sensitivitas stres</div><div class="pbar-track"><div class="pbar-fill" style="width:' + Math.round(b.N/7*100) + '%"></div></div><div class="pbar-val">' + b.N.toFixed(1) + '</div></div>';
+}
+
+/* ═══════════════════════════════════════════
+   EKSPOR DATA
+   ═══════════════════════════════════════════ */
+
 function exportData(){
-  const all = localStorage.getItem('bm_logs') || '[]';
-  const name = localStorage.getItem('bm_name') || 'user';
-  const payload = { name, exportedAt: new Date().toISOString(), logs: JSON.parse(all) };
+  const payload = {
+    name: localStorage.getItem('bm_name') || 'user',
+    profile: JSON.parse(localStorage.getItem('bm_profile') || 'null'),
+    logs: JSON.parse(localStorage.getItem('bm_logs') || '[]'),
+    exportedAt: new Date().toISOString()
+  };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'burnout-manager-' + name + '.json';
+  a.download = 'burnout-manager.json';
   a.click();
 }
+
+/* ═══════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════ */
 
 window.addEventListener('DOMContentLoaded', () => {
   const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   const now = new Date();
   const t = document.getElementById('today');
-  if(t) t.textContent = `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]}`;
+  if(t) t.textContent = hari[now.getDay()] + ', ' + now.getDate() + ' ' + bulan[now.getMonth()];
+
   renderName();
-  initCheckin();
+  initChips();
+
+  // Kalau sudah onboarding, langsung ke dashboard
+  if(localStorage.getItem('bm_profile') && localStorage.getItem('bm_name')){
+    go('s-dash');
+  }
 });
 </script>
 </body>
