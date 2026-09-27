@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Env & secrets
+.env
+.env.local
+*.key
+
+# Dependencies (kalau nanti pakai npm)
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+
+# Screenshot sementara
+screenshots/*.tmp
