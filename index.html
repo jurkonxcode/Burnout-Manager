@@ -3,112 +3,296 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#EDE8DD">
 <title>Burnout Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#F4F1EA; --surface:#FFF; --ink:#1E2A33; --muted:#77848F; --line:#E6E1D7;
-  --primary:#5B8DB8; --primary-soft:#E7F0F7;
-  --sage:#8FAE94; --sage-soft:#EAF1EB;
-  --accent:#E2B173; --accent-soft:#FBF1E2;
-  --danger:#C97A6D; --danger-soft:#F8E8E4;
-  --radius:22px; --shadow:0 8px 24px rgba(30,42,51,.08);
+  --page-bg:#EFEAE0;
+  --bg:#F6F3EC;
+  --surface:rgba(255,255,255,.72);
+  --surface-solid:#FFFFFF;
+  --surface-2:rgba(255,255,255,.5);
+  --ink:#1B242C;
+  --muted:#7A8894;
+  --line:rgba(30,42,51,.08);
+  --primary:#5B8DB8;
+  --primary-2:#8FB6D8;
+  --primary-soft:rgba(91,141,184,.12);
+  --sage:#7FA588;
+  --sage-soft:rgba(127,165,136,.14);
+  --accent:#D9A56A;
+  --accent-soft:rgba(217,165,106,.16);
+  --danger:#C97A6D;
+  --danger-soft:rgba(201,122,109,.14);
+  --radius:24px;
+  --radius-sm:16px;
+  --blur:20px;
+  --shadow-card:0 8px 32px rgba(30,42,51,.08), inset 0 1px 0 rgba(255,255,255,.6);
+  --shadow-float:0 20px 60px rgba(30,42,51,.15), 0 4px 12px rgba(30,42,51,.08);
+}
+[data-theme="dark"]{
+  --page-bg:#0A0E13;
+  --bg:#11161C;
+  --surface:rgba(36,43,53,.55);
+  --surface-solid:#1E242D;
+  --surface-2:rgba(36,43,53,.35);
+  --ink:#EEF2F6;
+  --muted:#8B97A5;
+  --line:rgba(255,255,255,.08);
+  --primary:#8FB6D8;
+  --primary-2:#B4CFE5;
+  --primary-soft:rgba(143,182,216,.16);
+  --sage:#9BBFA1;
+  --sage-soft:rgba(155,191,161,.14);
+  --accent:#E2B173;
+  --accent-soft:rgba(226,177,115,.14);
+  --danger:#D89A8D;
+  --danger-soft:rgba(216,154,141,.14);
+  --shadow-card:0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+  --shadow-float:0 20px 60px rgba(0,0,0,.5), 0 4px 12px rgba(0,0,0,.3);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:#EDE8DD;font-family:"Plus Jakarta Sans",system-ui,sans-serif;color:var(--ink)}
-.phone{width:100%;max-width:420px;height:100dvh;max-height:900px;margin:0 auto;background:var(--bg);
-  position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.15)}
-@media(min-width:480px){.phone{border-radius:36px;margin-top:2vh;height:96dvh}}
-.screen{display:none;flex:1;overflow-y:auto;padding:24px 20px 120px}
-.screen.active{display:block;animation:fade .3s ease}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:0 0 8px}
-h2{font-size:17px;font-weight:700;margin:0 0 12px}
-p{line-height:1.55;color:var(--muted);margin:0 0 12px}
+html,body{margin:0;background:var(--page-bg);font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;
+  color:var(--ink);transition:background .4s,color .4s;overflow:hidden}
+body::before,body::after{
+  content:'';position:fixed;border-radius:50%;filter:blur(80px);opacity:.5;z-index:0;pointer-events:none;
+  transition:opacity .4s;
+}
+body::before{width:340px;height:340px;background:radial-gradient(circle,#8FB6D8,transparent 70%);
+  top:-80px;left:-80px;animation:float1 18s ease-in-out infinite}
+body::after{width:300px;height:300px;background:radial-gradient(circle,#D9A56A,transparent 70%);
+  bottom:-100px;right:-80px;animation:float2 22s ease-in-out infinite}
+[data-theme="dark"] body::before,[data-theme="dark"] body::after{opacity:.25}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,60px) scale(1.1)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,-50px) scale(1.15)}}
+
+.phone{width:100%;max-width:440px;height:100dvh;max-height:940px;margin:0 auto;background:var(--bg);
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 40px 100px rgba(0,0,0,.18);z-index:1}
+@media(min-width:480px){.phone{border-radius:40px;margin-top:1.5vh;height:97dvh}}
+
+/* Screens & transitions */
+.screen{display:none;flex:1;overflow-y:auto;padding:28px 22px 130px;position:relative;z-index:2}
+.screen::-webkit-scrollbar{display:none}
+.screen.active{display:block}
+.screen.slide-right{animation:slideRight .38s cubic-bezier(.22,1,.36,1)}
+.screen.slide-left{animation:slideLeft .38s cubic-bezier(.22,1,.36,1)}
+.screen.fade-only{animation:fadeOnly .28s ease}
+@keyframes slideRight{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+@keyframes fadeOnly{from{opacity:0}to{opacity:1}}
+
+/* Typography */
+h1{font-size:27px;font-weight:800;letter-spacing:-.025em;margin:0 0 10px;line-height:1.15}
+h2{font-size:16px;font-weight:700;margin:0 0 12px;letter-spacing:-.01em}
+h3{margin:0;font-size:15px;font-weight:700}
+p{line-height:1.6;color:var(--muted);margin:0 0 12px;font-size:14px}
 .muted{color:var(--muted);font-size:13px}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;border:0;
-  border-radius:16px;font:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:.15s}
-.btn:active{transform:scale(.98)}
-.btn-primary{background:var(--ink);color:#fff}
-.btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
-.card{background:var(--surface);border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
-.card-head{display:flex;align-items:center;justify-content:space-between}
-.card h3{margin:0;font-size:15px;font-weight:700}
-.icon-round{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex-shrink:0}
+.gradient-text{background:linear-gradient(135deg,var(--primary),var(--sage));-webkit-background-clip:text;
+  background-clip:text;color:transparent}
+
+/* Buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:17px;border:0;
+  border-radius:18px;font:inherit;font-weight:600;font-size:15px;cursor:pointer;transition:all .2s cubic-bezier(.22,1,.36,1);
+  position:relative;overflow:hidden}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,#2A3641,#1B242C);color:#fff;
+  box-shadow:0 10px 24px rgba(27,36,44,.28), inset 0 1px 0 rgba(255,255,255,.15)}
+[data-theme="dark"] .btn-primary{background:linear-gradient(135deg,#8FB6D8,#5B8DB8);color:#0A0E13;
+  box-shadow:0 10px 24px rgba(143,182,216,.3)}
+.btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line);
+  backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));box-shadow:var(--shadow-card)}
+.btn-danger{background:var(--danger-soft);color:var(--danger);border:1px solid transparent}
+
+/* Glass cards */
+.card{background:var(--surface);border-radius:var(--radius);padding:20px;margin-bottom:14px;
+  backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
+  border:1px solid var(--line);box-shadow:var(--shadow-card);
+  transition:transform .2s,box-shadow .2s}
+.card.tap{cursor:pointer}
+.card.tap:active{transform:scale(.985)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.icon-round{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;flex-shrink:0}
 .icon-round svg{width:22px;height:22px;stroke-width:1.8}
-.nav{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
-  border-top:1px solid var(--line);display:none;padding:10px 8px calc(10px + env(safe-area-inset-bottom));justify-content:space-around}
-.nav.on{display:flex}
-.nav button{background:none;border:0;font:inherit;color:var(--muted);font-size:11px;font-weight:600;
-  display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 14px;border-radius:14px;cursor:pointer}
-.nav button.active{color:var(--primary);background:var(--primary-soft)}
-.nav svg{width:22px;height:22px;stroke-width:1.8}
+
+/* Nav floating pill */
+.nav{position:absolute;bottom:calc(16px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);
+  background:var(--surface);border:1px solid var(--line);
+  backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);
+  display:none;padding:8px;border-radius:26px;gap:4px;z-index:20;
+  box-shadow:var(--shadow-float);transition:opacity .3s,transform .3s}
+.nav.on{display:flex;animation:navIn .4s cubic-bezier(.22,1,.36,1)}
+@keyframes navIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.nav button{background:none;border:0;font:inherit;color:var(--muted);font-size:10px;font-weight:600;
+  display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 16px;border-radius:18px;
+  cursor:pointer;transition:all .25s;letter-spacing:.01em}
+.nav button.active{color:#fff;background:linear-gradient(135deg,#5B8DB8,#8FB6D8);
+  box-shadow:0 6px 18px rgba(91,141,184,.35)}
+[data-theme="dark"] .nav button.active{color:#0A0E13}
+.nav svg{width:21px;height:21px;stroke-width:1.9}
+
+/* Hero welcome */
 .hero{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;text-align:center;padding:40px 0}
-.logo{width:88px;height:88px;border-radius:28px;background:var(--primary);display:grid;place-items:center;
-  margin-bottom:24px;box-shadow:0 12px 30px rgba(91,141,184,.35)}
-.logo svg{width:44px;height:44px;stroke:#fff;stroke-width:1.6}
-.row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+.logo{width:96px;height:96px;border-radius:30px;
+  background:linear-gradient(135deg,#5B8DB8,#8FB6D8);display:grid;place-items:center;
+  margin-bottom:26px;box-shadow:0 20px 50px rgba(91,141,184,.4), inset 0 1px 0 rgba(255,255,255,.3);
+  animation:logoFloat 4s ease-in-out infinite}
+@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.logo svg{width:48px;height:48px;stroke:#fff;stroke-width:1.6}
+
+/* Rows */
+.row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);gap:10px}
 .row:last-child{border-bottom:0}
 .row-label{font-weight:600;font-size:14px}
 .emoji-row{display:flex;gap:8px}
-.emoji{width:42px;height:42px;border-radius:14px;background:var(--bg);border:2px solid transparent;font-size:20px;
-  display:grid;place-items:center;cursor:pointer;transition:.15s}
-.emoji.sel{border-color:var(--primary);background:var(--primary-soft);transform:scale(1.08)}
+.emoji{width:44px;height:44px;border-radius:15px;background:var(--surface-2);border:2px solid transparent;
+  font-size:20px;display:grid;place-items:center;cursor:pointer;transition:all .2s;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.emoji.sel{border-color:var(--primary);background:var(--primary-soft);transform:scale(1.1);
+  box-shadow:0 6px 20px var(--primary-soft)}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{padding:10px 16px;border-radius:14px;background:var(--bg);border:2px solid transparent;font-size:13px;font-weight:600;cursor:pointer}
-.chip.sel{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+.chip{padding:11px 17px;border-radius:15px;background:var(--surface-2);border:2px solid transparent;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.chip.sel{background:var(--primary-soft);border-color:var(--primary);color:var(--primary);
+  box-shadow:0 6px 20px var(--primary-soft)}
+
+/* Charts */
 .chart{display:flex;align-items:flex-end;gap:8px;height:150px;padding:12px 0 26px}
-.bar{flex:1;background:var(--primary-soft);border-radius:8px 8px 4px 4px;position:relative;transition:.4s}
-.bar.hi{background:var(--primary)}
+.bar{flex:1;background:var(--primary-soft);border-radius:10px 10px 4px 4px;position:relative;transition:.5s cubic-bezier(.22,1,.36,1)}
+.bar.hi{background:linear-gradient(180deg,var(--primary-2),var(--primary))}
 .bar span{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);font-weight:600}
-.top{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.back{width:40px;height:40px;border-radius:14px;background:var(--surface);border:1px solid var(--line);
-  display:grid;place-items:center;cursor:pointer;font-size:18px}
-.top h1{font-size:19px;margin:0}
-.banner{border-radius:18px;padding:16px;margin-bottom:14px;background:var(--accent-soft)}
+
+/* Header with back */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.back{width:42px;height:42px;border-radius:14px;background:var(--surface);border:1px solid var(--line);
+  display:grid;place-items:center;cursor:pointer;font-size:18px;color:var(--ink);
+  backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));box-shadow:var(--shadow-card);
+  transition:transform .2s}
+.back:active{transform:scale(.94)}
+.top h1{font-size:20px;margin:0;flex:1;font-weight:700}
+
+/* Banner */
+.banner{border-radius:20px;padding:18px;margin-bottom:14px;background:var(--accent-soft);
+  border:1px solid var(--line);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur))}
 .banner.danger{background:var(--danger-soft)}
-.banner strong{display:block;font-size:14px;margin-bottom:4px}
+.banner strong{display:block;font-size:14px;margin-bottom:6px;color:var(--ink)}
 .banner p{margin:0;font-size:13px}
-.expert{display:flex;gap:14px;align-items:center;padding:16px;background:var(--surface);border-radius:var(--radius);
-  margin-bottom:12px;box-shadow:var(--shadow)}
-.avatar{width:52px;height:52px;border-radius:18px;background:var(--sage-soft);display:grid;place-items:center;
-  font-weight:700;color:var(--sage);font-size:17px;flex-shrink:0}
+
+/* Expert */
+.expert{display:flex;gap:14px;align-items:center;padding:18px;background:var(--surface);border-radius:var(--radius);
+  margin-bottom:12px;border:1px solid var(--line);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
+  box-shadow:var(--shadow-card);cursor:pointer;transition:transform .2s}
+.expert:active{transform:scale(.985)}
+.avatar{width:54px;height:54px;border-radius:18px;background:linear-gradient(135deg,var(--sage-soft),var(--primary-soft));
+  display:grid;place-items:center;font-weight:800;color:var(--ink);font-size:17px;flex-shrink:0;
+  border:1px solid var(--line)}
 .verified{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--sage);
-  background:var(--sage-soft);padding:3px 8px;border-radius:8px;margin-top:4px}
+  background:var(--sage-soft);padding:3px 9px;border-radius:9px;margin-top:5px}
+
+/* Breathing */
 .breath-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;gap:36px}
-.breath-circle{width:210px;height:210px;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,#8FB6D8,#5B8DB8);display:grid;place-items:center;color:#fff;
-  font-weight:600;font-size:15px;box-shadow:0 20px 50px rgba(91,141,184,.4);
-  transition:transform 4s ease-in-out;text-align:center;padding:20px}
-.breath-circle.inhale{transform:scale(1.28)}
-.breath-circle.exhale{transform:scale(.9)}
+.breath-circle{width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,#A8CCE5,#5B8DB8);display:grid;place-items:center;color:#fff;
+  font-weight:600;font-size:15px;box-shadow:0 30px 70px rgba(91,141,184,.45), inset 0 2px 20px rgba(255,255,255,.25);
+  transition:transform 4s cubic-bezier(.4,0,.2,1);text-align:center;padding:20px}
+.breath-circle.inhale{transform:scale(1.3)}
+.breath-circle.exhale{transform:scale(.88)}
+
+/* Progress */
 .progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
-.progress-fill{height:100%;background:var(--primary);transition:.3s;width:0}
-.tipi-options{display:flex;flex-direction:column;gap:8px;margin-top:20px}
-.tipi-opt{padding:14px 16px;background:var(--surface);border-radius:14px;border:2px solid transparent;
-  cursor:pointer;font-size:14px;font-weight:500;display:flex;align-items:center;gap:12px;transition:.15s;
-  box-shadow:var(--shadow)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--sage));
+  transition:.4s cubic-bezier(.22,1,.36,1);width:0;border-radius:3px}
+
+/* Options */
+.tipi-options{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.tipi-opt{padding:16px 18px;background:var(--surface);border-radius:16px;border:1px solid var(--line);
+  cursor:pointer;font-size:14px;font-weight:500;display:flex;align-items:center;gap:14px;
+  transition:all .2s cubic-bezier(.22,1,.36,1);color:var(--ink);
+  backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));box-shadow:var(--shadow-card)}
 .tipi-opt:active{transform:scale(.98)}
-.tipi-opt .num{width:30px;height:30px;border-radius:50%;background:var(--bg);display:grid;place-items:center;
-  font-weight:700;font-size:12px;color:var(--muted);flex-shrink:0}
-.tipi-opt.sel{border-color:var(--primary);background:var(--primary-soft)}
-.tipi-opt.sel .num{background:var(--primary);color:#fff}
-.pbar{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px}
-.pbar-label{width:105px;font-weight:600;color:var(--ink);font-size:12px}
-.pbar-track{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
-.pbar-fill{height:100%;background:var(--primary);border-radius:4px;transition:.4s}
-.pbar-val{width:28px;text-align:right;font-size:12px;color:var(--muted);font-weight:600}
-/* Asesmen */
-.score-circle{width:150px;height:150px;border-radius:50%;margin:20px auto;display:grid;place-items:center;
-  border:8px solid var(--line);position:relative}
-.score-circle .score-inner{text-align:center}
-.score-circle .score-num{font-size:38px;font-weight:700;line-height:1}
-.score-circle .score-label{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.05em;text-transform:uppercase}
-.score-circle.low{border-color:#8FAE94}
-.score-circle.mid{border-color:#E2B173}
-.score-circle.high{border-color:#D28F6B}
-.score-circle.severe{border-color:#C97A6D}
+.tipi-opt.sel{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 8px 24px var(--primary-soft)}
+.tipi-opt .num{width:32px;height:32px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;
+  font-weight:700;font-size:12px;color:var(--muted);flex-shrink:0;transition:all .2s}
+.tipi-opt.sel .num{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff}
+
+/* Bars */
+.pbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:13px}
+.pbar-label{width:112px;font-weight:600;color:var(--ink);font-size:12px}
+.pbar-track{flex:1;height:8px;background:var(--surface-2);border-radius:5px;overflow:hidden}
+.pbar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--sage));border-radius:5px;
+  transition:1s cubic-bezier(.22,1,.36,1)}
+.pbar-val{width:30px;text-align:right;font-size:12px;color:var(--muted);font-weight:700}
+
+/* Score circle */
+.score-circle{width:170px;height:170px;border-radius:50%;margin:24px auto;display:grid;place-items:center;
+  position:relative;background:var(--surface);backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
+  border:1px solid var(--line);box-shadow:var(--shadow-card)}
+.score-circle::after{content:'';position:absolute;inset:8px;border-radius:50%;border:6px solid var(--line)}
+.score-circle.low::after{border-color:#7FA588}
+.score-circle.mid::after{border-color:#D9A56A}
+.score-circle.high::after{border-color:#D28F6B}
+.score-circle.severe::after{border-color:#C97A6D}
+.score-circle .score-inner{text-align:center;position:relative;z-index:2}
+.score-circle .score-num{font-size:44px;font-weight:800;line-height:1;color:var(--ink);letter-spacing:-.03em}
+.score-circle .score-label{font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+
+/* Switch */
+.switch{position:relative;width:50px;height:29px;background:var(--line);border-radius:15px;cursor:pointer;
+  transition:.3s cubic-bezier(.22,1,.36,1);flex-shrink:0}
+.switch.on{background:linear-gradient(135deg,var(--primary),var(--primary-2))}
+.switch::after{content:'';position:absolute;top:3px;left:3px;width:23px;height:23px;background:#fff;
+  border-radius:50%;transition:.3s cubic-bezier(.22,1,.36,1);box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.switch.on::after{transform:translateX(21px)}
+
+/* Pill */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:11px;
+  font-size:10px;font-weight:700;background:var(--accent-soft);color:var(--accent);margin-top:6px;
+  border:1px solid var(--line)}
+
+/* Settings row */
+.setting{display:flex;align-items:center;justify-content:space-between;padding:16px 0;
+  border-bottom:1px solid var(--line);cursor:pointer;transition:opacity .2s;gap:12px}
+.setting:last-child{border-bottom:0}
+.setting:active{opacity:.7}
+.setting-label{font-size:14px;font-weight:600;color:var(--ink)}
+.setting-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.setting-value{font-size:12px;color:var(--muted);font-weight:500}
+.setting-left{display:flex;align-items:center;gap:14px;flex:1}
+.setting-icon{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;flex-shrink:0}
+.setting-icon svg{width:18px;height:18px;stroke-width:1.9}
+
+/* Profile header */
+.profile-head{display:flex;flex-direction:column;align-items:center;padding:16px 0 22px;text-align:center}
+.profile-avatar{width:88px;height:88px;border-radius:30px;
+  background:linear-gradient(135deg,var(--primary),var(--sage));
+  display:grid;place-items:center;font-size:34px;font-weight:800;color:#fff;margin-bottom:14px;
+  box-shadow:0 20px 40px rgba(91,141,184,.3), inset 0 2px 12px rgba(255,255,255,.25)}
+.profile-name{font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-.02em}
+.profile-sub{font-size:13px;color:var(--muted)}
+
+/* Greeting */
+.greet{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.greet h1{font-size:22px;margin:6px 0 0}
+.greet .avatar{width:50px;height:50px;border-radius:17px;font-size:18px}
+
+/* Empty state */
+.empty{padding:32px 20px;text-align:center}
+
+/* FAB */
+.fab{position:absolute;bottom:calc(96px + env(safe-area-inset-bottom));right:20px;
+  width:56px;height:56px;border-radius:20px;
+  background:linear-gradient(135deg,#2A3641,#1B242C);color:#fff;border:0;
+  display:none;place-items:center;cursor:pointer;z-index:15;
+  box-shadow:0 12px 30px rgba(27,36,44,.35), inset 0 1px 0 rgba(255,255,255,.15);
+  transition:transform .2s}
+.fab.on{display:grid;animation:fabIn .3s cubic-bezier(.22,1,.36,1)}
+@keyframes fabIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.fab:active{transform:scale(.92)}
+.fab svg{width:26px;height:26px;stroke-width:2.2}
+[data-theme="dark"] .fab{background:linear-gradient(135deg,#8FB6D8,#5B8DB8);color:#0A0E13}
 </style>
 </head>
 <body>
@@ -116,85 +300,84 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
 <div class="phone">
 
   <!-- WELCOME -->
-  <div class="screen active" id="s-welcome">
+  <div class="screen active" id="s-welcome" data-depth="0">
     <div class="hero">
       <div class="logo">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3a7 7 0 0 0-7 7c0 3 2 5 3 7a5 5 0 0 0 8 0c1-2 3-4 3-7a7 7 0 0 0-7-7z"/>
         </svg>
       </div>
-      <h1>Burnout Manager</h1>
-      <p style="max-width:280px">Teman tenang untuk memantau energi, beban, dan batas kerjamu.</p>
-      <div style="width:100%;max-width:320px;margin-top:28px;display:flex;flex-direction:column;gap:10px">
+      <h1 class="gradient-text">Burnout Manager</h1>
+      <p style="max-width:290px;font-size:15px">Teman tenang untuk memantau energi, beban, dan batas kerjamu.</p>
+      <div style="width:100%;max-width:320px;margin-top:32px;display:flex;flex-direction:column;gap:10px">
         <button class="btn btn-primary" onclick="go('s-auth')">Mulai</button>
         <button class="btn btn-ghost" onclick="go('s-auth')">Saya sudah punya akun</button>
       </div>
-      <p class="muted" style="margin-top:22px;font-size:11px;max-width:260px">
-        Burnout Manager bukan pengganti psikolog atau psikiater.
+      <p class="muted" style="margin-top:26px;font-size:11px;max-width:270px">
+        Bukan pengganti psikolog atau psikiater.
       </p>
     </div>
   </div>
 
   <!-- AUTH -->
-  <div class="screen" id="s-auth">
-    <div style="margin-top:56px">
-      <h1>Masuk atau daftar</h1>
-      <p>Cukup satu langkah. Tidak ada formulir panjang.</p>
+  <div class="screen" id="s-auth" data-depth="1">
+    <div style="margin-top:64px">
+      <h1>Selamat datang.</h1>
+      <p>Mulai dengan satu langkah. Tidak ada formulir panjang.</p>
+      <div class="pill">● Mode demo</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-top:28px">
-      <button class="btn btn-ghost" onclick="go('s-name')">
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:34px">
+      <button class="btn btn-ghost" onclick="mockLogin('google')">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.24 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.11a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
         Lanjut dengan Google
       </button>
-      <button class="btn btn-ghost" onclick="go('s-name')">
+      <button class="btn btn-ghost" onclick="mockLogin('email')">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m2 7 10 7 10-7"/></svg>
         Lanjut dengan Email
       </button>
     </div>
-    <p class="muted" style="margin-top:26px;font-size:12px;text-align:center">
-      Dengan lanjut, kamu setuju data disimpan terenkripsi<br>dan bisa dihapus kapan saja.
+    <p class="muted" style="margin-top:30px;font-size:12px;text-align:center;line-height:1.6">
+      Login ini <strong>simulasi</strong>. Tidak ada akun Google asli.<br>Semua data disimpan di HP ini.
     </p>
   </div>
 
-  <!-- NAMA -->
-  <div class="screen" id="s-name">
-    <div style="margin-top:56px">
+  <!-- NAME -->
+  <div class="screen" id="s-name" data-depth="2">
+    <div style="margin-top:64px">
       <h1>Siapa namamu?</h1>
-      <p>Biar aplikasinya terasa milikmu, bukan milik orang lain.</p>
+      <p>Biar aplikasinya terasa milikmu.</p>
     </div>
     <input id="inputName" type="text" placeholder="Nama panggilan" autocomplete="given-name"
-      style="width:100%;padding:16px;border-radius:16px;border:1px solid var(--line);
-      font:inherit;font-size:16px;background:var(--surface);color:var(--ink);margin-top:16px;outline:none">
-    <button class="btn btn-primary" style="margin-top:16px" onclick="saveName()">Lanjut</button>
-    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
-      Nama ini hanya dipakai di dalam aplikasi. Tidak dibagikan.
-    </p>
+      style="width:100%;padding:18px;border-radius:18px;border:1px solid var(--line);
+      font:inherit;font-size:16px;font-weight:600;background:var(--surface);color:var(--ink);margin-top:20px;outline:none;
+      backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));box-shadow:var(--shadow-card)">
+    <button class="btn btn-primary" style="margin-top:14px" onclick="saveName()">Lanjut</button>
   </div>
 
   <!-- TIPI -->
-  <div class="screen" id="s-tipi">
-    <div style="margin-top:24px">
+  <div class="screen" id="s-tipi" data-depth="3">
+    <div style="margin-top:20px">
       <div class="progress"><div class="progress-fill" id="tipiProgress"></div></div>
-      <div class="muted" style="margin-top:10px;font-size:12px">
-        Pertanyaan <span id="tipiNum">1</span> dari 10
+      <div class="muted" style="margin-top:12px;font-size:12px">
+        <span id="tipiNum">1</span> / 10
       </div>
-      <h1 id="tipiText" style="margin-top:18px;font-size:22px">...</h1>
-      <p>Seberapa setuju kamu dengan pernyataan ini?</p>
+      <h1 id="tipiText" style="margin-top:20px;font-size:23px;line-height:1.3">...</h1>
+      <p>Seberapa setuju kamu?</p>
     </div>
     <div id="tipiOptions" class="tipi-options"></div>
   </div>
 
   <!-- CHRONO -->
-  <div class="screen" id="s-chrono">
+  <div class="screen" id="s-chrono" data-depth="4">
     <div class="top">
       <div class="back" onclick="startTipi()">‹</div>
       <h1>Jam biologis</h1>
     </div>
-    <h1>Kamu tipe pagi atau malam?</h1>
-    <p>Ini bantu kami menyarankan jam istirahat yang tepat untukmu.</p>
+    <h1 style="font-size:24px">Kamu tipe pagi atau malam?</h1>
+    <p>Untuk menyarankan jam istirahat yang tepat.</p>
 
     <div class="card">
-      <h2>Jam berapa kamu biasanya bangun?</h2>
+      <h2>Kamu biasanya bangun jam berapa?</h2>
       <div class="chips" data-field="wake">
         <div class="chip" data-v="1">Sebelum 05.00</div>
         <div class="chip" data-v="2">05.00–06.30</div>
@@ -220,13 +403,13 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
   </div>
 
   <!-- WORK -->
-  <div class="screen" id="s-work">
+  <div class="screen" id="s-work" data-depth="5">
     <div class="top">
-      <div class="back" onclick="go('s-chrono')">‹</div>
+      <div class="back" onclick="go('s-chrono',true)">‹</div>
       <h1>Konteks kerja</h1>
     </div>
-    <h1>Bagaimana ritme kerjamu?</h1>
-    <p>Ini bantu kami menyesuaikan saran agar realistis untukmu.</p>
+    <h1 style="font-size:24px">Bagaimana ritme kerjamu?</h1>
+    <p>Agar saran kami realistis untukmu.</p>
 
     <div class="card">
       <h2>Jenis pekerjaan</h2>
@@ -260,13 +443,13 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
       </div>
     </div>
 
-    <button class="btn btn-primary" onclick="saveWork()">Lihat profil saya</button>
+    <button class="btn btn-primary" onclick="saveWork()">Lihat profil</button>
   </div>
 
-  <!-- RESULT PROFIL -->
-  <div class="screen" id="s-result">
+  <!-- RESULT -->
+  <div class="screen" id="s-result" data-depth="6">
     <div class="top"><h1>Profil kamu</h1></div>
-    <p>Ini bukan diagnosis. Ini gambaran awal untuk menyesuaikan pengalamanmu di aplikasi.</p>
+    <p>Bukan diagnosis. Gambaran awal untuk menyesuaikan pengalamanmu.</p>
 
     <div class="card" id="resultPersonality"></div>
     <div class="card" id="resultChrono"></div>
@@ -277,28 +460,25 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
     </div>
 
     <button class="btn btn-primary" onclick="startAssess()">Lanjut ke asesmen</button>
-    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
-      Semua jawaban bisa diubah nanti di Profil.
-    </p>
   </div>
 
-  <!-- ASESMEN BURNOUT -->
-  <div class="screen" id="s-assess">
-    <div style="margin-top:24px">
+  <!-- ASESMEN -->
+  <div class="screen" id="s-assess" data-depth="7">
+    <div style="margin-top:20px">
       <div class="progress"><div class="progress-fill" id="assessProgress"></div></div>
-      <div class="muted" style="margin-top:10px;font-size:12px">
-        Pertanyaan <span id="assessNum">1</span> dari 10
+      <div class="muted" style="margin-top:12px;font-size:12px">
+        <span id="assessNum">1</span> / 10
       </div>
-      <h1 id="assessText" style="margin-top:18px;font-size:22px">...</h1>
+      <h1 id="assessText" style="margin-top:20px;font-size:23px;line-height:1.3">...</h1>
       <p>Dalam 2 minggu terakhir...</p>
     </div>
     <div id="assessOptions" class="tipi-options"></div>
   </div>
 
-  <!-- HASIL ASESMEN -->
-  <div class="screen" id="s-assess-result">
+  <!-- RESULT ASESMEN -->
+  <div class="screen" id="s-assess-result" data-depth="8">
     <div class="top"><h1>Hasil asesmen</h1></div>
-    <p>Ini bukan diagnosis. Ini indikasi awal tingkat burnout-mu.</p>
+    <p>Bukan diagnosis. Indikasi awal tingkat burnout-mu.</p>
 
     <div class="score-circle" id="scoreCircle">
       <div class="score-inner">
@@ -307,8 +487,8 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
       </div>
     </div>
 
-    <div style="text-align:center;margin-bottom:20px">
-      <h2 id="scoreLevel" style="margin-bottom:4px">—</h2>
+    <div style="text-align:center;margin-bottom:22px">
+      <h2 id="scoreLevel" style="margin-bottom:6px;font-size:20px">—</h2>
       <p id="scoreDesc" style="margin:0;font-size:13px">—</p>
     </div>
 
@@ -319,105 +499,102 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
 
     <div class="banner danger" id="crisisBanner" style="display:none">
       <strong>Kalau kamu merasa sangat berat</strong>
-      <p>SEJIWA 119 ext 8 · Into The Light Indonesia. Kamu tidak sendiri.</p>
+      <p>SEJIWA 119 ext 8 · Into The Light. Kamu tidak sendiri.</p>
     </div>
 
     <button class="btn btn-primary" onclick="finishAssess()">Mulai pakai</button>
-    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
-      Kamu bisa ulangi asesmen kapan saja di Profil.
-    </p>
   </div>
 
   <!-- DASHBOARD -->
-  <div class="screen" id="s-dash">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+  <div class="screen" id="s-dash" data-depth="10">
+    <div class="greet">
       <div>
         <div class="muted" id="today">—</div>
-        <h1 style="font-size:21px;margin:4px 0 0">Halo, <span id="userName">teman</span> 👋</h1>
+        <h1>Halo, <span id="userName">teman</span> 👋</h1>
       </div>
-      <div class="avatar" id="userAvatar" style="background:var(--accent-soft);color:var(--accent)">?</div>
+      <div class="avatar" id="userAvatar">?</div>
     </div>
 
-    <div class="card" id="statusCard" onclick="toggleSevere()" style="cursor:pointer;color:#fff;
-      background:linear-gradient(135deg,#5B8DB8,#8FB6D8);box-shadow:0 12px 30px rgba(91,141,184,.3)">
-      <div style="font-size:12px;opacity:.8">Status burnout</div>
-      <div style="font-size:23px;font-weight:700;margin:6px 0 4px" id="statusLabel">—</div>
-      <div style="font-size:12px;opacity:.85" id="statusNote">Belum ada data</div>
-      <div style="font-size:10px;opacity:.6;margin-top:10px">ketuk untuk demo severe</div>
+    <div class="card tap" id="statusCard" onclick="toggleSevere()" style="color:#fff;
+      background:linear-gradient(135deg,#5B8DB8,#8FB6D8);border:0;
+      box-shadow:0 16px 40px rgba(91,141,184,.35)">
+      <div style="font-size:12px;opacity:.85;font-weight:600">Status burnout</div>
+      <div style="font-size:24px;font-weight:800;margin:8px 0 4px;letter-spacing:-.02em" id="statusLabel">—</div>
+      <div style="font-size:12px;opacity:.9" id="statusNote">Belum ada data</div>
     </div>
 
-    <h2 style="margin-top:22px">Hari ini</h2>
+    <h2 style="margin-top:24px">Hari ini</h2>
 
-    <div class="card" onclick="go('s-checkin')" style="cursor:pointer">
+    <div class="card tap" onclick="go('s-checkin')">
       <div class="card-head">
-        <div style="display:flex;gap:12px;align-items:center">
+        <div style="display:flex;gap:14px;align-items:center">
           <div class="icon-round" style="background:var(--primary-soft);color:var(--primary)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           </div>
           <div>
             <h3>Log Harian</h3>
-            <div class="muted" style="margin-top:2px">Check-in 20 detik</div>
+            <div class="muted" style="margin-top:3px">Check-in 20 detik</div>
           </div>
         </div>
-        <div style="font-size:20px;color:var(--muted)">›</div>
+        <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
 
-    <div class="card" onclick="go('s-breath')" style="cursor:pointer;background:var(--sage-soft);box-shadow:none">
+    <div class="card tap" onclick="go('s-breath')" style="background:var(--sage-soft)">
       <div class="card-head">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div class="icon-round" style="background:#fff;color:var(--sage)">
+        <div style="display:flex;gap:14px;align-items:center">
+          <div class="icon-round" style="background:var(--surface-solid);color:var(--sage)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></svg>
           </div>
           <div>
             <h3>Bantu Saya Sekarang</h3>
-            <div class="muted" style="margin-top:2px">Napas 2 menit</div>
+            <div class="muted" style="margin-top:3px">Napas 2 menit</div>
           </div>
         </div>
-        <div style="font-size:20px;color:var(--muted)">›</div>
+        <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
 
-    <div class="card" onclick="go('s-tracker')" style="cursor:pointer">
+    <div class="card tap" onclick="go('s-tracker')">
       <div class="card-head">
-        <div style="display:flex;gap:12px;align-items:center">
+        <div style="display:flex;gap:14px;align-items:center">
           <div class="icon-round" style="background:var(--accent-soft);color:var(--accent)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-6"/></svg>
           </div>
           <div>
             <h3>Tracker &amp; Grafik</h3>
-            <div class="muted" style="margin-top:2px">Lihat tren mingguan</div>
+            <div class="muted" style="margin-top:3px">Tren mingguan</div>
           </div>
         </div>
-        <div style="font-size:20px;color:var(--muted)">›</div>
+        <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
 
-    <div class="card" id="expertCard" onclick="go('s-expert')" style="cursor:pointer;display:none">
+    <div class="card tap" id="expertCard" onclick="go('s-expert')" style="display:none">
       <div class="card-head">
-        <div style="display:flex;gap:12px;align-items:center">
+        <div style="display:flex;gap:14px;align-items:center">
           <div class="icon-round" style="background:var(--danger-soft);color:var(--danger)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
           <div>
             <h3>Hubungi Ahli</h3>
-            <div class="muted" style="margin-top:2px">Psikolog terverifikasi</div>
+            <div class="muted" style="margin-top:3px">Psikolog terverifikasi</div>
           </div>
         </div>
-        <div style="font-size:20px;color:var(--muted)">›</div>
+        <div style="font-size:22px;color:var(--muted)">›</div>
       </div>
     </div>
 
-    <div class="banner danger" style="margin-top:18px">
+    <div class="banner danger" style="margin-top:20px">
       <strong>Butuh bantuan sekarang?</strong>
-      <p>SEJIWA 119 ext 8 · Into The Light Indonesia</p>
+      <p>SEJIWA 119 ext 8 · Into The Light</p>
     </div>
   </div>
 
   <!-- CHECK-IN -->
-  <div class="screen" id="s-checkin">
+  <div class="screen" id="s-checkin" data-depth="11">
     <div class="top">
-      <div class="back" onclick="go('s-dash')">‹</div>
+      <div class="back" onclick="go('s-dash',true)">‹</div>
       <h1>Log Harian</h1>
     </div>
 
@@ -436,8 +613,8 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
           <div class="emoji" data-v="3">😟</div><div class="emoji" data-v="4">😣</div>
         </div>
       </div>
-      <div class="row" style="padding-bottom:0">
-        <div class="row-label">Beban kerja</div>
+      <div class="row" style="padding-bottom:0;display:block">
+        <div class="row-label" style="margin-bottom:12px">Beban kerja</div>
         <div class="chips" data-field="load">
           <div class="chip" data-v="1">Ringan</div>
           <div class="chip" data-v="2">Sedang</div>
@@ -447,15 +624,12 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
     </div>
 
     <button class="btn btn-primary" style="margin-top:8px" onclick="saveCheckin()">Simpan</button>
-    <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
-      Data ini hanya untukmu. Tidak dibagikan ke siapa pun.
-    </p>
   </div>
 
   <!-- NAPAS -->
-  <div class="screen" id="s-breath">
+  <div class="screen" id="s-breath" data-depth="12">
     <div class="top">
-      <div class="back" onclick="stopBreath();go('s-dash')">‹</div>
+      <div class="back" onclick="stopBreath();go('s-dash',true)">‹</div>
       <h1>Napas 4-7-8</h1>
     </div>
     <div class="breath-wrap">
@@ -464,15 +638,15 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
         <button class="btn btn-primary" id="breathBtn" onclick="startBreath()">Mulai</button>
       </div>
       <p class="muted" style="text-align:center;max-width:260px;font-size:12px">
-        Tarik 4 detik · Tahan 7 detik · Buang 8 detik
+        Tarik 4 · Tahan 7 · Buang 8
       </p>
     </div>
   </div>
 
   <!-- TRACKER -->
-  <div class="screen" id="s-tracker">
+  <div class="screen" id="s-tracker" data-depth="13">
     <div class="top">
-      <div class="back" onclick="go('s-dash')">‹</div>
+      <div class="back" onclick="go('s-dash',true)">‹</div>
       <h1>Tren 7 Hari</h1>
     </div>
     <div class="card">
@@ -485,75 +659,237 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
     </div>
     <div class="card" style="background:var(--accent-soft)">
       <h2>Insight</h2>
-      <p style="margin:0;font-size:13px" id="insight">Belum ada cukup data. Isi log harian beberapa hari lagi.</p>
+      <p style="margin:0;font-size:13px" id="insight">Belum ada cukup data.</p>
     </div>
   </div>
 
   <!-- HUBUNGI AHLI -->
-  <div class="screen" id="s-expert">
+  <div class="screen" id="s-expert" data-depth="14">
     <div class="top">
-      <div class="back" onclick="go('s-dash')">‹</div>
+      <div class="back" onclick="go('s-dash',true)">‹</div>
       <h1>Hubungi Ahli</h1>
     </div>
     <div class="banner" style="background:var(--sage-soft)">
       <strong>Semua tenaga ahli terverifikasi</strong>
-      <p>Kami memeriksa STR, SIPP, dan keanggotaan profesi sebelum mereka bisa menerima sesi.</p>
+      <p>Kami memeriksa STR, SIPP, dan keanggotaan profesi sebelum mereka menerima sesi.</p>
     </div>
 
     <div class="expert" onclick="alert('Demo: buka halaman booking')">
       <div class="avatar">AN</div>
       <div style="flex:1">
         <div style="font-weight:700;font-size:14px">dr. Ani, M.Psi</div>
-        <div class="muted" style="font-size:12px">Psikolog Klinis · Burnout kerja</div>
+        <div class="muted" style="font-size:12px;margin-top:2px">Psikolog Klinis · Burnout kerja</div>
         <div class="verified">✓ Terverifikasi</div>
       </div>
     </div>
 
     <div class="expert" onclick="alert('Demo: buka halaman booking')">
-      <div class="avatar" style="background:var(--primary-soft);color:var(--primary)">BS</div>
+      <div class="avatar" style="background:linear-gradient(135deg,var(--primary-soft),var(--sage-soft))">BS</div>
       <div style="flex:1">
         <div style="font-weight:700;font-size:14px">dr. Budi, Sp.KJ</div>
-        <div class="muted" style="font-size:12px">Psikiater · Kecemasan &amp; mood</div>
+        <div class="muted" style="font-size:12px;margin-top:2px">Psikiater · Kecemasan &amp; mood</div>
         <div class="verified">✓ Terverifikasi</div>
       </div>
     </div>
 
     <div class="card" style="margin-top:18px">
-      <h2 style="margin-bottom:8px">Data yang dibagikan</h2>
-      <label style="display:flex;gap:10px;align-items:center;padding:8px 0;font-size:13px">
+      <h2 style="margin-bottom:14px">Data yang dibagikan</h2>
+      <label style="display:flex;gap:12px;align-items:center;padding:10px 0;font-size:13px">
         <input type="checkbox" checked> Ringkasan check-in
       </label>
-      <label style="display:flex;gap:10px;align-items:center;padding:8px 0;font-size:13px">
+      <label style="display:flex;gap:12px;align-items:center;padding:10px 0;font-size:13px">
         <input type="checkbox" checked> Skor asesmen
       </label>
-      <label style="display:flex;gap:10px;align-items:center;padding:8px 0;font-size:13px">
+      <label style="display:flex;gap:12px;align-items:center;padding:10px 0;font-size:13px">
         <input type="checkbox"> Jurnal mentah
       </label>
       <p class="muted" style="margin:12px 0 0;font-size:12px">
-        Akses berlaku 30 hari. Bisa dicabut kapan saja.
+        Akses 30 hari. Bisa dicabut kapan saja.
       </p>
     </div>
   </div>
 
   <!-- PROFIL -->
-  <div class="screen" id="s-profile">
-    <div class="top"><h1>Profil &amp; Privasi</h1></div>
+  <div class="screen" id="s-profile" data-depth="15">
+    <div class="top">
+      <h1>Profil</h1>
+      <div class="back" onclick="go('s-settings')" style="font-size:16px" title="Pengaturan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" style="width:20px;height:20px">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="profile-head">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div class="profile-name" id="profileName">teman</div>
+      <div class="profile-sub" id="profileEmail">Mode demo · data lokal</div>
+    </div>
+
     <div class="card" id="profileSummary"></div>
     <div class="card" id="profileAssess"></div>
+
     <div class="card">
       <h2>Siapa yang bisa lihat</h2>
       <p style="font-size:13px;margin:0">Hanya kamu. Tidak ada tenaga ahli yang punya akses.</p>
     </div>
-    <div class="card">
-      <h2>Kontrol data</h2>
-      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="startAssess()">Ulangi asesmen</button>
-      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="exportData()">Ekspor data saya</button>
-      <button class="btn btn-ghost" style="margin-bottom:8px" onclick="if(confirm('Ulangi onboarding dari awal?')){localStorage.removeItem('bm_profile');localStorage.removeItem('bm_assessment');startTipi()}">Ulangi onboarding</button>
-      <button class="btn btn-ghost" onclick="if(confirm('Hapus semua data?')){localStorage.clear();location.reload()}">Hapus semua data</button>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="screen" id="s-settings" data-depth="16">
+    <div class="top">
+      <div class="back" onclick="go('s-profile',true)">‹</div>
+      <h1>Pengaturan</h1>
     </div>
+
+    <!-- AKUN -->
+    <div class="card">
+      <h2>Akun</h2>
+      <div class="setting" onclick="editName()">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--primary-soft);color:var(--primary)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          </div>
+          <div>
+            <div class="setting-label">Nama tampilan</div>
+            <div class="setting-sub" id="setName">—</div>
+          </div>
+        </div>
+        <div style="font-size:18px;color:var(--muted)">›</div>
+      </div>
+      <div class="setting" style="cursor:default">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--accent-soft);color:var(--accent)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M4 4h16v6H4z"/><path d="M4 14h16v6H4z"/></svg>
+          </div>
+          <div>
+            <div class="setting-label">Akun</div>
+            <div class="setting-sub">Mode demo · data lokal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAMPILAN -->
+    <div class="card">
+      <h2>Tampilan</h2>
+      <div class="setting" onclick="toggleTheme()" style="cursor:pointer">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--primary-soft);color:var(--primary)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </div>
+          <div>
+            <div class="setting-label">Mode gelap</div>
+            <div class="setting-sub">Nyaman untuk mata saat malam</div>
+          </div>
+        </div>
+        <div class="switch" id="themeSwitch"></div>
+      </div>
+
+      <div class="setting disabled">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--sage-soft);color:var(--sage)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+          </div>
+          <div>
+            <div class="setting-label">Bahasa</div>
+            <div class="setting-sub">Bahasa Indonesia (English segera)</div>
+          </div>
+        </div>
+        <div class="setting-value">ID</div>
+      </div>
+    </div>
+
+    <!-- NOTIFIKASI -->
+    <div class="card">
+      <h2>Notifikasi</h2>
+      <div class="setting disabled">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--accent-soft);color:var(--accent)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <div>
+            <div class="setting-label">Pengingat harian</div>
+            <div class="setting-sub">Segera hadir</div>
+          </div>
+        </div>
+        <div class="setting-value">—</div>
+      </div>
+
+      <div class="setting disabled">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--sage-soft);color:var(--sage)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 2v20M2 12h20"/></svg>
+          </div>
+          <div>
+            <div class="setting-label">Jam tenang</div>
+            <div class="setting-sub">Segera hadir</div>
+          </div>
+        </div>
+        <div class="setting-value">—</div>
+      </div>
+    </div>
+
+    <!-- DATA -->
+    <div class="card">
+      <h2>Data &amp; privasi</h2>
+      <div class="setting" onclick="exportData()">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--sage-soft);color:var(--sage)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+          </div>
+          <div>
+            <div class="setting-label">Ekspor data saya</div>
+            <div class="setting-sub">Unduh sebagai JSON</div>
+          </div>
+        </div>
+        <div style="font-size:18px;color:var(--muted)">›</div>
+      </div>
+
+      <div class="setting" onclick="startAssess()">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--primary-soft);color:var(--primary)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div>
+            <div class="setting-label">Ulangi asesmen</div>
+            <div class="setting-sub">Isi ulang skrining burnout</div>
+          </div>
+        </div>
+        <div style="font-size:18px;color:var(--muted)">›</div>
+      </div>
+
+      <div class="setting" onclick="resetOnboarding()">
+        <div class="setting-left">
+          <div class="setting-icon" style="background:var(--accent-soft);color:var(--accent)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          </div>
+          <div>
+            <div class="setting-label">Ulangi onboarding</div>
+            <div class="setting-sub">Reset profil kepribadian &amp; kerja</div>
+          </div>
+        </div>
+        <div style="font-size:18px;color:var(--muted)">›</div>
+      </div>
+    </div>
+
+    <!-- AKUN AKSI -->
+    <div class="card">
+      <h2>Akun</h2>
+      <button class="btn btn-danger" onclick="logout()">Keluar &amp; hapus data lokal</button>
+      <p class="muted" style="margin:12px 0 0;font-size:11px;text-align:center">
+        Ini akan menghapus semua data di HP ini. Tidak bisa dibatalkan.
+      </p>
+    </div>
+
+    <!-- TENTANG -->
     <div class="card">
       <h2>Tentang</h2>
-      <p style="font-size:13px;margin:0">Burnout Manager bukan pengganti layanan klinis. Untuk kondisi berat, hubungi psikolog, psikiater, atau layanan darurat.</p>
+      <p style="font-size:13px;margin:0 0 8px">Burnout Manager versi 0.1 (prototipe).</p>
+      <p style="font-size:12px;margin:0;color:var(--muted)">
+        Bukan pengganti layanan klinis. Untuk kondisi berat, hubungi psikolog, psikiater, atau layanan darurat.
+      </p>
     </div>
   </div>
 
@@ -581,27 +917,96 @@ p{line-height:1.55;color:var(--muted);margin:0 0 12px}
 
 <script>
 /* ═══════════════════════════════════════════
-   NAVIGASI
+   NAVIGASI DENGAN TRANSISI
    ═══════════════════════════════════════════ */
 
 const ONBOARDING_SCREENS = ['s-welcome','s-auth','s-name','s-tipi','s-chrono','s-work','s-result','s-assess','s-assess-result'];
 
-function go(id){
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function depthOf(id){
+  const el = document.getElementById(id);
+  return el ? parseInt(el.dataset.depth || 0) : 0;
+}
+
+function go(id, back){
+  const current = document.querySelector('.screen.active');
+  const currentId = current ? current.id : null;
+  if(currentId === id) return;
+
   const target = document.getElementById(id);
   if(!target) return;
+
+  // Tentukan arah
+  let dir = 'fade';
+  if(!back && currentId){
+    const d1 = depthOf(currentId);
+    const d2 = depthOf(id);
+    if(d2 > d1) dir = 'right';
+    else if(d2 < d1) dir = 'left';
+  } else if(back){
+    dir = 'left';
+  }
+
+  if(current){
+    current.classList.remove('active','slide-right','slide-left','fade-only');
+  }
+
   target.classList.add('active');
+  if(dir === 'right') target.classList.add('slide-right');
+  else if(dir === 'left') target.classList.add('slide-left');
+  else target.classList.add('fade-only');
   target.scrollTop = 0;
 
+  // Nav
   const nav = document.getElementById('nav');
-  nav.classList.toggle('on', !ONBOARDING_SCREENS.includes(id));
+  const showNav = !ONBOARDING_SCREENS.includes(id) && id !== 's-settings';
+  nav.classList.toggle('on', showNav);
   nav.querySelectorAll('button').forEach(b => {
     b.classList.toggle('active', b.dataset.tab === id);
   });
 
+  // Callbacks per layar
   if(id === 's-tracker') renderCharts();
-  if(id === 's-profile') renderProfileSummary();
+  if(id === 's-profile') renderProfile();
+  if(id === 's-settings') renderSettings();
   if(id === 's-dash') updateStatusFromScore();
+}
+
+/* ═══════════════════════════════════════════
+   TEMA (DARK MODE)
+   ═══════════════════════════════════════════ */
+
+function applyTheme(){
+  const t = localStorage.getItem('bm_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  const sw = document.getElementById('themeSwitch');
+  if(sw) sw.classList.toggle('on', t === 'dark');
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute('content', t === 'dark' ? '#0A0E13' : '#EFEAE0');
+}
+
+function toggleTheme(){
+  const t = localStorage.getItem('bm_theme') === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('bm_theme', t);
+  applyTheme();
+}
+
+/* ═══════════════════════════════════════════
+   MOCK LOGIN
+   ═══════════════════════════════════════════ */
+
+function mockLogin(provider){
+  localStorage.setItem('bm_auth', JSON.stringify({
+    provider: provider,
+    email: provider === 'google' ? 'kamu@gmail.com (demo)' : 'kamu@email.com (demo)',
+    loginAt: new Date().toISOString()
+  }));
+  go('s-name');
+}
+
+function logout(){
+  if(!confirm('Keluar dan hapus semua data di HP ini?')) return;
+  localStorage.clear();
+  location.reload();
 }
 
 /* ═══════════════════════════════════════════
@@ -618,16 +1023,35 @@ function saveName(){
   startTipi();
 }
 
+function editName(){
+  const cur = localStorage.getItem('bm_name') || '';
+  const v = prompt('Nama panggilan:', cur);
+  if(!v) return;
+  localStorage.setItem('bm_name', v.trim());
+  renderName();
+  renderSettings();
+  renderProfile();
+}
+
 function renderName(){
   const n = localStorage.getItem('bm_name') || 'teman';
   const el = document.getElementById('userName');
   const av = document.getElementById('userAvatar');
+  const pn = document.getElementById('profileName');
+  const pa = document.getElementById('profileAvatar');
+  const pe = document.getElementById('profileEmail');
   if(el) el.textContent = n;
   if(av) av.textContent = n.charAt(0).toUpperCase();
+  if(pn) pn.textContent = n;
+  if(pa) pa.textContent = n.charAt(0).toUpperCase();
+  if(pe){
+    const auth = JSON.parse(localStorage.getItem('bm_auth') || 'null');
+    pe.textContent = auth ? auth.email : 'Mode demo';
+  }
 }
 
 /* ═══════════════════════════════════════════
-   TIPI-10
+   TIPI
    ═══════════════════════════════════════════ */
 
 const tipiQuestions = [
@@ -642,11 +1066,10 @@ const tipiQuestions = [
   "Saya orang yang tenang, stabil secara emosi.",
   "Saya orang yang konvensional, kurang kreatif."
 ];
-
 const tipiLabels = ["Sangat tidak setuju","Tidak setuju","Agak tidak setuju","Netral","Agak setuju","Setuju","Sangat setuju"];
 
 let tipiIndex = 0;
-let onboarding = { tipi: [], wake: null, focus: null, jobType: null, workHours: null, meetings: null, big5: null };
+let onboarding = { tipi: [], wake:null, focus:null, jobType:null, workHours:null, meetings:null, big5:null };
 
 function startTipi(){
   tipiIndex = 0;
@@ -658,8 +1081,7 @@ function startTipi(){
 function renderTipi(){
   document.getElementById('tipiNum').textContent = tipiIndex + 1;
   document.getElementById('tipiText').textContent = tipiQuestions[tipiIndex];
-  document.getElementById('tipiProgress').style.width = (tipiIndex / 10 * 100) + '%';
-
+  document.getElementById('tipiProgress').style.width = ((tipiIndex)/10*100) + '%';
   const opts = document.getElementById('tipiOptions');
   opts.innerHTML = '';
   tipiLabels.forEach((label, i) => {
@@ -677,9 +1099,7 @@ function answerTipi(value){
   if(tipiIndex >= tipiQuestions.length){
     computeBig5();
     go('s-chrono');
-  } else {
-    renderTipi();
-  }
+  } else renderTipi();
 }
 
 function computeBig5(){
@@ -726,11 +1146,10 @@ function saveWork(){
 function renderResult(){
   const b = onboarding.big5;
   const names = { O: 'Keterbukaan', C: 'Kedisiplinan', E: 'Ekstraversi', A: 'Keramahan', N: 'Sensitivitas stres' };
-
   const pCard = document.getElementById('resultPersonality');
   pCard.innerHTML = '<h2>Kepribadian</h2>';
   ['O','C','E','A','N'].forEach(k => {
-    const pct = Math.round(b[k] / 7 * 100);
+    const pct = Math.round(b[k]/7*100);
     const row = document.createElement('div');
     row.className = 'pbar';
     row.innerHTML = '<div class="pbar-label">' + names[k] + '</div>' +
@@ -739,15 +1158,15 @@ function renderResult(){
     pCard.appendChild(row);
   });
 
-  const chronoLabels = { 1: 'Pagi banget', 2: 'Pagi', 3: 'Siang', 4: 'Sore', 5: 'Malam', 6: 'Malam banget' };
+  const chronoLabels = { 1:'Pagi banget', 2:'Pagi', 3:'Siang', 4:'Sore', 5:'Malam', 6:'Malam banget' };
   const chronoType = onboarding.focus <= 2 ? 'Tipe pagi' : onboarding.focus >= 5 ? 'Tipe malam' : 'Tipe menengah';
   document.getElementById('resultChrono').innerHTML =
     '<h2>Jam biologis</h2><p style="margin:0;font-size:14px;color:var(--ink)"><strong>' + chronoType +
     '</strong><br>Paling fokus: ' + chronoLabels[onboarding.focus] + '</p>';
 
-  const jobLabels = { 1: 'Kantoran', 2: 'Remote', 3: 'Hybrid', 4: 'Freelancer', 5: 'Shift', 6: 'Lainnya' };
-  const hourLabels = { 1: '< 6 jam', 2: '6–8 jam', 3: '8–10 jam', 4: '> 10 jam' };
-  const meetLabels = { 1: '0–1', 2: '2–3', 3: '4–5', 4: '6+' };
+  const jobLabels = { 1:'Kantoran', 2:'Remote', 3:'Hybrid', 4:'Freelancer', 5:'Shift', 6:'Lainnya' };
+  const hourLabels = { 1:'< 6 jam', 2:'6–8 jam', 3:'8–10 jam', 4:'> 10 jam' };
+  const meetLabels = { 1:'0–1', 2:'2–3', 3:'4–5', 4:'6+' };
   document.getElementById('resultWork').innerHTML =
     '<h2>Konteks kerja</h2><p style="margin:0;font-size:14px;color:var(--ink)">' +
     jobLabels[onboarding.jobType] + ' · ' + hourLabels[onboarding.workHours] + ' per hari<br>' +
@@ -757,7 +1176,7 @@ function renderResult(){
   if(b.N >= 4.5) insights.push('Kamu cukup sensitif terhadap stres. Jaga waktu pemulihan harian.');
   if(b.C >= 5) insights.push('Kamu cenderung disiplin dan bisa overwork tanpa sadar. Pasang batas jam kerja.');
   if(b.E <= 3 && onboarding.jobType === 2) insights.push('Kerja remote dengan ekstraversi rendah bisa bikin terisolasi. Jadwalkan interaksi sosial rutin.');
-  if(b.O >= 5) insights.push('Keterbukaanmu tinggi. Coba teknik istirahat yang bervariasi, bukan cuma satu.');
+  if(b.O >= 5) insights.push('Keterbukaanmu tinggi. Coba teknik istirahat yang bervariasi.');
   if(onboarding.workHours >= 3) insights.push('Jam kerjamu panjang. Prioritaskan tidur 7–8 jam.');
   if(onboarding.meetings >= 3) insights.push('Rapatmu padat. Sisipkan blok fokus tanpa gangguan.');
   if(insights.length === 0) insights.push('Profilmu cukup seimbang. Lanjutkan kebiasaan baik.');
@@ -766,13 +1185,8 @@ function renderResult(){
     insights.map(t => '<p style="margin:0 0 10px;font-size:13px;color:var(--ink)">• ' + t + '</p>').join('');
 }
 
-function finishOnboarding(){
-  localStorage.setItem('bm_profile', JSON.stringify(onboarding));
-  go('s-dash');
-}
-
 /* ═══════════════════════════════════════════
-   ASESMEN BURNOUT (CBI-inspired)
+   ASESMEN
    ═══════════════════════════════════════════ */
 
 const assessQuestions = [
@@ -783,11 +1197,10 @@ const assessQuestions = [
   "Saya merasa lelah ketika memikirkan hari kerja lain.",
   "Saya merasa terkuras di akhir hari kerja.",
   "Saya kehilangan semangat dalam bekerja.",
-  "Saya merasa tidak peduli lagi dengan pekerjaan saya.",
+  "Saya merasa tidak peduli lagi dengan pekerjaan.",
   "Saya merasa tidak mampu menyelesaikan pekerjaan.",
   "Saya merasa usaha saya sia-sia."
 ];
-
 const assessLabels = ["Tidak pernah","Jarang","Kadang","Sering","Selalu"];
 
 let assessIndex = 0;
@@ -803,8 +1216,7 @@ function startAssess(){
 function renderAssess(){
   document.getElementById('assessNum').textContent = assessIndex + 1;
   document.getElementById('assessText').textContent = assessQuestions[assessIndex];
-  document.getElementById('assessProgress').style.width = (assessIndex / 10 * 100) + '%';
-
+  document.getElementById('assessProgress').style.width = (assessIndex/10*100) + '%';
   const opts = document.getElementById('assessOptions');
   opts.innerHTML = '';
   assessLabels.forEach((label, i) => {
@@ -823,42 +1235,25 @@ function answerAssess(value){
     computeAssess();
     renderAssessResult();
     go('s-assess-result');
-  } else {
-    renderAssess();
-  }
+  } else renderAssess();
 }
 
 function computeAssess(){
   const total = assessAnswers.reduce((a,b) => a+b, 0);
-  let level, desc, cssClass;
-
-  if(total <= 9){
-    level = 'Rendah';
-    desc = 'Indikasi burnout rendah. Pertahankan kebiasaan baikmu.';
-    cssClass = 'low';
-  } else if(total <= 19){
-    level = 'Sedang';
-    desc = 'Ada tanda-tanda awal. Jaga waktu pemulihan dan batas kerja.';
-    cssClass = 'mid';
-  } else if(total <= 29){
-    level = 'Tinggi';
-    desc = 'Kamu cukup terbebani. Pertimbangkan bicara dengan ahli.';
-    cssClass = 'high';
-  } else {
-    level = 'Berat';
-    desc = 'Kamu sangat terbebani. Kami sarankan segera bicara dengan ahli.';
-    cssClass = 'severe';
-  }
-
+  let level, desc;
+  if(total <= 9){ level = 'Rendah'; desc = 'Indikasi burnout rendah. Pertahankan kebiasaan baikmu.'; }
+  else if(total <= 19){ level = 'Sedang'; desc = 'Ada tanda-tanda awal. Jaga waktu pemulihan dan batas kerja.'; }
+  else if(total <= 29){ level = 'Tinggi'; desc = 'Kamu cukup terbebani. Pertimbangkan bicara dengan ahli.'; }
+  else { level = 'Berat'; desc = 'Kamu sangat terbebani. Kami sarankan segera bicara dengan ahli.'; }
   window._assess = { total, level, desc, answers: assessAnswers.slice(), date: new Date().toISOString().slice(0,10) };
 }
 
 function renderAssessResult(){
   const a = window._assess;
   const circle = document.getElementById('scoreCircle');
-  circle.className = 'score-circle ' + (a.total <= 9 ? 'low' : a.total <= 19 ? 'mid' : a.total <= 29 ? 'high' : 'severe');
+  circle.className = 'score-circle ' + (a.total<=9?'low':a.total<=19?'mid':a.total<=29?'high':'severe');
   document.getElementById('scoreNum').textContent = a.total;
-  document.getElementById('scoreLevel').textContent = 'Risiko burnout: ' + a.level;
+  document.getElementById('scoreLevel').textContent = 'Risiko: ' + a.level;
   document.getElementById('scoreDesc').textContent = a.desc;
 
   const advice = [];
@@ -872,11 +1267,11 @@ function renderAssessResult(){
   } else if(a.total <= 29){
     advice.push('Bicara dengan atasan soal prioritas, bukan menambah beban.');
     advice.push('Blokir waktu tanpa notifikasi setiap hari.');
-    advice.push('Pertimbangkan sesi dengan psikolog dalam 2 minggu ke depan.');
+    advice.push('Pertimbangkan sesi dengan psikolog dalam 2 minggu.');
   } else {
     advice.push('Prioritaskan pemulihan, bukan produktivitas.');
     advice.push('Hubungi psikolog atau psikiater secepatnya.');
-    advice.push('Beri tahu satu orang yang kamu percaya tentang kondisimu.');
+    advice.push('Beri tahu satu orang yang kamu percaya.');
     document.getElementById('crisisBanner').style.display = 'block';
   }
 
@@ -897,24 +1292,21 @@ function updateStatusFromScore(){
   const card = document.getElementById('statusCard');
   const label = document.getElementById('statusLabel');
   const note = document.getElementById('statusNote');
-  if(!a || !card) return;
+  if(!card) return;
+  if(!a){ label.textContent = '—'; note.textContent = 'Belum ada data'; return; }
 
   label.textContent = a.level;
   note.textContent = 'Skor: ' + a.total + ' dari 40';
 
   let bg, sh;
-  if(a.total <= 9){ bg = 'linear-gradient(135deg,#8FAE94,#A9C4AD)'; sh = 'rgba(143,174,148,.35)'; }
-  else if(a.total <= 19){ bg = 'linear-gradient(135deg,#5B8DB8,#8FB6D8)'; sh = 'rgba(91,141,184,.3)'; }
-  else if(a.total <= 29){ bg = 'linear-gradient(135deg,#E2B173,#EBC896)'; sh = 'rgba(226,177,115,.35)'; }
-  else { bg = 'linear-gradient(135deg,#C97A6D,#E2A89A)'; sh = 'rgba(201,122,109,.35)'; }
+  if(a.total <= 9){ bg = 'linear-gradient(135deg,#7FA588,#A9C4AD)'; sh = 'rgba(127,165,136,.35)'; }
+  else if(a.total <= 19){ bg = 'linear-gradient(135deg,#5B8DB8,#8FB6D8)'; sh = 'rgba(91,141,184,.35)'; }
+  else if(a.total <= 29){ bg = 'linear-gradient(135deg,#D9A56A,#EBC896)'; sh = 'rgba(217,165,106,.4)'; }
+  else { bg = 'linear-gradient(135deg,#C97A6D,#E2A89A)'; sh = 'rgba(201,122,109,.4)'; }
 
   card.style.background = bg;
-  card.style.boxShadow = '0 12px 30px ' + sh;
+  card.style.boxShadow = '0 16px 40px ' + sh;
 }
-
-/* ═══════════════════════════════════════════
-   SEVERE TOGGLE (demo)
-   ═══════════════════════════════════════════ */
 
 let severe = false;
 function toggleSevere(){
@@ -958,11 +1350,11 @@ function saveCheckin(){
   const all = JSON.parse(localStorage.getItem('bm_logs') || '[]');
   const today = new Date().toISOString().slice(0,10);
   const idx = all.findIndex(x => x.d === today);
-  if(idx >= 0){ all[idx] = { d: today, ...data }; }
-  else { all.push({ d: today, ...data }); }
+  if(idx >= 0) all[idx] = { d: today, ...data };
+  else all.push({ d: today, ...data });
   localStorage.setItem('bm_logs', JSON.stringify(all));
-  alert('Tersimpan. Terima kasih sudah jujur pada diri sendiri.');
-  go('s-dash');
+  alert('Tersimpan.');
+  go('s-dash', true);
 }
 
 /* ═══════════════════════════════════════════
@@ -988,7 +1380,7 @@ function renderCharts(){
     arr.forEach((v, i) => {
       const bar = document.createElement('div');
       bar.className = 'bar' + (v >= hi ? ' hi' : '');
-      bar.style.height = (v / max * 100 || 4) + '%';
+      bar.style.height = (v/max*100 || 4) + '%';
       if(v >= hi) bar.style.background = color;
       const s = document.createElement('span');
       s.textContent = days[(new Date().getDay() - 6 + i + 7) % 7];
@@ -996,24 +1388,24 @@ function renderCharts(){
       el.appendChild(bar);
     });
   };
-  draw('chartEnergy', energy, '#5B8DB8', 3);
-  draw('chartStress', stress, '#C97A6D', 3);
+  draw('chartEnergy', energy, 'linear-gradient(180deg,#8FB6D8,#5B8DB8)', 3);
+  draw('chartStress', stress, 'linear-gradient(180deg,#E2A89A,#C97A6D)', 3);
 
   const filled = energy.filter(v => v > 0).length;
   const ins = document.getElementById('insight');
   if(!ins) return;
   if(filled < 3){
-    ins.textContent = 'Baru ' + filled + ' hari data. Isi log harian beberapa hari lagi untuk insight.';
+    ins.textContent = 'Baru ' + filled + ' hari data. Isi log harian beberapa hari lagi.';
   } else {
     const avgE = energy.filter(v => v).reduce((a,b) => a+b, 0) / filled;
     ins.textContent = avgE < 2.5
-      ? 'Energi kamu rendah minggu ini. Coba kurangi satu komitmen malam dan tidur lebih awal.'
-      : 'Energi kamu cukup stabil. Pertahankan faktor pelindung seperti istirahat dan olahraga.';
+      ? 'Energi kamu rendah minggu ini. Coba kurangi satu komitmen malam.'
+      : 'Energi kamu cukup stabil. Pertahankan faktor pelindung.';
   }
 }
 
 /* ═══════════════════════════════════════════
-   NAPAS 4-7-8
+   NAPAS
    ═══════════════════════════════════════════ */
 
 let breathTimer = null, breathStep = 0;
@@ -1021,7 +1413,7 @@ function setBreath(text, cls){
   const circle = document.getElementById('breathCircle');
   if(!circle) return;
   circle.textContent = text;
-  circle.classList.remove('inhale', 'exhale');
+  circle.classList.remove('inhale','exhale');
   if(cls) circle.classList.add(cls);
 }
 function startBreath(){
@@ -1032,9 +1424,9 @@ function startBreath(){
   breathStep = 0;
   const cycle = () => {
     const phase = breathStep % 3;
-    if(phase === 0) setBreath('Tarik napas...', 'inhale');
-    else if(phase === 1) setBreath('Tahan...', '');
-    else setBreath('Buang napas...', 'exhale');
+    if(phase === 0) setBreath('Tarik napas...','inhale');
+    else if(phase === 1) setBreath('Tahan...','');
+    else setBreath('Buang napas...','exhale');
     breathStep++;
   };
   cycle();
@@ -1045,16 +1437,16 @@ function stopBreath(){
   breathTimer = null;
   const bBtn = document.getElementById('breathBtn');
   if(bBtn) bBtn.textContent = 'Mulai';
-  setBreath('Siap?', '');
+  setBreath('Siap?','');
 }
 
 /* ═══════════════════════════════════════════
-   PROFIL
+   PROFIL & SETTINGS
    ═══════════════════════════════════════════ */
 
-function renderProfileSummary(){
+function renderProfile(){
+  renderName();
   const card = document.getElementById('profileSummary');
-  if(!card) return;
   const p = JSON.parse(localStorage.getItem('bm_profile') || 'null');
   if(!p){
     card.innerHTML = '<h2>Profil</h2><p style="margin:0;font-size:13px">Belum ada profil.</p>';
@@ -1077,8 +1469,22 @@ function renderProfileSummary(){
     acard.innerHTML =
       '<h2>Asesmen burnout</h2>' +
       '<p style="margin:0;font-size:14px;color:var(--ink)"><strong>' + a.level + '</strong> · ' + a.total + '/40</p>' +
-      '<p class="muted" style="margin:6px 0 0;font-size:12px">Terakhir diisi: ' + a.date + '</p>';
+      '<p class="muted" style="margin:6px 0 0;font-size:12px">Terakhir: ' + a.date + '</p>';
   }
+}
+
+function renderSettings(){
+  const n = localStorage.getItem('bm_name') || '—';
+  const el = document.getElementById('setName');
+  if(el) el.textContent = n;
+  applyTheme();
+}
+
+function resetOnboarding(){
+  if(!confirm('Ulangi onboarding dari awal?')) return;
+  localStorage.removeItem('bm_profile');
+  localStorage.removeItem('bm_assessment');
+  startTipi();
 }
 
 /* ═══════════════════════════════════════════
@@ -1088,9 +1494,11 @@ function renderProfileSummary(){
 function exportData(){
   const payload = {
     name: localStorage.getItem('bm_name') || 'user',
+    auth: JSON.parse(localStorage.getItem('bm_auth') || 'null'),
     profile: JSON.parse(localStorage.getItem('bm_profile') || 'null'),
     assessment: JSON.parse(localStorage.getItem('bm_assessment') || 'null'),
     logs: JSON.parse(localStorage.getItem('bm_logs') || '[]'),
+    theme: localStorage.getItem('bm_theme') || 'light',
     exportedAt: new Date().toISOString()
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -1105,6 +1513,8 @@ function exportData(){
    ═══════════════════════════════════════════ */
 
 window.addEventListener('DOMContentLoaded', () => {
+  applyTheme();
+
   const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
   const now = new Date();
@@ -1114,7 +1524,7 @@ window.addEventListener('DOMContentLoaded', () => {
   renderName();
   initChips();
 
-  // Auto-masuk kalau sudah lengkap
+  // Auto masuk kalau sudah lengkap
   if(localStorage.getItem('bm_profile') && localStorage.getItem('bm_assessment') && localStorage.getItem('bm_name')){
     go('s-dash');
   }
